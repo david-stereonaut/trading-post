@@ -5,18 +5,15 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'mobx-react'
 import { GeneralStore as generalStore } from './stores/GeneralStore'
-import { ProfileStore as profileStore } from './stores/ProfileStore'
 import { SearchStore as searchStore } from './stores/SearchStore'
 import { UserStore as userStore } from './stores/UserStore'
 
 const GeneralStore = new generalStore()
-const ProfileStore = new profileStore()
 const SearchStore = new searchStore()
 const UserStore = new userStore()
 
 const stores = {
   GeneralStore,
-  ProfileStore,
   SearchStore,
   UserStore
 }

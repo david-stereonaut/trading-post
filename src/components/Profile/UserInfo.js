@@ -2,15 +2,15 @@ import { observer, inject } from 'mobx-react'
 import './Profile.scss'
 
 
-const Profile = inject('UserStore')(observer((props) =>  {
+const UserInfo = inject('UserStore')(observer((props) =>  {
 
   const { UserStore } = props
 
   return (
-    <div id="profile-container">
-
+    <div id="user-info">
+      
     </div>
   )
 }))
 
-export default Profile
+export default UserInfo
