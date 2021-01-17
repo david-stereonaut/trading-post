@@ -1,7 +1,7 @@
 import { Route, Redirect } from "react-router-dom";
-import Profile from "./profile/Profile";
-import Search from "./search/Search";
-import Messages from "./messages/Messages";
+import Profile from "./Profile/Profile";
+import Search from "./Search/Search";
+import Messages from "./Messages/Messages";
 
 
 export default function Container() {
@@ -12,7 +12,7 @@ export default function Container() {
         <Redirect to="/search" />
       </Route> 
       <Route exact path="/search" render={() => <Search />}/>
-      <Route exact path="/profile/:userId" render={() => <Profile />}/>
+      <Route exact path="/profile" render={() => <Profile />}/>
       <Route exact path="/messages" render={() => <Messages />}/>
     </div>
   )
