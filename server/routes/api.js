@@ -88,9 +88,9 @@ router.get('/user/:userId', async function (req, res) {
     // })
     
    router.put('/addImage/:userId', function (req, res) {
-        let {image} = req.body // inside the image object there should be imageUrl+imageId
+        let {imageUrl} = req.body 
         let {userId} = req.params
-        User.findOneAndUpdate({ _id: userId }, { $push: { images: image }}, function (error, success){
+        User.findOneAndUpdate({ _id: userId }, { $push: { images: imageUrl }}, function (error, success){
             if (error) {
                 console.log(error);
             } else {
@@ -102,9 +102,9 @@ router.get('/user/:userId', async function (req, res) {
 
     
     router.put('/removeImage/:userId', function (req, res) {
-        let {imageId} = req.body // object sent from frontEnd should be the imageId
+        let {imageUrl} = req.body // object sent from frontEnd should be the imageId
         let {userId} = req.params
-        User.findOneAndRemove({ _id: userId }, { $pull: {image: { $elemMatch:  {id : imageId}}} }, function (error, success){
+        User.findOneAndUpdate({ _id: userId }, { $pull: {images: imageUrl} }, function (error, success){
             if (error) {
                 console.log(error);
             } else {
