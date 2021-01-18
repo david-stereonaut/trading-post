@@ -5,13 +5,23 @@
 }
 
 #user-info {
-  margin-top: 2vh;
+  padding: 1.5vh;
   max-width: 320px;
   margin-left: 1vw;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 20vw;
+  > * {
+    margin-bottom: 1vh;
+  }
+}
+
+
+#user-info:hover {
+  .MuiIconButton-root {
+    display: inline-block !important
+  }
 }
 
 .profile-middle-section {
@@ -25,7 +35,9 @@
   width: 20vw;
   display: flex;
   flex-direction: column;
-  
+  > * {
+    margin-bottom: 2vh;
+  }
 }
 
 .user-photos-container {
@@ -33,6 +45,16 @@
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
+  box-sizing: border-box;
+  padding: 1vh;
+  > * {
+    margin: 1vh;
+  }
+}
+
+.user-trades-container {
+  display: flex;
+  flex-direction: column;
   box-sizing: border-box;
   padding: 1vh;
 }
@@ -43,4 +65,11 @@
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-evenly;
+}
+
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+  #profile-container {
+    flex-direction: column;
+  }
 }
