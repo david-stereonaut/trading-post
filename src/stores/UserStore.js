@@ -3,12 +3,13 @@ const axios = require('axios');
 
 export class UserStore {
   constructor() {
+
     this.user = {};
     this.watchedUser = {};
 
     makeObservable(this, {
       user: observable,
-      watchedUser, observable
+      watchedUser: observable
     })
   }
 
@@ -24,10 +25,10 @@ export class UserStore {
 
   async startConversation(subject, text) {
     const conversation = {
-      senderId = this.user.id,
-      recieverId = this.watchedUser.id,
-      subject = subject,
-      text = text
+      senderId: this.user.id,
+      recieverId : this.watchedUser.id,
+      subject: subject,
+      text: text
     }
     await axios.post(`http://localhost:3001/startConversation`, conversation);
     const conversations = await axios.get(`http://localhost:3001/conversations/${this.user.id}`);
@@ -42,7 +43,7 @@ export class UserStore {
   }
 
   async removeTag(tag) {
-    await axois.delete(`http://localhost:3001/removeTag/${this.user.id}/${tag}`);
+    await axios.delete(`http://localhost:3001/removeTag/${this.user.id}/${tag}`);
     this.user.tags.splice(this.user.tags.indexOf(tag), 1);
   }
 
@@ -53,7 +54,7 @@ export class UserStore {
   }
   
   async removeImage(imageUrl) {
-    await axois.delete(`http://localhost:3001/removeImg/${this.user.id}/${imageUrl}`);
+    await axios.delete(`http://localhost:3001/removeImg/${this.user.id}/${imageUrl}`);
     this.user.images.splice(this.user.images.indexOf(imageUrl), 1);
   }
 

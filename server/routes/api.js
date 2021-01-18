@@ -16,8 +16,6 @@ router.get('/myuser/:userId', async function (req, res) {
                 location,
                 offeringTags,
                 seekingTags,
-                offeringTags,
-                seekingTags,
                 offering,
                 seeking,
                 conversations,
@@ -30,15 +28,13 @@ router.get('/myuser/:userId', async function (req, res) {
 router.get('/user/:userId', async function (req, res) {
     const {userId} = req.params
     const data = await User.findById(userId).populate('offering', 'seeking')
-        let {id, email,firstName,lastName,location,offeringTags,seekingTags,content,reviews} = data
+        let {id, email,firstName,lastName,location,offeringTags,seekingTags, offering, seeking, content,reviews} = data
             const newData ={
                 id,
                 email,
                 firstName,
                 lastName,
                 location,
-                offeringTags,
-                seekingTags,
                 offeringTags,
                 seekingTags,
                 offering,
