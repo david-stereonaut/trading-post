@@ -2,9 +2,12 @@ import { Route, Redirect } from "react-router-dom";
 import Profile from "./Profile/Profile";
 import Search from "./Search/Search";
 import Messages from "./Messages/Messages";
+import { inject, observer } from "mobx-react";
 
 
-export default function Container() {
+const Container = inject('UserStore')(observer((props) => {
+
+  const { UserStore } = props
 
   return (
     <div id="container">
@@ -12,8 +15,10 @@ export default function Container() {
         <Redirect to="/search" />
       </Route> 
       <Route exact path="/search" render={() => <Search />}/>
-      <Route exact path="/profile" render={() => <Profile />}/>
+      <Route exact path="/profile/:userId" render={() => <Profile />}/>
       <Route exact path="/messages" render={() => <Messages />}/>
     </div>
   )
-}
+}))
+
+export default Container

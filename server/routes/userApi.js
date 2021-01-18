@@ -6,8 +6,9 @@ const User = require('../models/UserModel')
 
 router.get('/myuser/:userId', async function (req, res) {
     const {userId} = req.params
-    const data = await User.findById(userId).populate('offering', 'seeking', 'conversations')
-        let {_id, email,firstName,lastName,location,offeringTags,seekingTags,offering,seeking,conversations,content,reviews} = data
+    const data = await User.findById(userId).populate('offering').populate('seeking')
+    console.log(data)
+        let {_id, email,firstName,lastName,location,offeringTags,seekingTags,offering,seeking,conversations,content,reviews,profilePic, images, description} = data
             const newData = {
                 _id,
                 email,
@@ -21,14 +22,17 @@ router.get('/myuser/:userId', async function (req, res) {
                 conversations,
                 content,
                 reviews,
+                profilePic,
+                images,
+                description
             }
             res.send(newData)
 })
 
 router.get('/user/:userId', async function (req, res) {
     const {userId} = req.params
-    const data = await User.findById(userId).populate('offering', 'seeking')
-        let {_id, email,firstName,lastName,location,offeringTags,seekingTags, offering, seeking, content,reviews} = data
+    const data = await User.findById(userId).populate('offering').populate('seeking')
+        let {_id, email,firstName,lastName,location,offeringTags,seekingTags, offering, seeking, content,reviews,profilePic,images, description} = data
             const newData ={
                 _id,
                 email,
@@ -41,6 +45,9 @@ router.get('/user/:userId', async function (req, res) {
                 seeking,
                 content,
                 reviews,
+                profilePic,
+                images,
+                description
             }
             res.send(newData)
     })

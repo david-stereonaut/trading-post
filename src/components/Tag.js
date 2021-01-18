@@ -5,10 +5,12 @@ import { useEffect } from 'react'
 
 const Tag = inject()(observer((props) =>  {
 
-  const { tag } = props
+  const { tag, editable } = props
 
   return (
-    <Chip label={tag} onDelete={()=>{}} />
+    editable ? 
+    <Chip style={{backgroundColor: '#FFE5D4'}} label={tag} onDelete={()=>{}} /> :
+    <Chip style={{backgroundColor: '#FFE5D4'}} label={tag} />
   )
 }))
 

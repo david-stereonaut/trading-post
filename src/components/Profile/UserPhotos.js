@@ -4,17 +4,24 @@ import './Profile.scss'
 import { sizing } from '@material-ui/system';
 import Tag from '../Tag';
 import Photo from './Photo'
+import { useParams } from 'react-router-dom';
 
 
 const UserPhotos = inject('UserStore')(observer((props) =>  {
 
   const { UserStore } = props
 
+  const { userId } = useParams()
+
+  let user = {}
+
+  user = userId === UserStore.user._id ? UserStore.user : UserStore.watchedUser
+
   return (
-    <Paper style={{marginTop: '2vh', boxSizing:'border-box', padding: 15}}>
+    <Paper style={{ boxSizing:'border-box', padding: 15}}>
       <Typography variant="h6">Photos:</Typography>
       <div className="user-photos-container">
-        {UserStore.user.images.map((imgUrl, ind) => <Photo key={ind} imgUrl={imgUrl} />)}
+        {user.images.map((imgUrl, ind) => <Photo key={ind} imgUrl={imgUrl} />)}
       </div>
     </Paper>
   )

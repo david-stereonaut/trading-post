@@ -1,0 +1,28 @@
+.trade-card {
+  margin: 1.5vh;
+}
+
+.profile-trade-card {
+  box-sizing: border-box;
+  padding: 1.5vh;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  .MuiCard-root {
+    flex-shrink: 0;
+  }
+  .MuiButton-root {
+    flex-shrink: 0;
+    align-self: center;
+  }
+  > * {
+    margin: 1vw;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+  .profile-trade-card {
+    flex-direction: column;
+  }
+}

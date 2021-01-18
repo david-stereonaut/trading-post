@@ -1,4 +1,6 @@
 import { createMuiTheme, ThemeProvider } from '@material-ui/core';
+import { inject, observer } from 'mobx-react';
+import { useEffect } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import './App.scss';
 import Container from './components/Container';
@@ -10,12 +12,22 @@ const theme = createMuiTheme({
       main: '#59B192'
     },
     secondary: {
-      main: "#2F3061"
+      main: "#EFC7C2"
+    },
+    tags: {
+      main: '#7D82B8'
     }
   }
 })
 
-function App() {
+const App = inject('UserStore')(observer((props) => {
+
+  const { UserStore } = props
+
+  useEffect(() => {
+    UserStore.fetchUser()
+  }, [])
+
   return (
     <Router>
       <ThemeProvider theme={theme}>
@@ -26,6 +38,6 @@ function App() {
       </ThemeProvider>
     </Router>
   );
-}
+}))
 
 export default App;

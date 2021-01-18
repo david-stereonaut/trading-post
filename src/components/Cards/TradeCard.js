@@ -1,12 +1,14 @@
 import { observer, inject } from 'mobx-react'
+import ProfileTradeCard from './ProfileTradeCard'
+import './TradeCard.scss'
 
 const TradeCard = inject('SearchStore')(observer((props) =>  {
 
-  const { SearchStore } = props
+  let { SearchStore, type, trade } = props
 
   return (
-    <div className="trade-card">
-
+    <div class="trade-card">
+    {type = 'profile' ? <ProfileTradeCard trade={trade} /> : <div></div>}
     </div>
   )
 }))
