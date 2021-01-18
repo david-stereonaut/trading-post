@@ -17,7 +17,7 @@ const Profile = inject('UserStore', 'GeneralStore')(observer((props) =>  {
 
   let user = {}
 
-  user = userId === UserStore.user.id ? UserStore.user : UserStore.watchedUser
+  user = userId === UserStore.user._id ? UserStore.user : UserStore.watchedUser
 
   useEffect(() => {
     GeneralStore.handleTabChange('', 0)

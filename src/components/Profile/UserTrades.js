@@ -16,18 +16,18 @@ const UserTrades = inject('UserStore')(observer((props) =>  {
 
   let user = {}
 
-  user = userId === UserStore.user.id ? UserStore.user : UserStore.watchedUser
+  user = userId === UserStore.user._id ? UserStore.user : UserStore.watchedUser
 
   return (
     <Paper style={{marginTop: '2vh', boxSizing:'border-box', padding: 15}}>
       <Typography variant="h5" align="center">Trades</Typography>
       <Typography variant="h6">Offers:</Typography>
       <div className="user-trades-container">
-        {UserStore.dummyTrades.filter(trade => trade.type==="Offering").map((trade, ind) => <TradeCard key={ind} type='profile' trade={trade} />)}
+        {user.offering.map((trade, ind) => <TradeCard key={ind} type='profile' trade={trade} />)}
       </div>
       <Typography variant="h6">Seeks:</Typography>
       <div className="user-trades-container">
-        {UserStore.dummyTrades.filter(trade => trade.type==="Seeking").map((trade, ind) => <TradeCard key={ind} type='profile' trade={trade} />)}
+        {user.seeking.map((trade, ind) => <TradeCard key={ind} type='profile' trade={trade} />)}
       </div>
     </Paper>
   )

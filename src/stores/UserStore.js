@@ -50,7 +50,16 @@ export class UserStore {
     makeObservable(this, {
       user: observable,
       watchedUser: observable,
-      dummyTrades: observable
+      dummyTrades: observable,
+      fetchUser: action,
+      fetchWatchedUser: action,
+      startConversation: action,
+      addTag: action,
+      removeTag: action,
+      addImage: action,
+      removeImage: action,
+      changeProfilePic: action,
+      updateUserName: action
     })
   }
 
@@ -79,38 +88,66 @@ export class UserStore {
   // editTrade
 
   async addTag(tag) {
-    await axios.put(`http://localhost:3001/addTag/${this.user.id}/${tag}`);
-    this.user.tags.push(tag);
+    const newTag = {
+      keyName: tag.type,
+      value: tag.name
+    }
+    const user = await axios.put(`http://localhost:3001/addToUserArray/${this.user.id}`, newTag);
+    this.user = user.data;
   }
 
   async removeTag(tag) {
-    await axios.delete(`http://localhost:3001/removeTag/${this.user.id}/${tag}`);
-    this.user.tags.splice(this.user.tags.indexOf(tag), 1);
+    const tagToDelete = {
+      keyName: tag.type,
+      value: tag.name
+    }
+    const user = await axios.put(`http://localhost:3001/removeFromUserArray/${this.user.id}`, tagToDelete);
+    this.user = user.data;
   }
 
   async addImage(imageUrl) {
-    await axios.post(`http://localhost:3001/addImage/${this.user.id}`, imageUrl);
-    const images = await axios.get(`http://localhost:3001/images/${this.user.id}`);
-    this.user.images = images.data;
+    const newImage = {
+      keyName: 'images',
+      value: imageUrl
+    }
+    const user = await axios.put(`http://localhost:3001/addToUserArray/${this.user.id}`, newImage);
+    this.user = user.data;
   }
   
   async removeImage(imageUrl) {
-    await axios.delete(`http://localhost:3001/removeImg/${this.user.id}/${imageUrl}`);
-    this.user.images.splice(this.user.images.indexOf(imageUrl), 1);
+    const imageToRemove = {
+      keyName: 'images',
+      value: imageUrl
+    }
+    const user = await axios.put(`http://localhost:3001/removeFromUserArray/${this.user.id}`, imageToRemove);
+    this.user = user.data;
   }
 
   async changeProfilePic(imageUrl) {
-    await axios.put(`http://localhost:3001/profilePic/${this.user.id}`, imageUrl);
-    this.user.profileImg = imageUrl;
+    const newProfilePic = {
+      keyName: 'profilePic',
+      value: imageUrl
+    }
+    const user = await axios.put(`http://localhost:3001/updateUserDetails/${this.user.id}`, newProfilePic);
+    this.user = user.data;
   }
 
-  async updateUserName(newName, newDescription) {
-    const details = {
-      newName: newName,
-      newDescription: newDescription
+  async updateUserName(newFirstName, newLastName, newDescription) {
+    const firstName = {
+      keyName: 'firstName',
+      value: newFirstName
     }
-    await axios.put(`http://localhost:3001/updateUserDetails/${this.user.id}`, details);
-    this.user.name = newName;
-    this.user.description = newDescription;
+    const lastName = {
+      keyName: 'lastName',
+      value: newLastName
+    }
+    const description = {
+      keyName: 'description',
+      value: newDescription
+    }
+    await axios.put(`http://localhost:3001/updateUserDetails/${this.user.id}`, firstName);
+    await axios.put(`http://localhost:3001/updateUserDetails/${this.user.id}`, lastName);
+    const user = await axios.put(`http://localhost:3001/updateUserDetails/${this.user.id}`, description);
+    this.user = user.data;
   }
 }

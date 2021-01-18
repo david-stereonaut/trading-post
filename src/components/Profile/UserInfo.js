@@ -16,9 +16,9 @@ const UserInfo = inject('UserStore')(observer((props) =>  {
 
   let editable = false
 
-  user = userId === UserStore.user.id ? UserStore.user : UserStore.watchedUser
+  user = userId === UserStore.user._id ? UserStore.user : UserStore.watchedUser
 
-  editable = userId === UserStore.user.id ? true : false
+  editable = userId === UserStore.user._id ? true : false
 
   return (
     <div>
