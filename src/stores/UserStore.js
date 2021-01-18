@@ -3,42 +3,13 @@ const axios = require('axios');
 
 export class UserStore {
   constructor() {
-<<<<<<< HEAD
-    this.user = {
-      "email": "LiaLevy@pmail.com",
-      "password": "LiaRules",
-      "firstName": "Lia",
-      "lastName": "Levy",
-      "profilePic": "https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-      "images": ["https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Woodworking_Tools_at_the_Women%27s_Woodshop_in_Minneapolis%2C_MN.jpg/220px-Woodworking_Tools_at_the_Women%27s_Woodshop_in_Minneapolis%2C_MN.jpg",
-      "https://esmmweighless.com/wp-content/uploads/2019/12/Carolyn-Cooking-Blog.jpg", 
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDJDZvwSrdAdHgArNF7X_7w_ATxy8fkY8oAg&usqp=CAU"
-       ],
-      "location": {
-          "country": "Israel",
-          "city": "Tel Aviv",
-          "street": "Shlomo Hamelech"
-      },
-      "offeringTags": ["Martial Arts", "Tae Kwon Do", "Cooking", "Woodworking"],
-      "seekingTags": ["Languages", "Arabic", "Dog Sitting", "Cooking"],
-      "offering": [], 
-      "seeking" : [], 
-      "conversations": [],
-      "content": [],
-      "reviews": []
-      }
-    
 
-    makeObservable(this, {
-      user: observable
-=======
     this.user = {};
     this.watchedUser = {};
 
     makeObservable(this, {
       user: observable,
-      watchedUser, observable
->>>>>>> master
+      watchedUser: observable
     })
   }
 
@@ -54,10 +25,10 @@ export class UserStore {
 
   async startConversation(subject, text) {
     const conversation = {
-      senderId = this.user.id,
-      recieverId = this.watchedUser.id,
-      subject = subject,
-      text = text
+      senderId: this.user.id,
+      recieverId : this.watchedUser.id,
+      subject: subject,
+      text: text
     }
     await axios.post(`http://localhost:3001/startConversation`, conversation);
     const conversations = await axios.get(`http://localhost:3001/conversations/${this.user.id}`);
@@ -72,7 +43,7 @@ export class UserStore {
   }
 
   async removeTag(tag) {
-    await axois.delete(`http://localhost:3001/removeTag/${this.user.id}/${tag}`);
+    await axios.delete(`http://localhost:3001/removeTag/${this.user.id}/${tag}`);
     this.user.tags.splice(this.user.tags.indexOf(tag), 1);
   }
 
@@ -83,7 +54,7 @@ export class UserStore {
   }
   
   async removeImage(imageUrl) {
-    await axois.delete(`http://localhost:3001/removeImg/${this.user.id}/${imageUrl}`);
+    await axios.delete(`http://localhost:3001/removeImg/${this.user.id}/${imageUrl}`);
     this.user.images.splice(this.user.images.indexOf(imageUrl), 1);
   }
 
