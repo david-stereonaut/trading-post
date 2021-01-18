@@ -2,6 +2,7 @@
 .eslintcache
 # dependencies
 /node_modules
+/Usersnpm-cache
 /.pnp
 .pnp.js
 
