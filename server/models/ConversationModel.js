@@ -5,11 +5,12 @@ user1_id: { type: Schema.Types.ObjectId, ref: 'User' },
 user2_id: { type: Schema.Types.ObjectId, ref: 'User' },   
 subject: String,
 type: String,
+// status should be here
 messages: [{ 
   sender_id: String,
   message_time: Date,
   text: String,
-  status: String 
+  // status: String 
   }],
 })
 const Conversation = mongoose.model("Conversation", conversationSchema)
