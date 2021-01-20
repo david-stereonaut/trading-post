@@ -7,15 +7,18 @@ import { Provider } from 'mobx-react'
 import { GeneralStore as generalStore } from './stores/GeneralStore'
 import { SearchStore as searchStore } from './stores/SearchStore'
 import { UserStore as userStore } from './stores/UserStore'
+import { MessagesStore as messagesStore } from './stores/MessagesStore'
 
 const GeneralStore = new generalStore()
 const SearchStore = new searchStore()
 const UserStore = new userStore()
+const MessagesStore = new messagesStore()
 
 const stores = {
   GeneralStore,
   SearchStore,
-  UserStore
+  UserStore,
+  MessagesStore
 }
 
 ReactDOM.render(

@@ -1,19 +1,23 @@
 import { observer, inject } from 'mobx-react'
 import { useEffect } from 'react'
 import './Messages.scss'
+import ListContainer from './ListContainer'
+import MessagesContainer from './MessagesContainer'
 
 
-const Messages = inject('UserStore', 'GeneralStore')(observer((props) =>  {
+const Messages = inject('MessagesStore')(observer((props) =>  {
 
-  const { UserStore, GeneralStore } = props
+  const { MessagesStore } = props;
 
   useEffect(() => {
-    GeneralStore.handleTabChange('', 2)
-  })
+    //add here function to insert userId
+    MessagesStore.getCons(MessagesStore.category);
+  }, []);
 
   return (
     <div id="messages-container">
-
+      <ListContainer/>
+      <MessagesContainer/>
     </div>
   )
 }))

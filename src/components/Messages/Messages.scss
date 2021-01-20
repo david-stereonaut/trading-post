@@ -1,0 +1,106 @@
+#messages-container {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    grid-template-areas: "l m";
+}
+
+#list-container {
+    grid-area: l;
+    border: 1px solid black;
+    display: grid;
+    height: 87vh;
+    grid-template-rows: 1fr 8fr 3fr;
+    grid-template-areas: "se" "li" "fi";
+}
+
+#messages-div {
+    display: grid;
+    grid-area: m;
+    margin-left: 2%;
+    border: 1px solid black;
+    height: 87vh;
+    grid-template-rows: 1fr 10fr 1fr;
+    grid-template-areas: "he" "te" "ty";
+}
+
+#cons-filter {
+    grid-area: fi;
+    margin-left: 5%;
+}
+
+#cons-list {
+    grid-area: li;
+    border-bottom: 1px solid black;
+    margin-left: 5%;
+}
+
+#search-cons {
+    grid-area: se;
+    border-bottom: 1px solid black;
+    margin-left: 5%;
+}
+
+#cons-header {
+    grid-area: he;
+    border-bottom: 1px solid black;
+    margin-left: 2%;
+}
+
+#messages-text {
+    grid-area: te;
+    border-bottom: 1px solid black;
+}
+
+#type-bar {
+    grid-area: ty;
+}
+
+#con-title {
+    margin: 0;
+}
+
+h1 {
+    margin: 0
+}
+
+.partner {
+    height: 10vh;
+}
+
+.partner-pic {
+    display: inline-block;
+    position: relative;
+    width: 60px;
+    height: 60px;
+    overflow: hidden;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.partner-name {
+    position: relative;
+    display: inline;
+    left: 6%;
+    bottom: 40%;
+}
+
+#current-partner-pic {
+    display: inline;
+    position: relative;
+    width: 80px;
+    height: 80px;
+    overflow: hidden;
+    border-radius: 50%;
+    object-fit: cover;
+    top: 0.5vh;
+}
+
+#current-partner-name {
+    position: relative;
+    display: inline;
+    left: 1vW;
+    top: -30px;
+}
+
+
+
