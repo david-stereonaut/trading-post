@@ -1,16 +1,9 @@
-import TradeCard from '../models/TradeCardModel';
 const express = require('express')
 const router = express.Router()
 const Conversation = require('../models/ConversationModel')
 const TradeCard = require('../models/TradeCardModel')
 const User = require('../models/UserModel')
 
-router.get('/tradecards/:userId', async function (req, res) {
-    const {userId} = req.params
-    // 2 options: get info from tradecard collection 
-            
-            res.send(newData)
-})
 
 router.post('/tradecard/:userId', async function (req, res) {
     const {userId} = req.params
@@ -25,9 +18,8 @@ router.post('/tradecard/:userId', async function (req, res) {
 })
 
 router.put('/tradecard/:tradeCardId', async function (req, res) {
-    const {keyName, value} = req.body 
     const {tradeCardId} = req.params
-    TradeCard.findOneAndUpdate({ _id: tradeCardId },  {$set: {[keyName]: value}}, function (error, success){
+    TradeCard.findOneAndUpdate({ _id: tradeCardId },  {$set: req.body}, function (error, success){
         if (error) {
             console.log(error);
         } else {

@@ -9,19 +9,16 @@ import { useParams } from 'react-router-dom';
 
 const UserPhotos = inject('UserStore')(observer((props) =>  {
 
-  const { UserStore } = props
+  const { UserStore, user } = props
 
   const { userId } = useParams()
 
-  let user = {}
-
-  user = userId === UserStore.user._id ? UserStore.user : UserStore.watchedUser
 
   return (
     <Paper style={{ boxSizing:'border-box', padding: 15}}>
       <Typography variant="h6">Photos:</Typography>
       <div className="user-photos-container">
-        {user.images.map((imgUrl, ind) => <Photo key={ind} imgUrl={imgUrl} />)}
+        {user.images.map((img, ind) => <Photo key={ind} imgUrl={img.imageUrl} />)}
       </div>
     </Paper>
   )

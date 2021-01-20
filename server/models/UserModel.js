@@ -3,9 +3,15 @@ const Schema = mongoose.Schema
 const userSchema = new Schema({
     email: String,
     password: String,
-    profilePic: String,
+    profilePic: {
+        imageUrl: String,
+        imageId: String
+    },
     description: String,
-    images: [],
+    images: [{
+        imageUrl: String,
+        imageId: String
+    }],
     firstName: String,
     lastName: String,
     location: {

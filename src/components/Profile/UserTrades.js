@@ -6,28 +6,25 @@ import Tag from '../Tag';
 import Photo from './Photo'
 import TradeCard from '../Cards/TradeCard';
 import { useParams } from 'react-router-dom';
+import { useEffect } from 'react';
 
 
 const UserTrades = inject('UserStore')(observer((props) =>  {
 
-  const { UserStore } = props
+  const { UserStore, user, editable } = props
 
   const { userId } = useParams()
-
-  let user = {}
-
-  user = userId === UserStore.user._id ? UserStore.user : UserStore.watchedUser
 
   return (
     <Paper style={{marginTop: '2vh', boxSizing:'border-box', padding: 15}}>
       <Typography variant="h5" align="center">Trades</Typography>
       <Typography variant="h6">Offers:</Typography>
       <div className="user-trades-container">
-        {user.offering.map((trade, ind) => <TradeCard key={ind} type='profile' trade={trade} />)}
+        {user.offering.length > 0 ? (user.offering.map((trade) => <TradeCard key={trade._id} type='profile' trade={trade} editable={editable} />)) : <Typography >User has no offers</Typography>}
       </div>
       <Typography variant="h6">Seeks:</Typography>
       <div className="user-trades-container">
-        {user.seeking.map((trade, ind) => <TradeCard key={ind} type='profile' trade={trade} />)}
+        {user.seeking.length > 0 ? (user.seeking.map((trade) => <TradeCard key={trade._id} type='profile' trade={trade} editable={editable} />)) : <Typography >User has no trades</Typography>}
       </div>
     </Paper>
   )

@@ -7,8 +7,11 @@ const tradeCardSchema = new Schema({
     subTitle: String,
     description: String,
     tags: [],
-    thumbnail: String
-})
+    thumbnail: {
+        imageUrl: String,
+        imageId: String
+    }
+}, { versionKey: false })
 const TradeCard = mongoose.model("TradeCard", tradeCardSchema)
 
 module.exports = TradeCard
