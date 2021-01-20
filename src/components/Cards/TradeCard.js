@@ -4,11 +4,11 @@ import './TradeCard.scss'
 
 const TradeCard = inject('SearchStore')(observer((props) =>  {
 
-  let { SearchStore, type, trade } = props
+  let { SearchStore, type, trade, editable } = props
 
   return (
-    <div class="trade-card">
-    {type = 'profile' ? <ProfileTradeCard trade={trade} /> : <div></div>}
+    <div className="trade-card">
+    {type = 'profile' ? <ProfileTradeCard trade={trade} editable={editable} /> : <div></div>}
     </div>
   )
 }))
