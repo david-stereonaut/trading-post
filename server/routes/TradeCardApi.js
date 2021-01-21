@@ -7,31 +7,32 @@ const User = require('../models/UserModel')
 
 router.post('/tradecard/:userId', async function (req, res) {
     const {userId} = req.params
-    const {data} = req.body
+    const data = req.body
     const newData = new TradeCard({...data})
     await newData.save()
-            .then(response => {
-                console.log('add tradecard')
-            })
-                   
-            res.send(newData)
+    let user = await User.findOneAndUpdate({ _id: userId }, { $push: { tradeCards: newData } }, { new: true, useFindAndModify: false }).populate('tradeCards')      
+    res.send(user)
 })
 
-router.put('/tradecard/:tradeCardId', async function (req, res) {
-    const {tradeCardId} = req.params
-    TradeCard.findOneAndUpdate({ _id: tradeCardId },  {$set: req.body}, function (error, success){
+router.put('/tradecard/:userId', async function (req, res) {
+    console.log('trig')
+    const {userId} = req.params
+    const {tradeCardId, tradeCard} = req.body
+    await TradeCard.findOneAndUpdate({ _id: tradeCardId },  tradeCard, function (error, success){
         if (error) {
             console.log(error);
         } else {
             console.log(success)
         }
     })       
-    res.send("1")
+    let user = await User.findById(userId).populate('tradeCards')
+    res.send(user)
 })
 
-router.delete('/tradeCards/:tradeCardId', async function (req, res) {
-    const {tradeCardId} = req.params
-    TradeCard.findOneAndDelete({_id: tradeCardId}, function (err, res) { 
+router.delete('/tradecard/:userId', async function (req, res) {
+    const {userId} = req.params
+    const { tradeCardId } = req.body
+    await TradeCard.findOneAndDelete({_id: tradeCardId}, function (err, res) { 
         if (err){ 
             console.log(err) 
         } 
@@ -39,7 +40,8 @@ router.delete('/tradeCards/:tradeCardId', async function (req, res) {
             console.log("Deleted Trade Card : ", tradeCardId); 
         } 
     });           
-        res.send("deleted trade card")
+    let user = await User.findById(userId).populate('tradeCards')
+    res.send(user)
 })
 
 

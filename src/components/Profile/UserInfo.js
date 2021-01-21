@@ -75,6 +75,7 @@ const UserInfo = inject('UserStore', 'GeneralStore')(observer((props) => {
   const [editDescriptionInput, setEditDescriptionInput] = useState(`${UserStore.user.description}`)
 
   const setNewDetails = () => {
+    GeneralStore.setEditName(false)
     let name = editNameInput.split(' ')
     let firstName = name[0]
     let lastName = name.length === 1 ? '' : name.length === 2 ? name[1] : name.splice(1).toString().replace(',', ' ')

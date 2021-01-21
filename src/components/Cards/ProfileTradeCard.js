@@ -32,11 +32,23 @@ const useStyles = makeStyles(theme => ({
 }))
 
 
-const ProfileTradeCard = inject('SearchStore')(observer((props) =>  {
+const ProfileTradeCard = inject('GeneralStore')(observer((props) =>  {
 
-  const { SearchStore, trade, editable } = props
+  const { GeneralStore, trade, editable } = props
 
   const classes = useStyles()
+
+  const openEdit = () => {
+    GeneralStore.handleEditTrade('editTradeImageUrl', trade.thumbnail.imageUrl)
+    GeneralStore.handleEditTrade('editTradeImageId', trade.thumbnail.imageId)
+    GeneralStore.handleEditTrade('editTradeTitle', trade.title)
+    GeneralStore.handleEditTrade('editTradeSubTitle', trade.subTitle)
+    GeneralStore.handleEditTrade('editTradeDescription', trade.description)
+    GeneralStore.handleEditTrade('editTradeType', trade.type)
+    GeneralStore.handleEditTrade('editTradeTags', trade.tags)
+    GeneralStore.handleEditTrade('editTradeId', trade._id)
+    GeneralStore.handleAddTradeCardDialog()
+  }
 
   return (
     <Paper>
@@ -50,7 +62,7 @@ const ProfileTradeCard = inject('SearchStore')(observer((props) =>  {
         <div className="middle-section">
           <div className={classes.cardTitle}>
             <Typography variant="body1">{trade.title}</Typography>
-            {editable && <IconButton size="small" ><EditIcon className={classes.editIcon} /></IconButton>}
+            {editable && <IconButton size="small" onClick={openEdit} ><EditIcon className={classes.editIcon} /></IconButton>}
           </div>
           <Typography variant="subtitle1" style={{fontSize: 12}} paragraph={true} color="textSecondary">{trade.subTitle}</Typography>
           <Typography variant="body1" style={{fontSize: 14}}  paragraph={true}>{trade.description}</Typography>

@@ -17,12 +17,11 @@ const userSchema = new Schema({
     location: {
         country: String,
         city: String,
-        street: String
+        street: String,
     },
     offeringTags: [],
     seekingTags: [],
-    offering: [{ type: Schema.Types.ObjectId, ref: 'TradeCard' }], 
-    seeking : [{ type: Schema.Types.ObjectId, ref: 'TradeCard' }], 
+    tradeCards: [{ type: Schema.Types.ObjectId, ref: 'TradeCard' }],
     conversations: [{ type: Schema.Types.ObjectId, ref: 'Conversation' }],
     content: [],
     reviews: [],
