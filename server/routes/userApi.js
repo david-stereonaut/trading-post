@@ -6,14 +6,14 @@ const User = require('../models/UserModel')
 
 router.get('/myuser/:userId', async function (req, res) {
     const { userId } = req.params
-    const data = await User.findById(userId).populate('offering').populate('seeking')
+    const data = await User.findById(userId).populate('tradeCards')
     let { password, ...newData} = data.toObject()
     res.send(newData)
 })
 
 router.get('/user/:userId', async function (req, res) {
     const { userId } = req.params
-    const data = await User.findById(userId).populate('offering').populate('seeking')
+    const data = await User.findById(userId).populate('tradeCards')
     let { password, conversations, ...newData } = data.toObject()
     res.send(newData)
 })

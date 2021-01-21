@@ -18,6 +18,7 @@ router.post('/uploadImage', function(req, res) {
 router.post('/destroyImage', function(req, res) {
     let imageId = req.body.id
     cloudinary.uploader.destroy(imageId, function(err, result) {
+        console.log(result)
         res.send(result)
     });
 })

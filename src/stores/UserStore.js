@@ -19,8 +19,6 @@ export class UserStore {
       removeImage: action,
       changeProfilePic: action,
       updateUserName: action,
-      getWatchedUser: computed,
-      getUser: computed
     })
   }
 
@@ -66,22 +64,24 @@ export class UserStore {
     this.user[tagType] = user.data[tagType];
   }
 
-  async addImage(imageUrl) {
-    const newImage = {
-      keyName: 'images',
-      value: imageUrl
+  async addImage(imageUrl, imageId) {
+    const data = {
+      images: {
+        imageUrl,
+        imageId
+      }
     }
-    const user = await axios.put(`http://localhost:3001/addToUserArray/${this.user._id}`, newImage);
-    this.user = user.data;
+    const user = await axios.put(`http://localhost:3001/addToUserArray/${this.user._id}`, data);
+    this.user.images = user.data.images;
   }
   
-  async removeImage(imageUrl) {
-    const imageToRemove = {
-      keyName: 'images',
-      value: imageUrl
+  async removeImage(imageUrl, imageId) {
+    const data= {
+      images : {imageUrl}
     }
-    const user = await axios.put(`http://localhost:3001/removeFromUserArray/${this.user._id}`, imageToRemove);
-    this.user = user.data;
+    const user = await axios.put(`http://localhost:3001/removeFromUserArray/${this.user._id}`, data);
+    axios.post('http://localhost:3001/destroyImage', {id:imageId})
+    this.user.images = user.data.images;
   }
 
   async changeProfilePic(imageUrl, imageId) {
@@ -107,11 +107,29 @@ export class UserStore {
     this.user.description = user.data.description
   }
 
-  get getUser() {
-    return this.user
+  // async updateTradeCard(tradeCard) {
+  //   const type = tradeCard.type.toLowerCase()
+  //   const data = {
+  //     [type]: tradeCard
+  //   }
+  //   const user = await axios.put(`http://localhost:3001/addToUserArray/${this.user._id}`, data);
+  //   this.user[type] = user.data[type]
+  // }
+
+  async addTradeCard(tradeCard) {
+    console.log(tradeCard)
+    const user = await axios.post(`http://localhost:3001/tradecard/${this.user._id}`, tradeCard);
+    this.user.tradeCards = user.data.tradeCards
   }
 
-  get getWatchedUser() {
-    return this.watchedUser
+  async deleteTradeCard(tradeCardId) {
+    const user = await axios.delete(`http://localhost:3001/tradecard/${this.user._id}`, { data: { tradeCardId } });
+    this.user.tradeCards = user.data.tradeCards
   }
+
+  async editTradeCard(tradeCard, tradeCardId) {
+    const user = await axios.put(`http://localhost:3001/tradecard/${this.user._id}`, { tradeCard, tradeCardId });
+    this.user.tradeCards = user.data.tradeCards
+  }
+
 }
