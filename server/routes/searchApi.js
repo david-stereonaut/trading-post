@@ -57,4 +57,16 @@ router.post('/search/tradeTags', async function (req, res) {
         res.send(err.message)
     }
 })
+
+router.get('/search/userbylocation', async function (req, res) {
+    const { lastname, firstname, city, country } = req.query
+    try {
+        const user = await User.find({ $and: [{ lastName: lastname }, { firstName: firstname }, { city: city }, { country: country }] }).populate('offering').populate('seeking')
+        res.send(user)
+    }
+    catch (err) {
+        res.send(err.message)
+    }
+})
+
 module.exports = router

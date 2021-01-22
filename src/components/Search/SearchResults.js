@@ -39,9 +39,9 @@ const SearchResults = inject('UserStore','SearchStore', 'GeneralStore')(observer
 
   const classes = useStyles()
 
+  //This needs to be fixed - both in the store, the api, and here. There should be an initial search that returns "Offering trades in your area", "Seeking trades in your area", "Traders in your area" - and the title should use history to see which titles should render
   useEffect(() => {
-    SearchStore.initialSearch()
-    SearchStore.searchUsers()
+    SearchStore.initialSearch(UserStore.user.city, UserStore.user.country)
   }, [])
 
   let offeringResults = SearchStore.tradesResults.length > 0 ? SearchStore.tradesResults.filter(c => c.type === 'Offering') : null
