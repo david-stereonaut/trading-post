@@ -1,5 +1,6 @@
 import { observable, action, computed, makeObservable } from  'mobx'
 
+
 export class GeneralStore {
   constructor() {
 

@@ -1,6 +1,6 @@
 import { observer, inject } from 'mobx-react'
 import { useEffect } from 'react'
-import './Search.scss'
+import Map from './Map/Map'
 
 
 const Search = inject('UserStore', 'SearchStore', 'GeneralStore')(observer((props) =>  {
@@ -13,7 +13,7 @@ const Search = inject('UserStore', 'SearchStore', 'GeneralStore')(observer((prop
 
   return (
     <div id="search-container">
-
+      <Map />
     </div>
   )
 }))

@@ -69,7 +69,7 @@ const UserInfo = inject('UserStore', 'GeneralStore')(observer((props) => {
   const { userId } = useParams()
   
   
-  const classes = useStyles({ usernameWidth, editable} )
+  const classes = useStyles({ usernameWidth, editable })
   
   const [editNameInput, setEditNameInput] = useState(`${UserStore.user.firstName} ${UserStore.user.lastName}`)
   const [editDescriptionInput, setEditDescriptionInput] = useState(`${UserStore.user.description}`)
