@@ -7,10 +7,13 @@ import LastName from './LastName'
 import Offering from './Offering'
 import Seeking from "./Seeking";
 import App from './Location'
+import SearchResults from './SearchResults'
 
 const Search = inject('UserStore', 'SearchStore', 'GeneralStore')(observer((props) =>  {
 
   const { UserStore, SearchStore, GeneralStore } = props
+
+  let showMap = false
 
   useEffect(() => {
     GeneralStore.handleTabChange('', 1)
@@ -22,7 +25,10 @@ const Search = inject('UserStore', 'SearchStore', 'GeneralStore')(observer((prop
       <SearchType/>
       {SearchStore.searchType === 'people' ? <> <FirstName/> <LastName/> </>:<> <Offering/> <Seeking/></>}     
     {/* <App/> */}
+        
+        <SearchResults showMap={showMap}/>
 
+        
     </div>
   )
 }))
