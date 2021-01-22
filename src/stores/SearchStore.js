@@ -3,6 +3,15 @@ import axios from 'axios'
 
 export class SearchStore {
   constructor() {
+    this.firstName = null;
+    this.lastName = null;
+    this.searchCity = null;
+    this.searchCountry = null;
+    this.users = [];
+    this.seeking = [];
+    this.offering = [];
+    this.location = null;
+    this.trades = [];
     this.searchFirst = null;
     this.searchLast = null;
     this.searchCity = null;
@@ -15,7 +24,9 @@ export class SearchStore {
     this.perfectTrade = false;
     
     this.tagsForSearch = [];
-    this.tradesByTags = []
+    this.tradesByTags = [];
+    this.searchType = 'people'
+   
     makeObservable(this, {
       searchFirst: observable,
       searchLast: observable,
@@ -26,6 +37,17 @@ export class SearchStore {
       usersResults: observable,
       tradesResults: observable,
       perfectTrade: observable,
+      allTags: observable,
+      tagsForSearch: observable,
+      tradesByTags: observable,
+      searchType: observable,
+      searchUsers: action,
+      searchTrades: action,
+      searchPerfectTrades: action,
+      getTags: action,
+      searchTradesByTags: action,
+      handleFirstName: action,
+      hendleLocation:action,
       // tagsForSearch: observable,
       // tradesByTags: observable,
       searchUsers: action,
@@ -35,6 +57,33 @@ export class SearchStore {
       initialSearch: action
     })
   }
+  handleSearchType = (value) => {
+    this.searchType = value;
+  }
+  
+  handleFirstName = (value) => {
+    this.firstName = value;
+    console.log(this.firstName)
+  }
+  handleLastName = (value) => {
+    this.lastName = value;
+    console.log(this.lastName)
+  }
+  handleOffering = (value) => {
+    this.offering = value;
+    console.log(this.offering)
+  }
+  handleSeeking = (value) => {
+    this.seeking = value;
+    console.log(this.seeking)
+  }
+  hendleLocation = (location) => {
+    this.searchCity = location[0];
+    this.searchCountry = location[1];
+    console.log(this.searchCity)
+    console.log(this.searchCountry)
+  }
+
   async searchUsers() {
     const usersResults = await axios.get(`http://localhost:3001/search/user?searchFirst=${this.searchFirst}&searchLast=${this.searchLast}&searchCity=${this.searchCity}&searchLocation=${this.searchCountry}`);
     this.usersResults = usersResults.data;
