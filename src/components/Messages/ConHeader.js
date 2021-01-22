@@ -1,31 +1,41 @@
-import { observer, inject } from 'mobx-react'
+import { observer, inject } from 'mobx-react';
+import { Link } from "react-router-dom";
+import Buttons from './Buttons';
+const moment = require('moment');
 
 const ConHeader = inject('MessagesStore')(observer((props) =>  {
 
-  const { MessagesStore } = props
+  const { MessagesStore } = props;
+  const conversation = MessagesStore.displayedCons.find(d => d._id === MessagesStore.currentConId);
+  const partner = MessagesStore.currentConId && MessagesStore.displayedCons[0] ? conversation.users.find(u => u._id !== MessagesStore.userId) : {};
+  const profileAddress = `/profile/${partner._id}`;
+  const status = MessagesStore.displayedCons[0] ? conversation.status : null;
+  const numOfMessages = MessagesStore.displayedCons[0] ? conversation.messages.length - 1 : null;
+  const firstSender = MessagesStore.displayedCons[0] && conversation.messages[0] ? conversation.messages[0].senderId : null;
+  const activationDate = MessagesStore.displayedCons[0] && conversation.messages[1] ? moment(conversation.messages.find(m => m.senderId === 'sestem message')).format('DD/MM/YYYY') : null;
+  const requestDate = MessagesStore.displayedCons[0] ? moment(conversation.messages[0].message_time).format('DD/MM/YYYY') : null;
+  const endDate = MessagesStore.displayedCons[0] ? moment(conversation.messages[numOfMessages].message_time).format('DD/MM/YYYY') : null;
+  let statusText = '';
 
-//   real var
-//   const partner = MessagesStore.currentConId ? MessagesStore.displayedCons.find(d => d._id === MessagesStore.currentConId).users.find(u => u._id !== MessagesStore.userId) : {}
-
-// dummy data - delete
-const dummyPartners = JSON.parse(JSON.stringify([{
-    "email": "AdamSchumer@pmail.com",
-        "password": "AdamRules",
-        "firstName": "Adam",
-        "lastName": "Schumer",
-        "profilePic": "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-        "images": ["https://i.imgur.com/EQlitgs.jpg", "https://ak.picdn.net/shutterstock/videos/1012987421/thumb/11.jpg",
-        "https://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2018/04/10100051/lab-yellow-walking-on-leash.jpg"
-    ]
-}]))
-const partner = dummyPartners[0];
-// dummy data untill here
-
+  switch (status) {
+    case 'Active': statusText = `Active barter since ${activationDate}`;
+    break;
+    case 'Pending': firstSender === MessagesStore.userId ? statusText = `Request from ${requestDate}` : statusText = `Offer from ${requestDate}`;
+    break;
+    case 'Completed': statusText = `Completed barter since ${endDate}`;
+    break;
+    case 'Cancelled': statusText = `Cancelled barter since ${endDate}`;
+    break;
+  }
 
   return (
     <div id = "cons-header">
-        <img src = {partner.profilePic} id = "current-partner-pic"/>
-        <h2 id = "current-partner-name">{`${partner.firstName} ${partner.lastName}`}</h2>
+      <div id = "current-partner-details">
+        <Link to = {profileAddress}><img src = {partner.profilePic ? partner.profilePic.imageUrl : ''} id = "current-partner-pic"/></Link>
+        <Link to = {profileAddress}><h2 id = "current-partner-name">{`${partner.firstName} ${partner.lastName}`}</h2></Link>
+        <h5 id = "status-text">{statusText}</h5>
+      </div>
+        <Buttons/>
     </div>
   )
 }))

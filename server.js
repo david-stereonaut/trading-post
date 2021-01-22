@@ -3,7 +3,11 @@ const app = express()
 const path = require('path')
 const mongoose = require('mongoose')
 const userRouter = require('./server/routes/userApi')
-mongoose.connect("mongodb+srv://TradingPostUser:elevation@cluster0.wllqb.mongodb.net/TradingPost?retryWrites=true&w=majority")
+const imageRouter = require('./server/routes/imageApi')
+const conversationRouter = require('./server/routes/conversationApi')
+const searchRouter = require('./server/routes/searchApi')
+const tradeCardRouter = require('./server/routes/tradeCardApi')
+mongoose.connect("mongodb+srv://TradingPostUser:elevation@cluster0.wllqb.mongodb.net/TradingPost?retryWrites=true&w=majority", { useNewUrlParser: true, useUnifiedTopology: true })
 // mongoose.connect("mongodb://localhost/trading-post", { useNewUrlParser: true},  { useUnifiedTopology: true })
 
 
@@ -19,6 +23,11 @@ app.use(function (req, res, next) {
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use('/', userRouter)
+app.use('/', imageRouter)
+app.use('/', conversationRouter)
+app.use('/', searchRouter)
+app.use('/', tradeCardRouter)
+
 
 const port = process.env.PORT || 3001
 app.listen(port, function() {

@@ -1,17 +1,14 @@
 const mongoose = require("mongoose")
 const Schema = mongoose.Schema
 const conversationSchema = new Schema({
-user1_id: { type: Schema.Types.ObjectId, ref: 'User' },   
-user2_id: { type: Schema.Types.ObjectId, ref: 'User' },   
-subject: String,
-type: String,
-// status should be here
-messages: [{ 
-  sender_id: String,
-  message_time: Date,
-  text: String,
-  // status: String 
+  users : [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  status: String,
+  messages: [{ 
+    senderId: String,
+    message_time: Date,
+    body: String,
+    tradeCard: { type: Schema.Types.ObjectId, ref: 'TradeCard' }
   }],
-})
+}, { versionKey: false })
 const Conversation = mongoose.model("Conversation", conversationSchema)
 module.exports = Conversation
