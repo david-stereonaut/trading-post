@@ -2,18 +2,20 @@ import { observable, action, computed, makeObservable } from 'mobx'
 import axios from 'axios'
 export class SearchStore {
   constructor() {
-    this.firstName = null;
-    this.lastName = null;
-    this.location = null;
-    this.users = [];
-    this.seeking = [];
-    this.offering = [];
-    this.location = null;
-    this.trades = [];
+    this.searchFirst = null;
+    this.searchLast = null;
+    this.searchCity = null;
+    this.searchCountry = null;
+    this.searchSeeking = [];
+    this.searchOffering = [];
+    this.searchType = null;
+    this.usersResults = [];
+    this.tradesResults = [];
     this.perfectTrade = false;
-    this.allTags = [];
+
     this.tagsForSearch = [];
     this.tradesByTags = []
+
     makeObservable(this, {
       firstName: observable,
       lastName: observable,
@@ -31,9 +33,14 @@ export class SearchStore {
       searchTrades: action,
       searchPerfectTrades: action,
       getTags: action,
-      searchTradesByTags: action
+      searchTradesByTags: action,
+      handleSearchType: action
     })
   }
+  handleSearchType = (value) => {
+    this.searchType = value;
+  }
+
   async searchUsers() {
     const users = await axios.get(`http://localhost:3001/search/user?firstname=${this.firstName}&lastname=${this.lastName}`);
     this.users = users.data;
