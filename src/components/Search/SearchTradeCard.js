@@ -28,6 +28,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
+// line 57 will be user's opposite tags, but didn't do logic yet, so now you just have 2 sets of the same tags - says seeking now, will be logic for seeking/offering
 
 const SearchTradeCard = inject('GeneralStore', 'SearchStore', 'UserStore')(observer((props) =>  {
 
@@ -48,13 +49,18 @@ const SearchTradeCard = inject('GeneralStore', 'SearchStore', 'UserStore')(obser
           <div className={classes.cardTitle}>
             <Typography variant="body1">{trade.title}</Typography>
           </div>
+          <Typography variant="subtitle1" style={{fontSize: 12}} paragraph={true} color="textSecondary">City, Country</Typography>
           <Typography variant="subtitle1" style={{fontSize: 12}} paragraph={true} color="textSecondary">{trade.subTitle}</Typography>
           <Typography variant="body1" style={{fontSize: 14}}  paragraph={true}>{trade.description}</Typography>
           <div className="trade-card-tags">
             {trade.tags.map(tag => <Tag key={tag} tag={tag} />)}
           </div>
+          <div className="trade-card-tags">Seeking:
+            {trade.tags.map(tag => <Tag key={tag} tag={tag} />)}
+          </div>
         </div>
         {trade.type === "Offering" ? <Button startIcon={<TradeIcon />} color="secondary" variant="contained">Trade!</Button> : <Button startIcon={<TradeIcon />} color="secondary" variant="contained">Trade!</Button>}
+        <Button >View profile</Button>
       </div>
     </Paper>
   )
