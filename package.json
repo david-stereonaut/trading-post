@@ -15,12 +15,14 @@
     "express": "^4.17.1",
     "mobx": "^6.0.4",
     "mobx-react": "^7.0.5",
+    "moment": "^2.29.1",
     "mongoose": "^5.11.12",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
     "sass": "^1.32.4",
+    "socket.io": "^3.1.0",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
