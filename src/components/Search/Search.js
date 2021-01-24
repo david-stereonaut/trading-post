@@ -1,5 +1,7 @@
 import { observer, inject } from 'mobx-react'
 import { useEffect } from 'react'
+import Map from './Map/Map'
+
 import './Search.scss'
 import SearchType from './SearchType'
 import FirstName from './FirstName'

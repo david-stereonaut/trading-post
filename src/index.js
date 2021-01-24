@@ -7,17 +7,21 @@ import { Provider } from 'mobx-react'
 import { GeneralStore as generalStore } from './stores/GeneralStore'
 import { SearchStore as searchStore } from './stores/SearchStore'
 import { UserStore as userStore } from './stores/UserStore'
+import { MapStore as mapStore } from './stores/MapStore'
+
 import { MessagesStore as messagesStore } from './stores/MessagesStore'
 
 const GeneralStore = new generalStore()
 const SearchStore = new searchStore()
 const UserStore = new userStore()
+const MapStore = new mapStore()
 const MessagesStore = new messagesStore()
 
 const stores = {
   GeneralStore,
   SearchStore,
   UserStore,
+  MapStore,
   MessagesStore
 }
 

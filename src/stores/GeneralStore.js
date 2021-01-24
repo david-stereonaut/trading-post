@@ -1,6 +1,7 @@
 import { observable, action, computed, makeObservable } from  'mobx'
 import axios from 'axios'
 
+
 export class GeneralStore {
   constructor() {
 
