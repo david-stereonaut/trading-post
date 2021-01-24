@@ -32,7 +32,7 @@ router.put('/tradecard/:userId', async function (req, res) {
 router.delete('/tradecard/:userId', async function (req, res) {
     const {userId} = req.params
     const { tradeCardId } = req.body
-    await TradeCard.findOneAndDelete({_id: tradeCardId}, function (err, res) { 
+    await TradeCard.findOneAndDelete({_id: tradeCardId}, { useFindAndModify: false }, function (err, res) { 
         if (err){ 
             console.log(err) 
         } 
