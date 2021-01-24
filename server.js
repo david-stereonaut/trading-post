@@ -7,10 +7,11 @@ const imageRouter = require('./server/routes/imageApi')
 const conversationRouter = require('./server/routes/conversationApi')
 const searchRouter = require('./server/routes/searchApi')
 const tradeCardRouter = require('./server/routes/tradeCardApi')
+const withAuth = require('./middleware');
+const cookieParser = require('cookie-parser');
+
 mongoose.connect("mongodb+srv://TradingPostUser:elevation@cluster0.wllqb.mongodb.net/TradingPost?retryWrites=true&w=majority", { useNewUrlParser: true, useUnifiedTopology: true })
 // mongoose.connect("mongodb://localhost/trading-post", { useNewUrlParser: true},  { useUnifiedTopology: true })
-
-
 
 app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*')
@@ -21,6 +22,7 @@ app.use(function (req, res, next) {
 })
 
 app.use(express.json())
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }))
 app.use('/', userRouter)
 app.use('/', imageRouter)
@@ -28,9 +30,19 @@ app.use('/', conversationRouter)
 app.use('/', searchRouter)
 app.use('/', tradeCardRouter)
 
+app.get('/api/secret', withAuth, function(req, res) {
+  res.send('The password is potato');
+});
+
+app.get('/checkToken', withAuth, function(req, res) {
+  res.sendStatus(200);
+});
+
+
 
 const port = process.env.PORT || 3001
 app.listen(port, function() {
   console.log(`Server running on port ${port}`)
 })
 
+module.exports = withAuth;

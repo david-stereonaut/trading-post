@@ -6,15 +6,20 @@ export class UserStore {
 
     this.user = {};
     this.watchedUser = {};
-
+    this.userId = null;
+    this.login = {email: null, password: null}
+   
     makeObservable(this, {
       user: observable,
+      login: observable,
       watchedUser: observable,
+      userId: observable,
       fetchUser: action,
       fetchWatchedUser: action,
       startConversation: action,
       addTag: action,
       removeTag: action,
+      loginUser: action,
       addImage: action,
       removeImage: action,
       changeProfilePic: action,
@@ -22,9 +27,23 @@ export class UserStore {
     })
   }
 
+handleLogin (email, password) {
+  this.login.email = email
+  this.login.password = password
+  // await this.loginUser()
+  // if (this.loginUser()){ console.log("ok") }
+}
+
+  async loginUser() {
+    const userId = await axios.post(`http://localhost:3001/user/authenticate` , this.login);
+    this.userId = userId.data;
+    console.log(this.userId)
+      }
+
   async fetchUser() {
-    const user = await axios.get(`http://localhost:3001/myUser/60045b1519f39a2c9c46c63e`);
+    const user = await axios.get(`http://localhost:3001/myUser/${this.userId}`);
     this.user = user.data;
+    console.log(this.user)
   }
 
   async fetchWatchedUser(id) {
