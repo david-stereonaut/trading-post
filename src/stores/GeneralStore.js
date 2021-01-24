@@ -1,4 +1,6 @@
 import { observable, action, computed, makeObservable } from  'mobx'
+import axios from 'axios'
+
 
 export class GeneralStore {
   constructor() {
@@ -18,6 +20,7 @@ export class GeneralStore {
     this.editTradeTags = []
     this.editTradeType = 'Offering'
     this.editTradeId = ''
+    this.allTags = [];
 
     makeObservable(this, {
       currentTab: observable,
@@ -45,7 +48,9 @@ export class GeneralStore {
       editTradeId: observable,
       handleEditTrade: action,
       removeEditTag: action,
-      addEditTag: action
+      addEditTag: action,
+      allTags: observable, 
+      getTags: action
     })
   }
 
@@ -95,5 +100,10 @@ export class GeneralStore {
 
   addEditTag = (tag) => {
     this.editTradeTags.push(tag)
+  }
+
+  async getTags() {
+    const tags = await axios.get(`http://localhost:3001/getTags`);
+    this.allTags = tags.data;
   }
 }

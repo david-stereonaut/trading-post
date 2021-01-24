@@ -29,6 +29,7 @@ export class UserStore {
 
   async fetchWatchedUser(id) {
     const user = await axios.get(`http://localhost:3001/user/${id}`);
+    console.log(user.data)
     this.watchedUser = user.data;
   }
 

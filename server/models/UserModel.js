@@ -17,7 +17,8 @@ const userSchema = new Schema({
     location: {
         country: String,
         city: String,
-        street: String,
+        lat: Number,
+        lng: Number
     },
     offeringTags: [],
     seekingTags: [],

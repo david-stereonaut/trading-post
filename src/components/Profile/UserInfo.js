@@ -69,7 +69,7 @@ const UserInfo = inject('UserStore', 'GeneralStore')(observer((props) => {
   const { userId } = useParams()
   
   
-  const classes = useStyles({ usernameWidth, editable} )
+  const classes = useStyles({ usernameWidth, editable })
   
   const [editNameInput, setEditNameInput] = useState(`${UserStore.user.firstName} ${UserStore.user.lastName}`)
   const [editDescriptionInput, setEditDescriptionInput] = useState(`${UserStore.user.description}`)
@@ -130,7 +130,7 @@ const UserInfo = inject('UserStore', 'GeneralStore')(observer((props) => {
             </div>
             {!GeneralStore.UserOfferTagEdit ?
             <div className="user-tag-container">
-              {user.offeringTags.map(tag => <Tag key={tag} tag={tag} />)}
+              {user.offeringTags && user.offeringTags.length > 0 ? user.offeringTags.map(tag => <Tag key={tag} tag={tag} />) : <Typography variant="subtitle1" >User has no offering tags</Typography>}
             </div> :
             <UserTagsEdit type={'offering'} />}
           </div>
@@ -141,7 +141,7 @@ const UserInfo = inject('UserStore', 'GeneralStore')(observer((props) => {
             </div>
             {!GeneralStore.UserSeekTagEdit ?
             <div className="user-tag-container">
-              {user.seekingTags.map(tag => <Tag key={tag} tag={tag} />)}
+              {user.seekingTags && user.seekingTags.length > 0 ? user.seekingTags.map(tag => <Tag key={tag} tag={tag} />) : <Typography variant="subtitle1" >User has no seeking tags</Typography>}
             </div> :
             <UserTagsEdit type={'seeking'} />}
           </div>

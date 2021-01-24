@@ -1,57 +1,79 @@
 import { observable, action, computed, makeObservable } from 'mobx'
 import axios from 'axios'
+
 export class SearchStore {
   constructor() {
-    this.firstName = null;
-    this.lastName = null;
-    this.location = null;
-    this.users = [];
-    this.seeking = [];
-    this.offering = [];
-    this.location = null;
-    this.trades = [];
-    this.perfectTrade = false;
-    this.allTags = [];
-    this.tagsForSearch = [];
-    this.tradesByTags = []
+    this.allTags = []
+    this.results = []
+    this.searchFor = 'trades'
+    this.seekingFilter = true
+    this.offeringFilter = true
+    this.tagsFilter = []
+    this.sortBy = 'location'
+   
     makeObservable(this, {
-      firstName: observable,
-      lastName: observable,
-      location: observable,
-      users: observable,
-      seeking: observable,
-      offering: observable,
-      location: observable,
-      trades: observable,
-      perfectTrade: observable,
       allTags: observable,
-      tagsForSearch: observable,
-      tradesByTags: observable,
-      searchUsers: action,
-      searchTrades: action,
-      searchPerfectTrades: action,
-      getTags: action,
-      searchTradesByTags: action
+      getAllTags: action,
+      results: observable,
+      initialSearch: action,
+      searchFor: observable,
+      seekingFilter: observable,
+      offeringFilter: observable,
+      setSeekingFilter: action,
+      setOfferingFilter: action,
+      tagsFilter: observable,
+      setTagsFilter: action,
+      sortBy: observable,
+      setSortBy: action
     })
   }
-  async searchUsers() {
-    const users = await axios.get(`http://localhost:3001/search/user?firstname=${this.firstName}&lastname=${this.lastName}`);
-    this.users = users.data;
+
+  setSeekingFilter(value) {
+    this.seekingFilter = value
   }
-  async searchTrades() {
-    const trades = await axios.get(`http://localhost:3001/search/trade?seeking=${this.seeking}&offering=${this.offering}&location=${this.location}`);
-    this.trades = trades.data;
+
+  setOfferingFilter(value) {
+    this.offeringFilter = value
   }
-  async searchPerfectTrades() {
-    const trades = await axios.get(`http://localhost:3001/search/perfecttrade?seeking=${this.seeking}&offering=${this.offering}&location=${this.location}`);
-    this.trades = trades.data;
+
+  setTagsFilter(value) {
+    this.tagsFilter = value
   }
-  async getTags() {
+
+  setSortBy(value) {
+    this.sortBy = value
+  }
+
+  async getAllTags() {
     const tags = await axios.get(`http://localhost:3001/getTags`);
-    this.allTags = tags.data;
+    this.allTags = tags.data
   }
-  async searchTradesByTags() {
-    const trades = await axios.get(`http://localhost:3001/search/tradeTags`, this.tagsForSearch);
-    this.tradesByTags = trades.data;
+
+  async initialSearch() {
+    const results = await axios.get(`http://localhost:3001/search/trades?q`);
+    const tags = await axios.get(`http://localhost:3001/getTags`);
+    this.results = results.data
+    this.allTags = tags.data
   }
+
+  async searchTrades(text) {
+    const results = await axios.get(`http://localhost:3001/search/trades?q=${text}`);
+    this.results = results.data
+    this.searchFor = 'trades'
+  }
+
+  async searchUsers(text) {
+    let splitted = text.split(' ')
+    let results
+    if (splitted.length <= 1 || text === '') {
+      results = await axios.get(`http://localhost:3001/search/users?q=${text}`);
+    } else {
+      const firstName = splitted[0]
+      const lastName = splitted.splice(1).toString().replace(',', ' ')
+      results = await axios.get(`http://localhost:3001/search/users?firstName=${firstName}&lastName=${lastName}`);
+    }
+    this.results = results.data
+    this.searchFor = 'people'
+  }
+
 }
