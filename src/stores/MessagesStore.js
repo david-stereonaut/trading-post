@@ -41,7 +41,7 @@ export class MessagesStore {
             popUpReview: action,
             revealGeneralPopup: action,
             revealTextPopup: action,
-            changeUser: action,
+            // changeUser: action,
             manageSocket: action
         })
     }
