@@ -15,6 +15,7 @@ const Messages = inject('MessagesStore', 'UserStore')(observer((props) =>  {
 
   useEffect(() => {
     MessagesStore.getCons(MessagesStore.category);
+    MessagesStore.socketPort = 'http://localhost:4000';
   }, []);
 
   return (

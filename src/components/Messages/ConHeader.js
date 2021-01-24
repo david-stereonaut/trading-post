@@ -34,6 +34,7 @@ const ConHeader = inject('MessagesStore')(observer((props) =>  {
         <Link to = {profileAddress}><img src = {partner.profilePic ? partner.profilePic.imageUrl : ''} id = "current-partner-pic"/></Link>
         <Link to = {profileAddress}><h2 id = "current-partner-name">{`${partner.firstName} ${partner.lastName}`}</h2></Link>
         <h5 id = "status-text">{statusText}</h5>
+        <h3 id = {MessagesStore.partnerTyping === true ? "visible-typing-text" : "hidden-typing-text"} >{partner.firstName}`s typing...</h3>
       </div>
         <Buttons/>
     </div>

@@ -461,3 +461,15 @@ a {
 #Neigborhood-title {
     color: rgb(255, 173, 102);
 }
+
+#hidden-typing-text {
+    display: none;
+}
+
+#visible-typing-text {
+    position: relative;
+    display: inline;
+    left: 20vW;
+    color: blue;
+    top: -55px;
+}
