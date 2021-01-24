@@ -1,5 +1,6 @@
 import { observable, action, computed, makeObservable } from  'mobx'
 import { act } from 'react-dom/test-utils';
+import io from 'socket.io-client';
 const axios = require('axios');
 const moment = require('moment');
 
@@ -14,7 +15,11 @@ export class MessagesStore {
         this.reviewPopup = false;
         this.generalPopup = false;
         this.textPopup = false;
-        this.declineMessage = ''
+        this.partnerTyping = false;
+        this.declineMessage = '';
+        this.socket = io('http://localhost:4000');
+        this.initiateSocket();
+        this.manageSocket();
 
         makeObservable(this, {
             userId: observable,
@@ -26,6 +31,7 @@ export class MessagesStore {
             generalPopup: observable,
             textPopup: observable,
             declineMessage: observable,
+            partnerTyping: observable,
             getCons: action,
             changeCategory: action,
             chooseCon: action,
@@ -37,7 +43,8 @@ export class MessagesStore {
             popUpReview: action,
             revealGeneralPopup: action,
             revealTextPopup: action,
-            changeUser: action
+            changeUser: action,
+            manageSocket: action
         })
     }
 
@@ -75,11 +82,19 @@ export class MessagesStore {
 
     chooseCon = conId => this.currentConId = conId;
 
-    typeMessage = text => this.newMessage = text;
+    typeMessage(text) {
+        this.newMessage = text;
+        const typingInfo = {
+            conversation: this.currentConId,
+            text: text
+        }
+        this.socket.emit('IAmTyping', typingInfo);
+    }
 
     typeDeclineMessage = text => this.declineMessage = text;
 
     async sendMessage() {
+        if (this.newMessage === '') {return}
         const message = {
             senderId: this.userId,
             message_time: moment(),
@@ -87,8 +102,7 @@ export class MessagesStore {
             tradeCard: null
         }
         const conMessages = await axios.post(`http://localhost:3001/conversations/${this.currentConId}`, message);
-        const messages = conMessages.data.messages
-        this.displayedCons.find(d => d._id === this.currentConId).messages.push(messages[messages.length - 1]);
+        this.socket.emit('sendMessage', conMessages.data);
         this.newMessage = '';
     }
 
@@ -114,8 +128,7 @@ export class MessagesStore {
             tradeCard: null
         }
         const conMessages = await axios.post(`http://localhost:3001/conversations/${this.currentConId}`, systemMessage);
-        const messages = conMessages.data.messages
-        this.displayedCons.find(d => d._id === this.currentConId).messages.push(messages[messages.length - 1]);
+        this.socket.emit('sendMessage', conMessages.data);
     }
 
     async updateAndClosePopup(status, popup) {
@@ -125,15 +138,21 @@ export class MessagesStore {
 
     async updateStatus(status) {
 
-        if (status === 'Active' || status === 'Completed' || status === 'Cancelled' || status === 'Declined') {this.sendSystemMessage(status)}
+        this.sendSystemMessage(status)
 
         const statusToUpdate = {status: status}
         const updatedCon = await axios.put(`http://localhost:3001/conversations/${this.currentConId}`, statusToUpdate);
-        const newStatus = updatedCon.data.status;
-        this.displayedCons.find(d => d._id === this.currentConId).status = newStatus;
-        const conId = this.currentConId;
-        this.changeCategory(`${status} barters`);
-        this.chooseCon(conId);
+        // const newStatus = updatedCon.data.status;
+        // this.displayedCons.find(d => d._id === this.currentConId).status = newStatus;
+        // const conId = this.currentConId;
+        // this.changeCategory(`${status} barters`);
+        // this.chooseCon(conId);
+
+        // const updatedInfo = {
+        //     conId: this.currentConId,
+        //     newStatus: newStatus
+        // }
+        this.socket.emit('changeStatus', updatedCon.data);
     }
 
     closePopup = popup => this[popup] = false;
@@ -153,4 +172,39 @@ export class MessagesStore {
         }
         this.getCons('Active');
     }
+
+    initiateSocket = () => {
+        this.socket.on('connect', data => {
+            const userId = {
+                _id: this.userId
+            }
+            this.socket.emit('join', userId);
+        });
+    }
+
+    manageSocket = () => {
+        this.socket.on('partnerTyping', data => {
+            if (this.currentConId !== data.conversation) {return}
+            this.partnerTyping = data.text === '' ? false : true;
+        });
+
+        this.socket.on('getMessage', data => {
+        const messages = data.messages;
+        if (this.displayedCons.every(d => d._id !== data._id)) {return}
+        this.displayedCons.find(d => d._id === data._id).messages.push(messages[messages.length - 1]);
+        if (this.currentConId !== data._id){return}
+        this.partnerTyping = false;
+        });
+
+        this.socket.on('statusChanged', data => {
+            const newStatus = data.status;
+            if (this.displayedCons.every(d => d._id !== data._id)) {return}
+            this.displayedCons.find(d => d._id === data._id).status = newStatus;
+            if (this.currentConId !== data._id){return}
+            const conId = this.currentConId;
+            this.changeCategory(`${newStatus} barters`);
+            this.chooseCon(conId);
+        })
+    }
+
 }

@@ -7,6 +7,7 @@ const imageRouter = require('./server/routes/imageApi')
 const conversationRouter = require('./server/routes/conversationApi')
 const searchRouter = require('./server/routes/searchApi')
 const tradeCardRouter = require('./server/routes/tradeCardApi')
+const SocketService = require('./server/SocketService/SocketService');
 mongoose.connect("mongodb+srv://TradingPostUser:elevation@cluster0.wllqb.mongodb.net/TradingPost?retryWrites=true&w=majority", { useNewUrlParser: true, useUnifiedTopology: true })
 // mongoose.connect("mongodb://localhost/trading-post", { useNewUrlParser: true},  { useUnifiedTopology: true })
 
@@ -28,9 +29,19 @@ app.use('/', conversationRouter)
 app.use('/', searchRouter)
 app.use('/', tradeCardRouter)
 
+const socketServer = app.listen(4000);
+const cors = {
+  cors: [
+    {
+      origin: "http://localhost:3000",
+      methods: ["GET", "POST"]
+    }
+  ]
+}
+
+const socketService = new SocketService(socketServer, cors);
 
 const port = process.env.PORT || 3001
 app.listen(port, function() {
   console.log(`Server running on port ${port}`)
 })
-
