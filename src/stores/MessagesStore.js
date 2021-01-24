@@ -43,7 +43,6 @@ export class MessagesStore {
             popUpReview: action,
             revealGeneralPopup: action,
             revealTextPopup: action,
-            changeUser: action,
             manageSocket: action
         })
     }
@@ -162,16 +161,6 @@ export class MessagesStore {
     revealGeneralPopup = () => this.generalPopup = true;
 
     revealTextPopup = () => this.textPopup = true;
-
-    changeUser = () => {
-        if (this.userId === '60045b1519f39a2c9c46c63e') {    
-            this.userId = '6004588a19f39a2c9c46c63d';
-        } 
-        else {
-            this.userId = '60045b1519f39a2c9c46c63e';
-        }
-        this.getCons('Active');
-    }
 
     initiateSocket = () => {
         this.socket.on('connect', data => {
