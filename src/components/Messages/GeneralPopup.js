@@ -3,10 +3,10 @@ import { observer, inject } from 'mobx-react'
 const GeneralPopup = inject('MessagesStore')(observer((props) =>  {
 
     const { MessagesStore } = props;
-    const conversation = MessagesStore.displayedCons ? MessagesStore.displayedCons.find(d => d._id === MessagesStore.currentConId): null;
+    const conversation = MessagesStore.userCons ? MessagesStore.userCons.find(d => d._id === MessagesStore.currentConId): null;
     const status = conversation ? conversation.status : null;
     const firstSender = conversation ? conversation.messages[0].senderId : null;
-    const partnerFirstName = MessagesStore.currentConId && MessagesStore.displayedCons[0] ? conversation.users.find(u => u._id !== MessagesStore.userId).firstName : 'your partner';
+    const partnerFirstName = MessagesStore.currentConId && MessagesStore.userCons[0] ? conversation.users.find(u => u._id !== MessagesStore.userId).firstName : 'your partner';
 
 
 
