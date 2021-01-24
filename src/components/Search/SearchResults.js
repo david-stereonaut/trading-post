@@ -54,8 +54,8 @@ const SearchResults = inject('UserStore','SearchStore', 'GeneralStore')(observer
       else if (SearchStore.seekingFilter) { return trade.type === 'Seeking'}
       else {return trade.type === 'Offering'}
     })
-    if (SearchStore.tagsFilter.length > 0) {
-      return newArr.filter(trade => SearchStore.tagsFilter.some(r=> trade.tags.includes(r))) // arr1.some(r=> arr2.includes(r))
+    if (SearchStore.seekingTagsFilter.length > 0) {
+      return newArr.filter(trade => SearchStore.seekingTagsFilter.some(r=> trade.tags.includes(r))) // arr1.some(r=> arr2.includes(r))
     }
     return newArr
   }

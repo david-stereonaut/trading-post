@@ -85,7 +85,7 @@ router.get('/search/trades', async function (req, res) {
     const { q } = req.query
     try {
         const re = new RegExp(`.*${q}.*`, 'i')
-        const trades = await TradeCard.find({ title: { $regex: re } }).populate([
+        const trades = await TradeCard.find({ description: { $regex: re } }).populate([
             {
                 path: 'user_id',
                 select: 'firstName lastName profilePic seekingTags offeringTags location'

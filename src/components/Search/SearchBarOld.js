@@ -5,10 +5,8 @@ import SearchIcon from '@material-ui/icons/Search';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import MapIcon from '@material-ui/icons/Map';
-import Location from './Location'
 
-
-const useStyles = makeStyles((theme) => ({
+const useStyles= makeStyles((theme) => ({
   barContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -69,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const Searchbar = inject('UserStore', 'SearchStore', 'GeneralStore')(observer((props) => {
+const Searchbar = inject('UserStore', 'SearchStore', 'GeneralStore')(observer((props) =>  {
 
   const { UserStore, SearchStore, GeneralStore, handleMap, showMap } = props
 
@@ -97,53 +95,20 @@ const Searchbar = inject('UserStore', 'SearchStore', 'GeneralStore')(observer((p
   }
 
   const classes = useStyles({ showFilters })
-
+ 
   return (
     <div className={classes.barContainer}>
       <Paper className={classes.paper}>
         <Paper className={classes.inputs}>
+          <TextField variant="outlined" InputProps={{className: classes.textField}} value={freeTextInput} onChange={({ target }) => setFreeTextInput(target.value)} placeholder="Free text" />
           <Select variant="outlined" className={classes.select} value={searchFor} onChange={({ target }) => setSearchFor(target.value)}>
             <MenuItem value='trades'>Trades</MenuItem>
             <MenuItem value='people'>People</MenuItem>
           </Select>
-          <TextField id="outlined-search" label={searchFor} variant="outlined" InputProps={{ className: classes.textField }} value={freeTextInput} onChange={({ target }) => setFreeTextInput(target.value)} placeholder="Search" />
-          <div>
-              <FormControl>
-                <FormLabel style={{ marginBottom: 5 }}>Seeking Tags</FormLabel>
-                <Autocomplete
-                  className={classes.seekingTagsFilter}
-                  multiple
-                  size="small"
-                  limitTags={1}
-                  options={SearchStore.allTags}
-                  getOptionLabel={(option) => option}
-                  defaultValue={[]}
-                  onChange={(e, value) => SearchStore.setSeekingTagsFilter(value)}
-                  renderInput={(params) => (
-                    <TextField variant="outlined" {...params} />
-                  )}
-                />
-                <FormLabel style={{ marginBottom: 5, marginTop: 5 }}>Offering Tags</FormLabel>
-                <Autocomplete
-                  className={classes.offeringTagsFilter}
-                  multiple
-                  size="small"
-                  limitTags={1}
-                  options={SearchStore.allTags}
-                  getOptionLabel={(option) => option}
-                  defaultValue={[]}
-                  onChange={(e, value) => SearchStore.setOfferingTagsFilter(value)}
-                  renderInput={(params) => (
-                    <TextField variant="outlined" {...params} />
-                  )}
-                />
-                <MenuItem value='location'>Location</MenuItem>
-              </FormControl>
-            </div>
           <IconButton className={classes.filterIcon} onClick={() => setShowFilters(!showFilters)}><FilterListIcon /></IconButton>
           <IconButton className={classes.searchIcon} onClick={search}><SearchIcon /></IconButton>
         </Paper>
-        <Collapse style={{ width: '90%' }} in={showFilters}>
+        <Collapse style={{width: '90%'}} in={showFilters}>
           <div className={classes.filterSection}>
             {searchFor !== 'people' &&
               <FormControl component="fieldset">
@@ -151,20 +116,51 @@ const Searchbar = inject('UserStore', 'SearchStore', 'GeneralStore')(observer((p
                 <FormGroup>
                   <FormControlLabel
                     control={<Checkbox checked={SearchStore.seekingFilter} onChange={({ target }) => SearchStore.setSeekingFilter(target.checked)} />}
-                    label="Show Seeking"
+                    label="Seeking"
                   />
                   <FormControlLabel
                     control={<Checkbox checked={SearchStore.offeringFilter} onChange={({ target }) => SearchStore.setOfferingFilter(target.checked)} />}
-                    label="Show Offering"
+                    label="Offering"
                   />
                 </FormGroup>
               </FormControl>
             }
-
             <div>
               <FormControl>
-                <FormLabel style={{ marginBottom: 5 }}>Sort by</FormLabel>
-                <Select style={{ height: 40, width: 130 }} variant="outlined" value={SearchStore.sortBy} onChange={({ target }) => SearchStore.setSortBy(target.value)}>
+              <FormLabel style={{marginBottom: 5}}>Seeking Tags</FormLabel>
+              <Autocomplete 
+                className={classes.seekingTagsFilter}
+                multiple
+                size="small"
+                limitTags={1}
+                options={SearchStore.allTags}
+                getOptionLabel={(option) => option}
+                defaultValue={[]}
+                onChange={(e, value) => SearchStore.setSeekingTagsFilter(value)}
+                renderInput={(params) => (
+                  <TextField  variant="outlined" {...params} />
+                )}
+              />
+              <FormLabel style={{marginBottom: 5, marginTop: 5}}>Offering Tags</FormLabel>
+              <Autocomplete 
+                className={classes.offeringTagsFilter}
+                multiple
+                size="small"
+                limitTags={1}
+                options={SearchStore.allTags}
+                getOptionLabel={(option) => option}
+                defaultValue={[]}
+                onChange={(e, value) => SearchStore.setOfferingTagsFilter(value)}
+                renderInput={(params) => (
+                  <TextField  variant="outlined" {...params} />
+                )}
+              />
+              </FormControl>
+            </div>
+            <div>
+              <FormControl>
+                <FormLabel style={{marginBottom: 5}}>Sort by</FormLabel>
+                <Select style={{height: 40, width: 130}} variant="outlined" value={SearchStore.sortBy} onChange={({ target }) => SearchStore.setSortBy(target.value)}>
                   <MenuItem value='location'>Location</MenuItem>
                   <MenuItem value='match'>Match</MenuItem>
                 </Select>
@@ -174,7 +170,7 @@ const Searchbar = inject('UserStore', 'SearchStore', 'GeneralStore')(observer((p
         </Collapse>
       </Paper>
 
-      <Button startIcon={<MapIcon />} style={{ marginLeft: 30, alignSelf: 'flex-start' }} onClick={() => handleMap()}>Show Map</Button>
+      <Button startIcon={<MapIcon />} style={{marginLeft: 30, alignSelf: 'flex-start'}} onClick={() => handleMap()}>Show Map</Button>
     </div>
   )
 }))

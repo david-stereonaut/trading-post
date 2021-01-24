@@ -8,7 +8,9 @@ export class SearchStore {
     this.searchFor = 'trades'
     this.seekingFilter = true
     this.offeringFilter = true
-    this.tagsFilter = []
+    this.seekingTagsFilter = []
+    this.offeringTagsFilter = []
+    this.location = null
     this.sortBy = 'location'
    
     makeObservable(this, {
@@ -16,13 +18,17 @@ export class SearchStore {
       getAllTags: action,
       results: observable,
       initialSearch: action,
+      location: observable,
+      handleLocation: action,
       searchFor: observable,
       seekingFilter: observable,
       offeringFilter: observable,
       setSeekingFilter: action,
       setOfferingFilter: action,
-      tagsFilter: observable,
-      setTagsFilter: action,
+      seekingTagsFilter: observable,
+      offeringTagsFilter: observable,
+      setSeekingTagsFilter: action,
+      setOfferingTagsFilter: action,
       sortBy: observable,
       setSortBy: action
     })
@@ -36,12 +42,23 @@ export class SearchStore {
     this.offeringFilter = value
   }
 
-  setTagsFilter(value) {
-    this.tagsFilter = value
+  setSeekingTagsFilter(value) {
+    this.SeekingTagsFilter = value
+  }
+
+  setOfferingTagsFilter(value) {
+    this.OfferingTagsFilter = value
   }
 
   setSortBy(value) {
     this.sortBy = value
+  }
+
+  handleLocation = (location) => {
+    this.searchCity = location[0];
+    this.searchCountry = location[1];
+    console.log(this.searchCity)
+    console.log(this.searchCountry)
   }
 
   async getAllTags() {
