@@ -20,12 +20,13 @@ const theme = createMuiTheme({
   }
 })
 
-const App = inject('UserStore')(observer((props) => {
+const App = inject('UserStore', 'SearchStore')(observer((props) => {
 
-  const { UserStore } = props
+  const { UserStore, SearchStore } = props
 
   useEffect(() => {
     UserStore.fetchUser()
+    SearchStore.initialSearch()
   }, [])
 
   return (

@@ -1,21 +1,32 @@
 import { AppBar, Avatar, InputBase, Tab, Tabs, TextField, Toolbar } from "@material-ui/core";
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { observer, inject } from 'mobx-react'
 import './Navbar.scss'
 import HomeIcon from '@material-ui/icons/Home';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import InboxIcon from '@material-ui/icons/Inbox';
-import { useEffect } from "react";
+import { useState } from "react";
 
 
-const Navbar = inject('GeneralStore', 'UserStore')(observer((props) =>  {
+const Navbar = inject('GeneralStore', 'UserStore', 'SearchStore')(observer((props) =>  {
 
-  const { GeneralStore, UserStore } = props
+  const { GeneralStore, UserStore, SearchStore } = props
+
+  const [searchInput, setSearchInput] = useState('')
 
   function tabProps(index) {
     return {
       id: `simple-tab-${index}`,
       'aria-controls': `simple-tabpanel-${index}`,
+    }
+  }
+  let history = useHistory();
+
+  const search = (e) => {
+    if (e.key === 'Enter') {
+      SearchStore.searchTrades(searchInput)
+      setSearchInput('')
+      history.push('/search')
     }
   }
 
@@ -27,13 +38,13 @@ const Navbar = inject('GeneralStore', 'UserStore')(observer((props) =>  {
           <Tab style={{minWidth: 30}} icon={<InboxIcon />} component={Link}  to="/messages" {...tabProps(2)} />
           <Tab style={{display: 'none'}} {...tabProps(3)} />
         </Tabs>
-          <TextField placeholder="Search" value='' variant="outlined" size="small" style={{}} InputProps={{
+          {GeneralStore.currentTab !== 1 && <TextField placeholder="Search" onKeyDown={search} value={searchInput} onChange={({ target }) => setSearchInput(target.value)} variant="outlined" size="small" InputProps={{
               style: {
                   backgroundColor: "white",
                   height: 30
               }
             }}
-          />
+          />}
     </AppBar>
   )
 }))

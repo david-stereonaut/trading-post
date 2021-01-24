@@ -56,8 +56,8 @@ const UserTrades = inject('UserStore', 'GeneralStore')(observer((props) =>  {
 
   // }, [user.seeking, user.offering])
 
-  let offering = user.tradeCards.filter(c => c.type === 'Offering')
-  let seeking = user.tradeCards.filter(c => c.type === 'Seeking')
+  let offering = user.tradeCards && user.tradeCards.length > 0 ? user.tradeCards.filter(c => c.type === 'Offering') : undefined
+  let seeking = user.tradeCards && user.tradeCards.length > 0 ? user.tradeCards.filter(c => c.type === 'Seeking') : undefined
 
   return (
     <Paper className={classes.tradesContainer}>

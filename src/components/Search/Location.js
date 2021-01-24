@@ -66,6 +66,6 @@ const searchLocation = inject('SearchStore')(observer((props) =>  {
 
 export default scriptLoader([
   `https://maps.googleapis.com/maps/api/js?key=AIzaSyBZbfnMyK4xaIDNevsXwulDnxC9nhZ0rS0&libraries=places`,
-])(App)
+])(searchLocation)
 
 

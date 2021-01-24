@@ -29,7 +29,7 @@ const useStyles=makeStyles((theme) => ({
   }
 }))
 
-const MapInfoCard = inject('UserStore', 'SearchStore', 'GeneralStore')(observer((props) =>  {
+const MapTradeInfoCard = inject('UserStore', 'SearchStore', 'GeneralStore')(observer((props) =>  {
   
   const {trade} = props
 
@@ -53,10 +53,10 @@ const MapInfoCard = inject('UserStore', 'SearchStore', 'GeneralStore')(observer(
         <Typography >{trade.description}</Typography>
       </div>
       <div>
-        <Button>User profile</Button>
+        <Button href={`/profile/${trade.user_id._id}`} >User profile</Button>
       </div>
     </div>
 )
 }))
 
-export default MapInfoCard
+export default MapTradeInfoCard

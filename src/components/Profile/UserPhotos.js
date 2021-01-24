@@ -64,15 +64,15 @@ const UserPhotos = inject('UserStore', 'GeneralStore')(observer((props) =>  {
       </div>
         {editable && editMode && 
           <div className={classes.insideButtons}>
-            {user.images.length < 5 && <IconButton color="primary" className={classes.insideButton} onClick={() => GeneralStore.handleImageUploadDialog()}><AddIcon /></IconButton>}
+            {user.images && user.images.length < 5 && <IconButton color="primary" className={classes.insideButton} onClick={() => GeneralStore.handleImageUploadDialog()}><AddIcon /></IconButton>}
             <IconButton className={classes.insideButton} color="primary" onClick={() => setEditMode(false)}><DoneIcon /></IconButton>
           </div>}
       <div className="user-photos-container">
-        {user.images.slice().reverse().map((img, ind) => 
+        {user.images && user.images.length > 0 ? user.images.slice().reverse().map((img, ind) => 
         <div className={classes.photo}>
           <Photo key={ind} imgUrl={img.imageUrl} />
           {editMode && <Button onClick={() => UserStore.removeImage(img.imageUrl, img.imageId)} className={classes.removeButton}>Remove</Button>}
-        </div>)}
+        </div>) : <Typography>User has no photos</Typography>}
       </div>
     </Paper>
   )

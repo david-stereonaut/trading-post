@@ -43,7 +43,7 @@ const Profile = inject('UserStore', 'GeneralStore')(observer((props) =>  {
 
 
 
-  return user.firstName ? (
+  return user ? (
     <div id="profile-container">
       <UserInfo user={user} editable={editable} />
       <div className="profile-middle-section">
