@@ -5,31 +5,35 @@ import SearchIcon from '@material-ui/icons/Search';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import MapIcon from '@material-ui/icons/Map';
-import Location from './Location'
+import {LocationSearchInput} from './Location'
 
 
 const useStyles = makeStyles((theme) => ({
   barContainer: {
     display: 'flex',
     flexDirection: 'row',
+    justifySelf: 'center',
+    // height: 40
     // justifyContent: 'center'
   },
   select: {
     minWidth: 100,
     borderRadius: 20,
-    height: 40,
+    // height: 40,
   },
   textField: {
     borderRadius: 20,
-    height: 40,
-    width: 300
+    // height: 40,
+    // width: 300
   },
   inputs: {
     borderRadius: 20,
+    // heigh: 40,
+    // width: 200,
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center'
+    // justifyContent: 'center',
+    // alignItems: 'center'
   },
   paper: {
     borderRadius: 20,
@@ -89,10 +93,18 @@ const Searchbar = inject('UserStore', 'SearchStore', 'GeneralStore')(observer((p
   }, [])
 
   const search = () => {
-    if (searchFor === 'trades') {
-      SearchStore.searchTrades(freeTextInput)
-    } else {
-      SearchStore.searchUsers(freeTextInput)
+    switch(searchFor){
+      case "offering":
+        SearchStore.searchTrades(freeTextInput)
+        break;
+      case "seeking":
+        SearchStore.searchTrades(freeTextInput)
+        break;
+      case "people":
+        SearchStore.searchUsers(freeTextInput)
+        break;
+      case "trades":
+        SearchStore.searchTags()
     }
   }
 
@@ -102,44 +114,54 @@ const Searchbar = inject('UserStore', 'SearchStore', 'GeneralStore')(observer((p
     <div className={classes.barContainer}>
       <Paper className={classes.paper}>
         <Paper className={classes.inputs}>
-          <Select variant="outlined" className={classes.select} value={searchFor} onChange={({ target }) => setSearchFor(target.value)}>
-            <MenuItem value='trades'>Trades</MenuItem>
+          <Select variant="outlined" label="Search for" className={classes.select} value={searchFor} onChange={({ target }) => setSearchFor(target.value)}>
+            <MenuItem value='offering'>Offers</MenuItem>
+            <MenuItem value='seeking'>Requests</MenuItem>
             <MenuItem value='people'>People</MenuItem>
+            <MenuItem value='tags'>Tags</MenuItem>
           </Select>
-          <TextField id="outlined-search" label={searchFor} variant="outlined" InputProps={{ className: classes.textField }} value={freeTextInput} onChange={({ target }) => setFreeTextInput(target.value)} placeholder="Search" />
-          <div>
-              <FormControl>
-                <FormLabel style={{ marginBottom: 5 }}>Seeking Tags</FormLabel>
-                <Autocomplete
-                  className={classes.seekingTagsFilter}
-                  multiple
-                  size="small"
-                  limitTags={1}
-                  options={SearchStore.allTags}
-                  getOptionLabel={(option) => option}
-                  defaultValue={[]}
-                  onChange={(e, value) => SearchStore.setSeekingTagsFilter(value)}
-                  renderInput={(params) => (
-                    <TextField variant="outlined" {...params} />
-                  )}
-                />
-                <FormLabel style={{ marginBottom: 5, marginTop: 5 }}>Offering Tags</FormLabel>
-                <Autocomplete
-                  className={classes.offeringTagsFilter}
-                  multiple
-                  size="small"
-                  limitTags={1}
-                  options={SearchStore.allTags}
-                  getOptionLabel={(option) => option}
-                  defaultValue={[]}
-                  onChange={(e, value) => SearchStore.setOfferingTagsFilter(value)}
-                  renderInput={(params) => (
-                    <TextField variant="outlined" {...params} />
-                  )}
-                />
-                <MenuItem value='location'>Location</MenuItem>
+          <TextField id="Naked input" label={searchFor} variant="outlined" InputProps={{ className: classes.textField }} value={freeTextInput} onChange={({ target }) => setFreeTextInput(target.value)} placeholder="Search" />
+          
+            <FormControl>
+
+              <FormLabel style={{ marginBottom: 5 }}>Seeking Tags</FormLabel>
+              <Autocomplete
+                className={classes.seekingTagsFilter}
+                multiple
+                size="small"
+                limitTags={1}
+                options={SearchStore.allTags}
+                getOptionLabel={(option) => option}
+                defaultValue={[]}
+                onChange={(e, value) => SearchStore.setSeekingTagsFilter(value)}
+                renderInput={(params) => (
+                  <TextField variant="outlined" {...params} />
+                )}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel style={{ marginBottom: 5, marginTop: 5 }}>Offering Tags</FormLabel>
+              <Autocomplete
+                className={classes.offeringTagsFilter}
+                multiple
+                size="small"
+                limitTags={1}
+                options={SearchStore.allTags}
+                getOptionLabel={(option) => option}
+                defaultValue={[]}
+                onChange={(e, value) => SearchStore.setOfferingTagsFilter(value)}
+                renderInput={(params) => (
+                  <TextField variant="outlined" {...params} />
+                )}
+              />
               </FormControl>
-            </div>
+              <FormControl>
+              <LocationSearchInput />
+                  {/* <MenuItem value='location'>Location</MenuItem>
+                  <MenuItem value='match'>Match</MenuItem> */}
+            </FormControl>
+            <div>
+          </div>
           <IconButton className={classes.filterIcon} onClick={() => setShowFilters(!showFilters)}><FilterListIcon /></IconButton>
           <IconButton className={classes.searchIcon} onClick={search}><SearchIcon /></IconButton>
         </Paper>
@@ -165,8 +187,7 @@ const Searchbar = inject('UserStore', 'SearchStore', 'GeneralStore')(observer((p
               <FormControl>
                 <FormLabel style={{ marginBottom: 5 }}>Sort by</FormLabel>
                 <Select style={{ height: 40, width: 130 }} variant="outlined" value={SearchStore.sortBy} onChange={({ target }) => SearchStore.setSortBy(target.value)}>
-                  <MenuItem value='location'>Location</MenuItem>
-                  <MenuItem value='match'>Match</MenuItem>
+                 
                 </Select>
               </FormControl>
             </div>

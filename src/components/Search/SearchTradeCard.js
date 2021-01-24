@@ -34,6 +34,7 @@ const SearchTradeCard = inject('GeneralStore', 'SearchStore', 'UserStore')(obser
         image={trade.thumbnail.imageUrl}
       />
       <CardContent>
+        <Typography variant="subtitle1" style={{ fontSize: 12 }} paragraph={true} color="textSecondary">{trade.type}</Typography>
         <Typography variant="body1">{trade.title}</Typography>
         <Typography variant="subtitle1" style={{ fontSize: 12 }} color="textSecondary">{`${trade.user_id.location.city}, ${trade.user_id.location.country}`}</Typography>
         <Typography variant="subtitle1" style={{ fontSize: 12 }} paragraph={true} color="textSecondary">{trade.subTitle}</Typography>
@@ -42,7 +43,7 @@ const SearchTradeCard = inject('GeneralStore', 'SearchStore', 'UserStore')(obser
         {!seeTags ? <IconButton size="small" onClick={() => setSeeTags(!seeTags)}><ExpandMoreIcon /></IconButton> : <IconButton size="small" onClick={() => setSeeTags(!seeTags)}><ExpandLessIcon /></IconButton>}
       </CardContent>
       <CardActions style={{marginTop: 'auto'}}>
-        <Button href={`/profile/${trade.user_id._id}`} color="secondary" variant="contained">Show profile</Button>
+        <Button href={`/profile/${trade.user_id._id}`} color="secondary" variant="contained">Go to profile</Button>
         <Button startIcon={<TradeIcon />} color="secondary" variant="contained">Trade!</Button>
       </CardActions>
     </Card>

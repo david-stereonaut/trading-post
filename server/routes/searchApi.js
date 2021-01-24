@@ -3,6 +3,8 @@ const router = express.Router()
 const Conversation = require('../models/ConversationModel')
 const TradeCard = require('../models/TradeCardModel')
 const User = require('../models/UserModel')
+
+
 // router.get('/search/user', async function (req, res) {
 //     const { lastname, firstname } = req.query
 //     try {
@@ -13,16 +15,18 @@ const User = require('../models/UserModel')
 //         res.send(err.message)
 //     }
 // })
-// router.get('/search/trade', async function (req, res) {
-//     const { seeking, offering, location } = req.query
-//     try {
-//         const users = await User.find({ $and: [{ $or: [{ offeringTags: seeking }, { seekingTags: offering }] }, { "location.country": { $in: location } }] }).populate('offering').populate('seeking').limit(20)
-//         res.send(users)
-//     }
-//     catch (err) {
-//         res.send(err.message)
-//     }
-// })
+
+router.get('/search/tradetags', async function (req, res) {
+    const { seeking, offering, location } = req.query
+    try {
+        const users = await User.find({ $and: [{ $or: [{ offeringTags: seeking }, { seekingTags: offering }] }, { "location.country": { $in: location } }] }).populate('offering').populate('seeking').limit(20)
+        console.log(users)
+        res.send(users)
+    }
+    catch (err) {
+        res.send(err.message)
+    }
+})
 // router.get('/search/perfecttrade', async function (req, res) {
 //     const { seeking, offering, location } = req.query
 //     try {
@@ -33,6 +37,7 @@ const User = require('../models/UserModel')
 //         res.send(err.message)
 //     }
 // })
+
 router.get('/getTags', async function (req, res) {
     const data = await TradeCard.find({})
     const allTags = data.map(t => t.tags)
@@ -47,6 +52,7 @@ router.get('/getTags', async function (req, res) {
     let uniqueTags = Object.keys(uniqueTagsObject)
     res.send(uniqueTags)
 })
+
 // router.post('/search/tradeTags', async function (req, res) {
 //     const { tags } = req.body
 //     try {

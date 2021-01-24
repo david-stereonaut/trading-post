@@ -50,6 +50,14 @@ export class SearchStore {
     this.OfferingTagsFilter = value
   }
 
+  getOfferingTagsArray(){
+    return this.offeringTagsFilter.toString()
+  }
+
+  getSeekingTagsArray(){
+    return this.seekingTagsFilter.toString()
+  }
+
   setSortBy(value) {
     this.sortBy = value
   }
@@ -74,9 +82,22 @@ export class SearchStore {
   }
 
   async searchTrades(text) {
+    
     const results = await axios.get(`http://localhost:3001/search/trades?q=${text}`);
     this.results = results.data
     this.searchFor = 'trades'
+  }
+
+  async searchTags() {
+    let offering = this.getOfferingTagsArray()
+    let seeking = this.getSeekingTagsArray()
+    const tradesResults = await axios.get(`http://localhost:3001/search/tradetags?searchSeeking=${seeking}&searchOffering=${offering}&searchCity=${this.searchCity}&searchLocation=${this.searchCountry}`);
+    this.tradesResults = tradesResults.data;
+  }
+
+  async searchPerfectTrades() {
+    const tradesResults = await axios.get(`http://localhost:3001/search/perfecttrade?searchSeeking=${this.searchSeeking}&searchOffering=${this.searchOffering}&searchCity=${this.searchCity}&searchLocation=${this.searchCountry}`);
+    this.tradesResults = tradesResults.data;
   }
 
   async searchUsers(text) {
