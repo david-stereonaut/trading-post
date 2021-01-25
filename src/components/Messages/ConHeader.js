@@ -1,7 +1,22 @@
+import { Avatar, makeStyles, Typography } from '@material-ui/core';
 import { observer, inject } from 'mobx-react';
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Buttons from './Buttons';
 const moment = require('moment');
+
+const useStyles = makeStyles(() => ({
+  consHeader: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10
+  },
+  conAvatar: {
+    height: 70,
+    width: 70,
+    cursor: 'pointer'
+  }
+}))
 
 const ConHeader = inject('MessagesStore')(observer((props) =>  {
 
@@ -26,17 +41,26 @@ const ConHeader = inject('MessagesStore')(observer((props) =>  {
     break;
     case 'Cancelled': statusText = `Cancelled barter since ${endDate}`;
     break;
+    default: statusText = ''
   }
 
+  let history = useHistory();
+
+  const redirectToProfile = () => {
+    history.push(profileAddress)
+  }
+
+  const classes = useStyles()
+
   return (
-    <div id = "cons-header">
-      <div id = "current-partner-details">
-        <Link to = {profileAddress}><img src = {partner.profilePic ? partner.profilePic.imageUrl : ''} id = "current-partner-pic"/></Link>
-        <Link to = {profileAddress}><h2 id = "current-partner-name">{`${partner.firstName} ${partner.lastName}`}</h2></Link>
-        <h5 id = "status-text">{statusText}</h5>
-        <h3 id = {conversation.partnerTyping === true ? "visible-typing-text" : "hidden-typing-text"} >{partner.firstName}`s typing...</h3>
-      </div>
-        <Buttons/>
+    <div className={classes.consHeader}>
+        <Avatar onClick={redirectToProfile} className={classes.conAvatar} alt={partner.firstName} src={partner.profilePic && partner.profilePic.imageUrl}/>
+        <div style={{marginLeft: 15}}>
+          <Typography variant='h5'>{`${partner.firstName} ${partner.lastName}`}</Typography>
+          <Typography variant='subtitle2'>{statusText}</Typography>
+        </div>
+        {conversation.partnerTyping === true && <Typography style={{marginLeft: 15}}>{partner.firstName}`s typing...</Typography>}
+        <Buttons />
     </div>
   )
 }))

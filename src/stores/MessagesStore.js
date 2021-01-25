@@ -42,7 +42,8 @@ export class MessagesStore {
             revealGeneralPopup: action,
             revealTextPopup: action,
             // changeUser: action,
-            manageSocket: action
+            manageSocket: action,
+            setUserId: action
         })
     }
 
@@ -181,5 +182,9 @@ export class MessagesStore {
             if (this.currentConId !== data._id){return}
             this.changeCategory(`${newStatus} barters`);
         })
+    }
+
+    setUserId = (id) => {
+        this.userId = id
     }
 }

@@ -7,6 +7,7 @@ import { TradeIcon } from '../TradeIcon'
 import { useState } from 'react'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -17,6 +18,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
+
 // line 57 will be user's opposite tags, but didn't do logic yet, so now you just have 2 sets of the same tags - says seeking now, will be logic for seeking/offering
 
 const SearchTradeCard = inject('GeneralStore', 'SearchStore', 'UserStore')(observer((props) => {
@@ -24,10 +26,19 @@ const SearchTradeCard = inject('GeneralStore', 'SearchStore', 'UserStore')(obser
   const { GeneralStore, SearchStore, UserStore, trade, showMap, userId } = props
 
   const [seeTags, setSeeTags] = useState(false)
-
   const classes = useStyles()
 
+  const history = useHistory()
+
+  const redirectToProfile = () => {
+    history.push(`/profile/${trade.user_id._id}`)
+  }
+
+
+
+
   return (
+    
     <Card className={classes.card}>
       <CardMedia
         style={{ height: 150 }}
@@ -42,10 +53,11 @@ const SearchTradeCard = inject('GeneralStore', 'SearchStore', 'UserStore')(obser
         {!seeTags ? <IconButton size="small" onClick={() => setSeeTags(!seeTags)}><ExpandMoreIcon /></IconButton> : <IconButton size="small" onClick={() => setSeeTags(!seeTags)}><ExpandLessIcon /></IconButton>}
       </CardContent>
       <CardActions style={{marginTop: 'auto'}}>
-        <Button href={`/profile/${trade.user_id._id}`} color="secondary" variant="contained">Show profile</Button>
+        <Button onClick={redirectToProfile} color="secondary" variant="contained">Show profile</Button>
         <Button startIcon={<TradeIcon />} color="secondary" variant="contained">Trade!</Button>
       </CardActions>
-    </Card>
+        </Card>
+    
   )
 }))
 
