@@ -7,7 +7,7 @@ const moment = require('moment');
 export class MessagesStore {
     constructor() {
         //inserting dummy userId (change way to get it)
-        this.userId = '60045b1519f39a2c9c46c63e';
+        this.userId = '';
         this.category = 'Active barters';
         this.userCons = [];
         this.currentConId = '';
@@ -43,7 +43,8 @@ export class MessagesStore {
             revealTextPopup: action,
             // changeUser: action,
             manageSocket: action,
-            setUserId: action
+            setUserId: action,
+            signOut: action
         })
     }
 
@@ -186,5 +187,18 @@ export class MessagesStore {
 
     setUserId = (id) => {
         this.userId = id
+    }
+
+    signOut() {
+        this.userId = '';
+        this.category = 'Active barters';
+        this.userCons = [];
+        this.currentConId = '';
+        this.newMessage = '';
+        this.reviewPopup = false;
+        this.generalPopup = false;
+        this.textPopup = false;
+        this.declineMessage = '';
+        this.socket = io('http://localhost:4000');
     }
 }
