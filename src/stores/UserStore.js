@@ -7,11 +7,9 @@ export class UserStore {
     this.user = {};
     this.watchedUser = {};
     this.userId = null;
-    this.login = { email: null, password: null }
 
     makeObservable(this, {
       user: observable,
-      login: observable,
       watchedUser: observable,
       userId: observable,
       fetchUser: action,
@@ -24,31 +22,28 @@ export class UserStore {
       removeImage: action,
       changeProfilePic: action,
       updateUserName: action,
+      signOut: action,
+      setUserId: action
     })
   }
 
-   handleLogin(email, password) {
-    this.login.email = email
-    this.login.password = password
-  }
+
   
-  async loginUser() {
+  async loginUser(email, password) {
     try {
-      const userId = await axios.post(`http://localhost:3001/user/authenticate`, this.login);
+      const userId = await axios.post(`http://localhost:3001/user/authenticate`, {email, password});
       this.userId = userId.data
       localStorage.setItem('userId', userId.data);
-      return("ok")
+      return "ok"
     }
     catch (err) {
-      alert(err.response.data.error)
+      return err.response.data.error
     }
   }
 
   async fetchUser() {
-    this.userId = localStorage.getItem('userId')
     const user = await axios.get(`http://localhost:3001/myUser/${this.userId}`);
     this.user = user.data;
-    console.log(this.user)
   }
 
   async fetchWatchedUser(id) {
@@ -155,6 +150,15 @@ export class UserStore {
   async editTradeCard(tradeCard, tradeCardId) {
     const user = await axios.put(`http://localhost:3001/tradecard/${this.user._id}`, { tradeCard, tradeCardId });
     this.user.tradeCards = user.data.tradeCards
+  }
+
+  setUserId(id) {
+    this.userId = id
+  }
+
+  signOut() {
+    this.user = {};
+    this.userId = null;
   }
 
 }

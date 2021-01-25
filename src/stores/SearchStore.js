@@ -24,7 +24,7 @@ export class SearchStore {
       tagsFilter: observable,
       setTagsFilter: action,
       sortBy: observable,
-      setSortBy: action
+      setSortBy: action,
     })
   }
 

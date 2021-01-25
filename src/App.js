@@ -25,7 +25,10 @@ const App = inject('UserStore', 'SearchStore')(observer((props) => {
   const { UserStore, SearchStore } = props
 
   useEffect(() => {
-    UserStore.fetchUser()
+    if (localStorage.userId) {
+      UserStore.setUserId(localStorage.userId)
+      UserStore.fetchUser()
+    }
     SearchStore.initialSearch()
   }, [])
 

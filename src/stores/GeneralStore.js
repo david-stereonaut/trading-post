@@ -50,7 +50,7 @@ export class GeneralStore {
       removeEditTag: action,
       addEditTag: action,
       allTags: observable, 
-      getTags: action
+      getTags: action,
     })
   }
 
@@ -106,4 +106,5 @@ export class GeneralStore {
     const tags = await axios.get(`http://localhost:3001/getTags`);
     this.allTags = tags.data;
   }
+
 }
