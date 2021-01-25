@@ -27,7 +27,11 @@ const userSchema = new Schema({
     tradeCards: [{ type: Schema.Types.ObjectId, ref: 'TradeCard' }],
     conversations: [{ type: Schema.Types.ObjectId, ref: 'Conversation' }],
     content: [],
-    reviews: [],
+    reviews: [{
+      reviewer: { type: Schema.Types.ObjectId, ref: 'User' },
+      review: String,
+      stars: Number
+    }],
 }, { versionKey: false })
 
 userSchema.pre('save', function(next) {

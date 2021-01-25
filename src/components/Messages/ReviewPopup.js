@@ -9,11 +9,19 @@ const ReviewPopup = inject('MessagesStore')(observer((props) =>  {
   const { MessagesStore } = props;
   const conversation = MessagesStore.userCons.find(d => d._id === MessagesStore.currentConId);
   const partnerFirstName = MessagesStore.currentConId && MessagesStore.userCons[0] ? conversation.users.find(u => u._id !== MessagesStore.userId).firstName : 'your partner';
+  const partnerId = MessagesStore.currentConId && MessagesStore.userCons[0] ? conversation.users.find(u => u._id !== MessagesStore.userId)._id : null;
 
-  const [stars, setStars] = useState([true, true, true, false, false])
-  const [rating, setRating] = useState(3)
+  const [stars, setStars] = useState([true, true, true, false, false]);
+  const [rating, setRating] = useState(3);
+  const [reviewText, setReviewText] = useState('');
 
-  const reviewAndComplete = () => MessagesStore.updateAndClosePopup('Completed', 'reviewPopup');
+  const typeReview = e => setReviewText(e.target.value);
+
+  const reviewAndComplete = () => {
+    MessagesStore.addReview(partnerId, MessagesStore.userId, reviewText, rating);
+    MessagesStore.updateAndClosePopup('Completed', 'reviewPopup');
+    setReviewText('');
+  }
 
   const closePopup = () => MessagesStore.closePopup('reviewPopup')
 
@@ -50,7 +58,7 @@ const ReviewPopup = inject('MessagesStore')(observer((props) =>  {
         <DialogTitle id = "review-Popup-title">Barter completed!</DialogTitle>
         <DialogContent>
           <Typography paragraph={true}>Add a review about {partnerFirstName}</Typography>
-        <TextField multiline rows={4} placeholder='Write your review here' variant="outlined" />
+        <TextField multiline rows={4} placeholder='Write your review here' variant="outlined" onChange = {typeReview} value = {reviewText}/>
         <Typography variant='h6' style={{marginTop: 10}}>Rate</Typography>
         <div style={starsStyle}>
           {stars.map((star, ind) => star ? <StarIcon key={ind} style={{color: '#F7CB15', cursor: 'pointer'}} onClick={() => rate(ind+1)} /> : <StarBorderIcon key={ind} onClick={() => rate(ind+1)} style={{cursor: 'pointer'}} />)}
