@@ -9,13 +9,12 @@ export class MessagesStore {
         //inserting dummy userId (change way to get it)
         this.userId = '60045b1519f39a2c9c46c63e';
         this.category = 'Active barters';
-        this.displayedCons = [];
+        this.userCons = [];
         this.currentConId = '';
         this.newMessage = '';
         this.reviewPopup = false;
         this.generalPopup = false;
         this.textPopup = false;
-        this.partnerTyping = false;
         this.declineMessage = '';
         this.socket = io('http://localhost:4000');
         this.initiateSocket();
@@ -24,14 +23,13 @@ export class MessagesStore {
         makeObservable(this, {
             userId: observable,
             category: observable,
-            displayedCons: observable,
+            userCons: observable,
             currentConId: observable,
             newMessage: observable,
             reviewPopup: observable,
             generalPopup: observable,
             textPopup: observable,
             declineMessage: observable,
-            partnerTyping: observable,
             getCons: action,
             changeCategory: action,
             chooseCon: action,
@@ -43,41 +41,25 @@ export class MessagesStore {
             popUpReview: action,
             revealGeneralPopup: action,
             revealTextPopup: action,
-            changeUser: action,
+            // changeUser: action,
             manageSocket: action
         })
     }
 
-    async getCons(category) {
+    async getCons() {
         const cons = await axios.get(`http://localhost:3001/conversations/${this.userId}`);
         const results = cons.data.conversations;
-        let consToDisplay = [];
-        switch (category) {
-            case 'All barters': consToDisplay = results;
-            break;
-            case 'Requests': consToDisplay = results.filter(r => r.status === 'Pending' && r.messages[0].senderId === this.userId);
-            break;
-            case 'Offers': consToDisplay = results.filter(r => r.status === 'Pending' && r.messages[0].senderId !== this.userId);
-            break;
-            case 'Active barters': consToDisplay = results.filter(r => r.status === 'Active');
-            break;
-            case 'Completed barters': consToDisplay = results.filter(r => r.status === 'Completed');
-            break;
-            case 'Cancelled barters': consToDisplay = results.filter(r => r.status === 'Cancelled' || r.status === 'Declined');
-            break;  
-            case 'Declined barters': consToDisplay = results.filter(r => r.status === 'Cancelled' || r.status === 'Declined');
-            break;  
-        }
-        consToDisplay.sort(function(a, b) {
+        results.forEach(c => c.partnerTyping = false);
+        results.sort(function(a, b) {
             return moment(b.messages[b.messages.length - 1].message_time) - moment(a.messages[a.messages.length - 1].message_time);
-          });
-        this.displayedCons = consToDisplay;
+        });
+        this.userCons = results;
     }
 
     changeCategory (category) {
         this.category = category;
-        this.currentConId = '';
-        this.getCons(this.category);
+        // this.currentConId = '';
+        this.getCons();
     }
 
     chooseCon = conId => this.currentConId = conId;
@@ -86,8 +68,10 @@ export class MessagesStore {
         this.newMessage = text;
         const typingInfo = {
             conversation: this.currentConId,
+            partnerId : this.userCons.find(d => d._id === this.currentConId).users.find(u => u._id !== this.userId)._id,
             text: text
         }
+        console.log(typingInfo);
         this.socket.emit('IAmTyping', typingInfo);
     }
 
@@ -107,8 +91,7 @@ export class MessagesStore {
     }
 
     async sendSystemMessage(newStatus) {
-        console.log(newStatus);
-        const userFirstName = this.displayedCons[0].users.find(u => u._id === this.userId).firstName;
+        const userFirstName = this.userCons[0].users.find(u => u._id === this.userId).firstName;
         let text = '';
         switch (newStatus) {
             case 'Active': text = `${userFirstName} confirmed the request. This barter is active!`;
@@ -142,36 +125,30 @@ export class MessagesStore {
 
         const statusToUpdate = {status: status}
         const updatedCon = await axios.put(`http://localhost:3001/conversations/${this.currentConId}`, statusToUpdate);
-        // const newStatus = updatedCon.data.status;
-        // this.displayedCons.find(d => d._id === this.currentConId).status = newStatus;
-        // const conId = this.currentConId;
-        // this.changeCategory(`${status} barters`);
-        // this.chooseCon(conId);
-
-        // const updatedInfo = {
-        //     conId: this.currentConId,
-        //     newStatus: newStatus
-        // }
-        this.socket.emit('changeStatus', updatedCon.data);
+        const data = {
+            conversation: updatedCon.data,
+            partnerId: updatedCon.data.users.find(u => u !== this.userId)
+        }
+        this.socket.emit('changeStatus', data);
     }
-
-    closePopup = popup => this[popup] = false;
 
     popUpReview = () => this.reviewPopup = true; 
-
+    
     revealGeneralPopup = () => this.generalPopup = true;
-
+    
     revealTextPopup = () => this.textPopup = true;
-
-    changeUser = () => {
-        if (this.userId === '60045b1519f39a2c9c46c63e') {    
-            this.userId = '6004588a19f39a2c9c46c63d';
-        } 
-        else {
-            this.userId = '60045b1519f39a2c9c46c63e';
-        }
-        this.getCons('Active');
-    }
+    
+    closePopup = popup => this[popup] = false;
+    
+    // changeUser = () => {
+    //     if (this.userId === '60045b1519f39a2c9c46c63e') {    
+    //         this.userId = '6004588a19f39a2c9c46c63d';
+    //     } 
+    //     else {
+    //         this.userId = '60045b1519f39a2c9c46c63e';
+    //     }
+    //     this.getCons('Active');
+    // }
 
     initiateSocket = () => {
         this.socket.on('connect', data => {
@@ -184,27 +161,25 @@ export class MessagesStore {
 
     manageSocket = () => {
         this.socket.on('partnerTyping', data => {
-            if (this.currentConId !== data.conversation) {return}
-            this.partnerTyping = data.text === '' ? false : true;
+            if (this.userCons.every(d => d._id !== data.conversation)) {return}
+            this.userCons.find(d => d._id === data.conversation).partnerTyping = data.text === '' ? false : true;
         });
 
         this.socket.on('getMessage', data => {
         const messages = data.messages;
-        if (this.displayedCons.every(d => d._id !== data._id)) {return}
-        this.displayedCons.find(d => d._id === data._id).messages.push(messages[messages.length - 1]);
-        if (this.currentConId !== data._id){return}
-        this.partnerTyping = false;
+        if (this.userCons.every(d => d._id !== data._id)) {return}
+        const conversation = this.userCons.find(d => d._id === data._id);
+        conversation.messages.push(messages[messages.length - 1]);
+        conversation.partnerTyping = false;
+        // if (this.currentConId !== data._id){return}
         });
 
         this.socket.on('statusChanged', data => {
             const newStatus = data.status;
-            if (this.displayedCons.every(d => d._id !== data._id)) {return}
-            this.displayedCons.find(d => d._id === data._id).status = newStatus;
+            if (this.userCons.every(d => d._id !== data._id)) {return}
+            this.userCons.find(d => d._id === data._id).status = newStatus;
             if (this.currentConId !== data._id){return}
-            const conId = this.currentConId;
             this.changeCategory(`${newStatus} barters`);
-            this.chooseCon(conId);
         })
     }
-
 }

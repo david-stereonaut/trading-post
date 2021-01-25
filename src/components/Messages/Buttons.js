@@ -3,9 +3,9 @@ import { observer, inject } from 'mobx-react'
 const Buttons = inject('MessagesStore')(observer((props) =>  {
 
   const { MessagesStore } = props;
-  const conversation = MessagesStore.displayedCons.find(d => d._id === MessagesStore.currentConId);
-  const status = MessagesStore.displayedCons[0] ? conversation.status : null;
-  const firstSender = MessagesStore.displayedCons[0] ? conversation.messages[0].senderId : null;
+  const conversation = MessagesStore.userCons.find(d => d._id === MessagesStore.currentConId);
+  const status = MessagesStore.userCons[0] ? conversation.status : null;
+  const firstSender = MessagesStore.userCons[0] ? conversation.messages[0].senderId : null;
 
   const popUpReview = () => MessagesStore.popUpReview();
 
