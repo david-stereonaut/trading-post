@@ -27,24 +27,24 @@ router.post('/user/register', async function(req, res) {
       if (err) {
         console.error(err);
         res.status(500)
-          .json({
+          .send({
           error: 'Internal error please try again'
         });
       } else if (!user) {
         res.status(401)
-          .json({
+          .send({
             error: 'Incorrect email or password'
           });
       } else {
         user.isCorrectPassword(password, function(err, same) {
           if (err) {
             res.status(500)
-              .json({
+              .send({
                 error: 'Internal error please try again'
             });
           } else if (!same) {
             res.status(401)
-              .json({
+              .send({
                 error: 'Incorrect email or password'
             });
           } else {

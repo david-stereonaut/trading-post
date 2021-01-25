@@ -7,6 +7,7 @@ import { TradeIcon } from '../TradeIcon'
 import { useState } from 'react'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -57,6 +58,13 @@ const MapUserCard = inject('GeneralStore', 'SearchStore', 'UserStore')(observer(
 
   const classes = useStyles()
 
+  const history = useHistory()
+
+  const redirectToProfile = () => {
+    history.push(`/profile/${user._id}`)
+  }
+
+
   return (
     <Paper style={{marginBottom: 15, padding: 15}}>
       <div className={classes.card}>
@@ -83,7 +91,7 @@ const MapUserCard = inject('GeneralStore', 'SearchStore', 'UserStore')(observer(
       </div>
       <div className={classes.bottomSection}>
         <div className={classes.buttons}>
-          <Button href={`/profile/${user._id}`} color="secondary" variant="contained">Show profile</Button>
+          <Button onClick={redirectToProfile} color="secondary" variant="contained">Show profile</Button>
           <Button startIcon={<TradeIcon />} color="secondary" variant="contained">Trade!</Button>
         </div>
       </div>
