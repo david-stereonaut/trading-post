@@ -24,8 +24,12 @@ const Messages = inject('MessagesStore', 'UserStore', 'GeneralStore')(observer((
 
   useEffect(() => {
     GeneralStore.handleTabChange('', 2)
+    if (UserStore.user._id) {
+      MessagesStore.setUserId(UserStore.user._id)
+    }
     MessagesStore.getCons(MessagesStore.category);
     MessagesStore.socketPort = 'http://localhost:4000';
+
   }, []);
 
   const classes = useStyles()

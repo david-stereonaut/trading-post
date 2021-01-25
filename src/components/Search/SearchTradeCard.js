@@ -26,7 +26,6 @@ const SearchTradeCard = inject('GeneralStore', 'SearchStore', 'UserStore')(obser
   const { GeneralStore, SearchStore, UserStore, trade, showMap, userId } = props
 
   const [seeTags, setSeeTags] = useState(false)
-console.log(trade._id)
   const classes = useStyles()
 
   const history = useHistory()
@@ -39,8 +38,7 @@ console.log(trade._id)
 
 
   return (
-    <>
-    {trade.length >0 ?
+    
     <Card className={classes.card}>
       <CardMedia
         style={{ height: 150 }}
@@ -59,8 +57,7 @@ console.log(trade._id)
         <Button startIcon={<TradeIcon />} color="secondary" variant="contained">Trade!</Button>
       </CardActions>
         </Card>
-     : <></>}
-     </>
+    
   )
 }))
 

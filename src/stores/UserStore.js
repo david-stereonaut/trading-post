@@ -31,6 +31,7 @@ export class UserStore {
     this.login.email = email
     this.login.password = password
   }
+  
   async loginUser() {
     try {
       const userId = await axios.post(`http://localhost:3001/user/authenticate`, this.login);

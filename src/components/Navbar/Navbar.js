@@ -33,7 +33,7 @@ const Navbar = inject('GeneralStore', 'UserStore', 'SearchStore')(observer((prop
   return (
     <AppBar position="fixed" style={{flexDirection: 'row'}}>
       <Tabs value={GeneralStore.currentTab} onChange={GeneralStore.handleTabChange}>
-          <Tab style={{minWidth: 30}} icon={UserStore.user.firstName ? (<Avatar alt="User" src={UserStore.user.profilePic.imageUrl} />) : <AccountCircleIcon/>} component={Link}  to={`/profile/${UserStore.user._id}`} {...tabProps(0)} />
+      <Tab style={{minWidth: 30}} icon={UserStore.user.firstName ? (<Avatar alt="User" src={UserStore.user.profilePic.imageUrl} />) : <AccountCircleIcon/>} component={Link}  to={UserStore.user._id ? `/profile/${UserStore.user._id}` : '/login'} {...tabProps(0)} />
           <Tab style={{minWidth: 30}} icon={<HomeIcon />} component={Link}  to="/search" {...tabProps(1)} />
           <Tab style={{minWidth: 30}} icon={<InboxIcon />} component={Link}  to="/messages" {...tabProps(2)} />
           <Tab style={{display: 'none'}} {...tabProps(3)} />

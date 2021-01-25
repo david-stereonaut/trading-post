@@ -7,6 +7,7 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'row',
         alignItems: 'center',
         width: 350,
+        height: 60,
         padding: 10,
         cursor: 'pointer'
     },
@@ -42,7 +43,7 @@ const PartnerDetails = inject('MessagesStore')(observer((props) =>  {
             <Typography variant='body1' style={{fontWeight: 500}}>{`${partner.firstName} ${partner.lastName}`}</Typography>
             {MessagesStore.category !== 'All barters' && partnerTyping === false && <Typography variant='subtitle1'>{shortedMessage}</Typography>}
             {MessagesStore.category === 'All barters' && partnerTyping === false && <Typography variant='subtitle1'>{props.status}</Typography>}
-            {partnerTyping === true && <h5 className = 'typing-info'>{partner.firstName}'s typing...</h5>}
+            {partnerTyping === true && <Typography variant='subtitle2'>{partner.firstName}'s typing...</Typography>}
             </div>
         </div>
         </>
