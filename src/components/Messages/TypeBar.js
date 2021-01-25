@@ -1,6 +1,7 @@
 import { IconButton, InputBase, makeStyles, Paper } from '@material-ui/core';
 import { observer, inject } from 'mobx-react'
 import SendIcon from '@material-ui/icons/Send';
+import { useState } from 'react';
 
 const useStyles = makeStyles(() => ({
   typeBar: {

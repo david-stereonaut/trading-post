@@ -34,14 +34,18 @@ const PartnerDetails = inject('MessagesStore')(observer((props) =>  {
     const classes = useStyles()
 
     return (
+        <>
+        <Divider style={{width: 370}} />
         <div className ={classes.partner}  onClick = {chooseCon}>
             <Avatar src = {partner.profilePic.imageUrl} className={classes.largeAvatar} />
             <div className ={classes.partnerText}>
             <Typography variant='body1' style={{fontWeight: 500}}>{`${partner.firstName} ${partner.lastName}`}</Typography>
-            {MessagesStore.category !== 'All barters' && <Typography variant='subtitle1'>{shortedMessage}</Typography>}
-            {MessagesStore.category === 'All barters' && <Typography variant='subtitle1'>{props.status}</Typography>}
+            {MessagesStore.category !== 'All barters' && partnerTyping === false && <Typography variant='subtitle1'>{shortedMessage}</Typography>}
+            {MessagesStore.category === 'All barters' && partnerTyping === false && <Typography variant='subtitle1'>{props.status}</Typography>}
+            {partnerTyping === true && <h5 className = 'typing-info'>{partner.firstName}'s typing...</h5>}
             </div>
         </div>
+        </>
     )
 }))
 

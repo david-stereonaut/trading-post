@@ -41,9 +41,9 @@ const Messages = inject('MessagesStore', 'UserStore', 'GeneralStore')(observer((
         </div>
       </Paper>
     </div>
-      {/* <ReviewPopup/>
+      <ReviewPopup/>
       <GeneralPopup/>
-      <TextPopup/> */}
+      <TextPopup/>
     </>
   )
 }))

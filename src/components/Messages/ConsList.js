@@ -23,12 +23,13 @@ const ConsList = inject('MessagesStore')(observer((props) =>  {
             break;  
             case 'Declined barters': consToDisplay = userCons.filter(u => u.status === 'Cancelled' || u.status === 'Declined');
             break;  
+            default: consToDisplay = []
         }
 
     return (
         <div style={{marginTop: 10}}>
             <Typography variant='h5'>{MessagesStore.category}</Typography>
-            {MessagesStore.displayedCons.map((d, index) => <PartnerDetails key = {index} conId = {d._id} partner = {d.users.find(u => u._id !== MessagesStore.userId)} status = {d.status} lastMessage = {d.messages[d.messages.length - 1].body}/>)}
+            {consToDisplay.map((d, index) => <PartnerDetails key = {index} conId = {d._id} partner = {d.users.find(u => u._id !== MessagesStore.userId)} status = {d.status} lastMessage = {d.messages[d.messages.length - 1].body} partnerTyping = {d.partnerTyping}/>)}
         </div>
     )
 }))

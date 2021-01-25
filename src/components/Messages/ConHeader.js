@@ -58,7 +58,7 @@ const ConHeader = inject('MessagesStore')(observer((props) =>  {
           <Typography variant='h5'>{`${partner.firstName} ${partner.lastName}`}</Typography>
           <Typography variant='subtitle2'>{statusText}</Typography>
         </div>
-        {MessagesStore.partnerTyping === true && <Typography>{partner.firstName}`s typing...</Typography>}
+        {conversation.partnerTyping === true && <Typography>{partner.firstName}`s typing...</Typography>}
         <Buttons />
     </div>
   )

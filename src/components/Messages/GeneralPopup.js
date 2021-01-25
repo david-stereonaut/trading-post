@@ -1,3 +1,4 @@
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Typography } from '@material-ui/core';
 import { observer, inject } from 'mobx-react'
 
 const GeneralPopup = inject('MessagesStore')(observer((props) =>  {
@@ -21,6 +22,7 @@ const GeneralPopup = inject('MessagesStore')(observer((props) =>  {
             text = firstSender === MessagesStore.userId ? 'Cancel request? The request will be deleted' : `Starting barter with ${partnerFirstName}`;
             newStatus = firstSender === MessagesStore.userId ? null : 'Active';
         break;
+        default: text = ''; newStatus = '';
     }
 
     const updateAndClosePopup = () => MessagesStore.updateAndClosePopup(newStatus, 'generalPopup');
@@ -28,11 +30,15 @@ const GeneralPopup = inject('MessagesStore')(observer((props) =>  {
     const closePopup = () => MessagesStore.closePopup('generalPopup');
 
     return (
-        <div id = {MessagesStore.generalPopup ? "visible-general-popup" : "hidden-general-popup"}>
-            <h3 id = "general-popup-text">{text}</h3>
-            <button className = "pop-up-button agree-button" onClick = {updateAndClosePopup}>continue</button>
-            <button className = "pop-up-button cancel-button" onClick = {closePopup}>Cancel</button>
-        </div>
+        <Dialog open = {MessagesStore.generalPopup} onClose={closePopup}>
+            <DialogContent>
+                <Typography>{text}</Typography>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick = {closePopup}>Cancel</Button>
+                <Button color='primary' onClick = {updateAndClosePopup}>Continue</Button>
+            </DialogActions>
+        </Dialog>
     )
 }))
 

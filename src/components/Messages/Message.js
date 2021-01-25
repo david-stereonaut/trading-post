@@ -1,7 +1,29 @@
+import { makeStyles, Paper, Typography } from '@material-ui/core';
 import { observer, inject } from 'mobx-react'
 const moment = require('moment');
 
-
+const useStyles = makeStyles(() => ({
+  userMessage:{
+    alignSelf: 'flex-start',
+    maxWidth: '80%',
+    marginBottom: 15,
+    padding: 10,
+    backgroundColor: '#59B192'
+  },
+  partnerMessage: {
+    alignSelf: 'flex-end',
+    maxWidth: '80%',
+    marginBottom: 15,
+    padding: 10,
+  },
+  systemMessage: {
+    alignSelf: 'center',
+    maxWidth: '80%',
+    marginBottom: 15,
+    padding: 10,
+    color: '#7b4b94'
+  }
+}))
 
 const Message = inject('MessagesStore')(observer((props) =>  {
 
@@ -11,19 +33,21 @@ const Message = inject('MessagesStore')(observer((props) =>  {
 
   let type = '';
   switch(message.senderId) {
-    case MessagesStore.userId: type = 'user-message';
+    case MessagesStore.userId: type = 'userMessage';
     break;
-    case 'system message': type = 'system-message';
+    case 'system message': type = 'systemMessage';
     break;
-    default: type = 'partner-message';
+    default: type = 'partnerMessage';
     break;
   }
 
+  const classes = useStyles()
+
   return (
-    <div id = "Message" className = {`message ${type}`}>
-        <p className = "message-text">{message.senderId === 'system message' && <span className = "system-inform">System message: </span>}{message.body}</p>
-        {message.senderId !== 'system message' && <p className = "message-time">{messageTime}</p>}
-    </div>
+    <Paper id = "Message" className = {classes[type]}>
+        <Typography paragraph={type !== 'systemMessage' && true} variant='body1' >{message.senderId === 'system message' && 'System message: '}{message.body}</Typography>
+        {message.senderId !== 'system message' && <Typography variant='subtitle2' style={{fontSize: 13, marginBottom: -5}}>{messageTime}</Typography>}
+    </Paper>
   )
 }))
 

@@ -49,11 +49,11 @@ const Search = inject('UserStore', 'SearchStore', 'GeneralStore')(observer((prop
       <div className={classes.searchTextContainer}>
         <Searchbar handleMap={handleMap} />
 
-        {/* <SearchResults showMap={showMap} /> */}
+        <SearchResults showMap={showMap} />
 
           
       </div>
-      {/* {showMap && <Map />} */}
+      {showMap && <Map />}
     </div>
   )
 }))
