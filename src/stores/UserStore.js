@@ -52,6 +52,10 @@ export class UserStore {
     this.watchedUser = user.data;
   }
 
+  // async fetchNeoghbors() {
+
+  // }
+
   async startConversation(subject, text) {
     const conversation = {
       senderId: this.user.id,

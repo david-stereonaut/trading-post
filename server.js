@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const path = require('path')
+const server = require('http').createServer(app)
 const mongoose = require('mongoose')
 const userRouter = require('./server/routes/userApi')
 const imageRouter = require('./server/routes/imageApi')
@@ -38,8 +39,6 @@ app.get('/checkToken', withAuth, function(req, res) {
   res.sendStatus(200);
 });
 
-
-const socketServer = app.listen(4000);
 const cors = {
   cors: [
     {
@@ -49,24 +48,10 @@ const cors = {
   ]
 }
 
-// ignore this (Eilon)
-// const cors = {
-//   cors: [
-//     {
-//       origin: "http://localhost:3000",
-//       methods: ["GET", "POST"]
-//     },
-//     {
-//       origin: "http://localhost:5000",
-//       methods: ["GET", "POST"]
-//     }
-//   ]
-// }
-
-const socketService = new SocketService(socketServer, cors);
+const socketService = new SocketService(server, cors);
 
 const port = process.env.PORT || 3001
-app.listen(port, function() {
+server.listen(port, function() {
   console.log(`Server running on port ${port}`)
 })
 

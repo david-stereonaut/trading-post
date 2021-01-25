@@ -1,13 +1,5 @@
 const socketIo = require('socket.io');
 
-// const server = app.listen(4000);
-// const io = require('socket.io')(server, {
-//     cors: {
-//       origin: "http://localhost:3000",
-//       methods: ["GET", "POST"]
-//     }
-//   });
-
 class SocketService {
     constructor(server, cors) {
         this.io = socketIo(server, cors);
@@ -21,7 +13,6 @@ class SocketService {
         this.partnerTyping(client);
         this.changeStatus(client);
         this.disconnection(client);
-        // this.test(client);
     }
 
     newConnection = client => {
@@ -31,7 +22,6 @@ class SocketService {
                 userId: data._id
             }
             this.activeUsers.push(clientInfo);
-            // console.log(`${clientInfo.socketId} joined`);
             console.log(this.activeUsers);
         });
     }
@@ -72,21 +62,10 @@ class SocketService {
         client.on('disconnect', () => {
             this.activeUsers.splice(this.activeUsers.find(a => a.socketId === client.id), 1);
             console.log(`${client.id} disconnected`);
+            console.log(`remaining users:`)
+            console.log(this.activeUsers);
         })
     }
 }
 
 module.exports = SocketService;
-
-// this.io.on('connection', function(client) {
-//   console.log('Client connected...');
-//   client.on('join', function(data) {
-//      console.log(data);
-//     });
-//      client.emit('messages', 'Hello from server');
-//      client.on('messages', function(data) {
-//          console.log(data);
-//       client.emit('broad', data);
-//       client.broadcast.emit('broad',data);
-//   });
-// });
