@@ -1,4 +1,4 @@
-import { observable, action, computed, makeObservable } from  'mobx';
+import { observable, action, computed, makeObservable } from 'mobx';
 const axios = require('axios');
 
 export class UserStore {
@@ -6,24 +6,58 @@ export class UserStore {
 
     this.user = {};
     this.watchedUser = {};
+    this.userId = null;
 
     makeObservable(this, {
       user: observable,
       watchedUser: observable,
+      userId: observable,
       fetchUser: action,
       fetchWatchedUser: action,
       startConversation: action,
       addTag: action,
       removeTag: action,
+      loginUser: action,
       addImage: action,
       removeImage: action,
       changeProfilePic: action,
       updateUserName: action,
+      signOut: action,
+      setUserId: action,
+      registerUser: action
     })
   }
 
+
+  
+  async loginUser(email, password) {
+    try {
+      const userId = await axios.post(`http://localhost:3001/user/authenticate`, {email, password});
+      this.userId = userId.data
+      localStorage.setItem('userId', userId.data);
+      return "ok"
+    }
+    catch (err) {
+      return err.response.data.error
+    }
+  }
+
+  async registerUser(user) {
+    try {
+      const userId = await axios.post(`http://localhost:3001/user/register`, user);
+      console.log(userId.data)
+      this.userId = userId.data
+      localStorage.setItem('userId', userId.data);
+      return "ok"
+    }
+    catch (err) {
+      return err.response.data.error
+    }
+
+  }
+
   async fetchUser() {
-    const user = await axios.get(`http://localhost:3001/myUser/60045b1519f39a2c9c46c63e`);
+    const user = await axios.get(`http://localhost:3001/myUser/${this.userId}`);
     this.user = user.data;
   }
 
@@ -33,10 +67,14 @@ export class UserStore {
     this.watchedUser = user.data;
   }
 
+  // async fetchNeoghbors() {
+
+  // }
+
   async startConversation(subject, text) {
     const conversation = {
       senderId: this.user.id,
-      recieverId : this.watchedUser.id,
+      recieverId: this.watchedUser.id,
       subject: subject,
       text: text
     }
@@ -75,13 +113,13 @@ export class UserStore {
     const user = await axios.put(`http://localhost:3001/addToUserArray/${this.user._id}`, data);
     this.user.images = user.data.images;
   }
-  
+
   async removeImage(imageUrl, imageId) {
-    const data= {
-      images : {imageUrl}
+    const data = {
+      images: { imageUrl }
     }
     const user = await axios.put(`http://localhost:3001/removeFromUserArray/${this.user._id}`, data);
-    axios.post('http://localhost:3001/destroyImage', {id:imageId})
+    axios.post('http://localhost:3001/destroyImage', { id: imageId })
     this.user.images = user.data.images;
   }
 
@@ -131,6 +169,15 @@ export class UserStore {
   async editTradeCard(tradeCard, tradeCardId) {
     const user = await axios.put(`http://localhost:3001/tradecard/${this.user._id}`, { tradeCard, tradeCardId });
     this.user.tradeCards = user.data.tradeCards
+  }
+
+  setUserId(id) {
+    this.userId = id
+  }
+
+  signOut() {
+    this.user = {};
+    this.userId = null;
   }
 
 }

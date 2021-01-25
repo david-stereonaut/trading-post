@@ -30,7 +30,7 @@ export class SearchStore {
       setSeekingTagsFilter: action,
       setOfferingTagsFilter: action,
       sortBy: observable,
-      setSortBy: action
+      setSortBy: action,
     })
   }
 

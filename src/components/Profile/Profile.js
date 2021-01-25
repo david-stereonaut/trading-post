@@ -12,26 +12,24 @@ import ImageUpload from './Edits/ImageUpload'
 
 
 const Profile = inject('UserStore', 'GeneralStore')(observer((props) =>  {
-
+  
   const { UserStore, GeneralStore } = props
-
+  
   const { userId } = useParams()
   const fetch = async () => {
-    await UserStore.fetchUser()
     await UserStore.fetchWatchedUser(userId)
-
   }
-
   
-  let user = {}
-  let editable = false
-  user = userId === UserStore.user._id ? UserStore.user : UserStore.watchedUser
-  editable = userId === UserStore.user._id ? true : false
   useEffect(() => {
     fetch()
     GeneralStore.setEditName(false)
     GeneralStore.handleTabChange('', (editable ? 0 : 3))
   }, [userId])
+  
+  let user = {}
+  let editable = false
+  user = userId === UserStore.user._id ? UserStore.user : UserStore.watchedUser
+  editable = userId === UserStore.user._id ? true : false
 
   useEffect(() => {
     GeneralStore.handleTabChange('', (editable ? 0 : 3))
@@ -45,6 +43,7 @@ const Profile = inject('UserStore', 'GeneralStore')(observer((props) =>  {
 
   return user ? (
     <div id="profile-container">
+      {editable = userId === UserStore.user._id ? true : false}
       <UserInfo user={user} editable={editable} />
       <div className="profile-middle-section">
         <UserTrades user={user} editable={editable} />

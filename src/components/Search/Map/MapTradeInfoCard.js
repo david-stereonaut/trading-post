@@ -3,6 +3,8 @@ import { useCallback, useEffect, useState, } from 'react'
 
 import { GoogleMap, InfoWindow, LoadScript, Marker } from '@react-google-maps/api';
 import { Button, Card, CardMedia, makeStyles, Typography } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
+
 
 const useStyles=makeStyles((theme) => ({
   mainContainer: {
@@ -33,8 +35,13 @@ const MapTradeInfoCard = inject('UserStore', 'SearchStore', 'GeneralStore')(obse
   
   const {trade} = props
 
-
   const classes = useStyles()
+
+  const history = useHistory()
+
+  const redirectToProfile = () => {
+    history.push(`/profile/${trade.user_id._id}`)
+  }
 
   return (
     <div className={classes.mainContainer}>
@@ -53,7 +60,7 @@ const MapTradeInfoCard = inject('UserStore', 'SearchStore', 'GeneralStore')(obse
         <Typography >{trade.description}</Typography>
       </div>
       <div>
-        <Button href={`/profile/${trade.user_id._id}`} >User profile</Button>
+        <Button onClick={redirectToProfile} >User profile</Button>
       </div>
     </div>
 )

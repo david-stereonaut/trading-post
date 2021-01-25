@@ -1,11 +1,11 @@
 import { observer, inject } from 'mobx-react'
 import { useCallback, useEffect, useState, } from 'react'
-
 import { GoogleMap, InfoWindow, LoadScript, Marker } from '@react-google-maps/api';
 import { Button, Card, CardMedia, IconButton, makeStyles, Typography } from '@material-ui/core';
 import Tag from '../../Tag';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+import { useHistory } from 'react-router-dom';
 
 const useStyles=makeStyles((theme) => ({
   mainContainer: {
@@ -39,8 +39,15 @@ const MapUserInfoCard = inject('UserStore', 'SearchStore', 'GeneralStore')(obser
   const [seekTags, setSeekTags] = useState(false)
   const [offerTags, setOfferTags] = useState(false)
 
-
   const classes = useStyles()
+
+  
+  const history = useHistory()
+
+  const redirectToProfile = () => {
+    history.push(`/profile/${user._id}`)
+  }
+
 
   return (
     <div className={classes.mainContainer}>
@@ -64,7 +71,7 @@ const MapUserInfoCard = inject('UserStore', 'SearchStore', 'GeneralStore')(obser
         </div>
       </div>
       <div>
-        <Button href={`/profile/${user._id}`} >User profile</Button>
+        <Button onClick={redirectToProfile} >User profile</Button>
       </div>
     </div>
 )

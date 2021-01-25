@@ -20,8 +20,9 @@ const useStyles = makeStyles((theme) => ({
     },
     display: 'flex',
     flexDirection: 'row',
-    alignSelf:  ({editable}) => (editable ? `flex-start` : 'center'),
-    marginLeft: ({usernameWidth,editable}) => (editable ? `calc(50% - ${usernameWidth/2}px)` : null),
+    alignSelf: 'center'
+    // alignSelf:  ({editable}) => (editable ? `flex-start` : 'center'),
+    // marginLeft: ({usernameWidth,editable}) => (editable ? `calc(50% - ${usernameWidth/2}px)` : null),
   },
   columnItems: {
     display: 'flex',
@@ -96,7 +97,7 @@ const UserInfo = inject('UserStore', 'GeneralStore')(observer((props) => {
           <ClickAwayListener onClickAway={() => GeneralStore.setEditName(false)}>
           {
           !GeneralStore.editName ?
-          <div>
+          <div style={{display: 'flex', flexDirection: 'column'}}>
             <div className={classes.userName}>
               <Typography variant="h5" ref={userName}>
                 {`${user.firstName} ${user.lastName}`}
@@ -136,12 +137,12 @@ const UserInfo = inject('UserStore', 'GeneralStore')(observer((props) => {
           </div>
           <div style={{ marginTop: 10, marginBottom: 10 }}>
             <div className={classes.tags}>
-              <Typography variant="body1" style={{ alignSelf: 'flex-start' }}>Seeking</Typography>
+              <Typography variant="body1" style={{ alignSelf: 'flex-start' }}>Requesting</Typography>
               {editable && <IconButton size="small" onClick={GeneralStore.handleUserSeekTagEdit}><EditIcon fontSize="inherit" /></IconButton>}
             </div>
             {!GeneralStore.UserSeekTagEdit ?
             <div className="user-tag-container">
-              {user.seekingTags && user.seekingTags.length > 0 ? user.seekingTags.map(tag => <Tag key={tag} tag={tag} />) : <Typography variant="subtitle1" >User has no seeking tags</Typography>}
+              {user.seekingTags && user.seekingTags.length > 0 ? user.seekingTags.map(tag => <Tag key={tag} tag={tag} />) : <Typography variant="subtitle1" >User has no requesting tags</Typography>}
             </div> :
             <UserTagsEdit type={'seeking'} />}
           </div>

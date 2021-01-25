@@ -1,11 +1,21 @@
+import { Button, makeStyles } from '@material-ui/core';
 import { observer, inject } from 'mobx-react'
+
+const useStyles = makeStyles(() => ({
+  buttons: {
+    marginLeft: 'auto',
+    '& > *': {
+      marginLeft: 15
+    }
+  }
+}))
 
 const Buttons = inject('MessagesStore')(observer((props) =>  {
 
   const { MessagesStore } = props;
-  const conversation = MessagesStore.displayedCons.find(d => d._id === MessagesStore.currentConId);
-  const status = MessagesStore.displayedCons[0] ? conversation.status : null;
-  const firstSender = MessagesStore.displayedCons[0] ? conversation.messages[0].senderId : null;
+  const conversation = MessagesStore.userCons.find(d => d._id === MessagesStore.currentConId);
+  const status = MessagesStore.userCons[0] ? conversation.status : null;
+  const firstSender = MessagesStore.userCons[0] ? conversation.messages[0].senderId : null;
 
   const popUpReview = () => MessagesStore.popUpReview();
 
@@ -13,14 +23,16 @@ const Buttons = inject('MessagesStore')(observer((props) =>  {
 
   const revealTextPopup = () => MessagesStore.revealTextPopup();
 
+  const classes = useStyles()
+
   return (
-    <div id = "buttons">
-        {status === "Active" && <button className = 'status-but' id = 'complete-but' onClick = {popUpReview}>Complete</button>}
-        {status === "Active" && <button className = 'status-but' id = 'cancel-but' onClick = {revealGeneralPopup}>Cancel barter</button>}
-        {status === "Pending" && firstSender !== MessagesStore.userId && <button className = 'status-but' id = 'accept-but' onClick = {revealGeneralPopup}>Accept</button>}
-        {status === "Pending" && firstSender !== MessagesStore.userId && <button className = 'status-but' id = 'decline-but' onClick = {revealTextPopup}>Decline</button>}
-        {status === "Pending" && firstSender === MessagesStore.userId && <button className = 'status-but' id = 'cancel-req-but' onClick = {revealGeneralPopup}>Cancel request</button>}
-        {status === "Completed" && <button className = 'status-but' id = 'req-new-but'>Request new barter</button>}
+    <div className={classes.buttons}>
+        {status === "Active" && <Button color='primary' variant='contained' className = 'status-but' id = 'complete-but' onClick = {popUpReview}>Complete</Button>}
+        {status === "Active" && <Button color='secondary' variant='contained' className = 'status-but' id = 'cancel-but' onClick = {revealGeneralPopup}>Cancel barter</Button>}
+        {status === "Pending" && firstSender !== MessagesStore.userId && <Button color='primary' variant='contained' className = 'status-but' id = 'accept-but' onClick = {revealGeneralPopup}>Accept</Button>}
+        {status === "Pending" && firstSender !== MessagesStore.userId && <Button color='secondary' variant='contained' className = 'status-but' id = 'decline-but' onClick = {revealTextPopup}>Decline</Button>}
+        {status === "Pending" && firstSender === MessagesStore.userId && <Button color='secondary' variant='contained' className = 'status-but' id = 'cancel-req-but' onClick = {revealGeneralPopup}>Cancel request</Button>}
+        {status === "Completed" && <Button color='primary' variant='contained' className = 'status-but' id = 'req-new-but'>Request new barter</Button>}
     </div>
   )
 }))
