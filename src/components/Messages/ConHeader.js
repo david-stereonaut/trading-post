@@ -20,17 +20,17 @@ const useStyles = makeStyles(() => ({
 const ConHeader = inject('MessagesStore')(observer((props) =>  {
 
   const { MessagesStore } = props;
-  const conversation = MessagesStore.displayedCons.find(d => d._id === MessagesStore.currentConId);
-  const partner = MessagesStore.currentConId && MessagesStore.displayedCons[0] ? conversation.users.find(u => u._id !== MessagesStore.userId) : {};
+  const conversation = MessagesStore.userCons.find(d => d._id === MessagesStore.currentConId);
+  const partner = MessagesStore.currentConId && MessagesStore.userCons[0] ? conversation.users.find(u => u._id !== MessagesStore.userId) : {};
   const profileAddress = `/profile/${partner._id}`;
-  const status = MessagesStore.displayedCons[0] ? conversation.status : null;
-  const numOfMessages = MessagesStore.displayedCons[0] ? conversation.messages.length - 1 : null;
-  const firstSender = MessagesStore.displayedCons[0] && conversation.messages[0] ? conversation.messages[0].senderId : null;
-  const activationDate = MessagesStore.displayedCons[0] && conversation.messages[1] ? moment(conversation.messages.find(m => m.senderId === 'sestem message')).format('DD/MM/YYYY') : null;
-  const requestDate = MessagesStore.displayedCons[0] ? moment(conversation.messages[0].message_time).format('DD/MM/YYYY') : null;
-  const endDate = MessagesStore.displayedCons[0] ? moment(conversation.messages[numOfMessages].message_time).format('DD/MM/YYYY') : null;
-  let statusText = '';
+  const status = MessagesStore.userCons[0] ? conversation.status : null;
+  const numOfMessages = MessagesStore.userCons[0] ? conversation.messages.length - 1 : null;
+  const firstSender = MessagesStore.userCons[0] && conversation.messages[0] ? conversation.messages[0].senderId : null;
+  const activationDate = MessagesStore.userCons[0] && conversation.messages[1] ? moment(conversation.messages.find(m => m.senderId === 'sestem message')).format('DD/MM/YYYY') : null;
+  const requestDate = MessagesStore.userCons[0] ? moment(conversation.messages[0].message_time).format('DD/MM/YYYY') : null;
+  const endDate = MessagesStore.userCons[0] ? moment(conversation.messages[numOfMessages].message_time).format('DD/MM/YYYY') : null;
 
+  let statusText = '';
   switch (status) {
     case 'Active': statusText = `Active barter since ${activationDate}`;
     break;

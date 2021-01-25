@@ -17,7 +17,7 @@ const useStyles = makeStyles(() => ({
 const MessagesContainer = inject('MessagesStore')(observer((props) =>  {
 
   const { MessagesStore } = props
-  const conStatus = MessagesStore.currentConId && MessagesStore.displayedCons[0] ? MessagesStore.displayedCons.find(d => d._id === MessagesStore.currentConId).status : null;
+  const conStatus = MessagesStore.currentConId && MessagesStore.userCons[0] ? MessagesStore.userCons.find(d => d._id === MessagesStore.currentConId).status : null;
 
   const classes = useStyles()
 

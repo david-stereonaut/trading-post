@@ -5,7 +5,8 @@ const SearchCons = inject('MessagesStore')(observer((props) =>  {
 
   const { MessagesStore } = props
 
-  const changeUser = () => MessagesStore.changeUser();
+  // ignore this (Eilon)
+  // const changeUser = () => MessagesStore.changeUser();
 
   return (
     <div id="search-cons">

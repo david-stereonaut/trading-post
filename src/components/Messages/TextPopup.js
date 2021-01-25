@@ -4,10 +4,10 @@ import MessagesContainer from './MessagesContainer';
 const TextPopup = inject('MessagesStore')(observer((props) =>  {
 
     const { MessagesStore } = props;
-    const conversation = MessagesStore.displayedCons[0] ? MessagesStore.displayedCons.find(d => d._id === MessagesStore.currentConId): null;
+    const conversation = MessagesStore.userCons[0] ? MessagesStore.userCons.find(d => d._id === MessagesStore.currentConId): null;
     const status = conversation ? conversation.status : null;
     const firstSender = conversation ? conversation.messages[0].senderId : null;
-    const partnerFirstName = MessagesStore.currentConId && MessagesStore.displayedCons[0] ? conversation.users.find(u => u._id !== MessagesStore.userId).firstName : 'your partner';
+    const partnerFirstName = MessagesStore.currentConId && MessagesStore.userCons[0] ? conversation.users.find(u => u._id !== MessagesStore.userId).firstName : 'your partner';
 
     const updateAndClosePopup = () => MessagesStore.updateAndClosePopup('Declined', 'textPopup');
 

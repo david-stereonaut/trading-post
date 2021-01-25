@@ -39,6 +39,20 @@ const cors = {
   ]
 }
 
+// ignore this (Eilon)
+// const cors = {
+//   cors: [
+//     {
+//       origin: "http://localhost:3000",
+//       methods: ["GET", "POST"]
+//     },
+//     {
+//       origin: "http://localhost:5000",
+//       methods: ["GET", "POST"]
+//     }
+//   ]
+// }
+
 const socketService = new SocketService(socketServer, cors);
 
 const port = process.env.PORT || 3001

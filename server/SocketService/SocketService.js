@@ -31,7 +31,7 @@ class SocketService {
                 userId: data._id
             }
             this.activeUsers.push(clientInfo);
-            console.log(`${clientInfo.socketId} joined`);
+            // console.log(`${clientInfo.socketId} joined`);
             console.log(this.activeUsers);
         });
     }
@@ -48,16 +48,23 @@ class SocketService {
     }
 
     partnerTyping = client => {
-        client.on('IAmTyping', function(data) {
-            client.broadcast.emit('partnerTyping', data);
+        client.on('IAmTyping', data => {
+            if (this.activeUsers.every(a => a.userId !== data.partnerId)) {return}
+            this.activeUsers.forEach(a => {
+                if(a.userId === data.partnerId) {client.to(a.socketId).emit('partnerTyping', data)}
+            })
         })
     }
 
     changeStatus = client => {
-        client.on('changeStatus', function(data) {
-            console.log(data);
-            client.emit('statusChanged', data);
-            client.broadcast.emit('statusChanged', data);
+        client.on('changeStatus', data => {
+            client.emit('statusChanged', data.conversation);
+            if (this.activeUsers.every(a => a.userId !== data.partnerId)) {return}
+            this.activeUsers.forEach(a => {
+                if(a.userId === data.partnerId) {
+                    client.to(a.socketId).emit('statusChanged', data.conversation)
+                }
+            })
         })
     }
 

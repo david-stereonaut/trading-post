@@ -3,8 +3,8 @@ import { observer, inject } from 'mobx-react'
 const ReviewPopup = inject('MessagesStore')(observer((props) =>  {
 
   const { MessagesStore } = props;
-  const conversation = MessagesStore.displayedCons.find(d => d._id === MessagesStore.currentConId);
-  const partnerFirstName = MessagesStore.currentConId && MessagesStore.displayedCons[0] ? conversation.users.find(u => u._id !== MessagesStore.userId).firstName : 'your partner';
+  const conversation = MessagesStore.userCons.find(d => d._id === MessagesStore.currentConId);
+  const partnerFirstName = MessagesStore.currentConId && MessagesStore.userCons[0] ? conversation.users.find(u => u._id !== MessagesStore.userId).firstName : 'your partner';
 
   const reviewAndComplete = () => MessagesStore.updateAndClosePopup('Completed', 'reviewPopup');
 
