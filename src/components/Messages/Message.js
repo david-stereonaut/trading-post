@@ -1,6 +1,8 @@
 import { observer, inject } from 'mobx-react'
 const moment = require('moment');
 
+
+
 const Message = inject('MessagesStore')(observer((props) =>  {
 
   const { MessagesStore } = props

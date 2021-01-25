@@ -1,4 +1,14 @@
+import { IconButton, InputBase, makeStyles, Paper } from '@material-ui/core';
 import { observer, inject } from 'mobx-react'
+import SendIcon from '@material-ui/icons/Send';
+
+const useStyles = makeStyles(() => ({
+  typeBar: {
+    height: 40,
+    display: 'flex',
+    marginTop: 'auto'
+  }
+}))
 
 const TypeBar = inject('MessagesStore')(observer((props) =>  {
 
@@ -10,11 +20,13 @@ const TypeBar = inject('MessagesStore')(observer((props) =>  {
 
   const sendByEnter = e => {if (e.keyCode === 13) {MessagesStore.sendMessage()}}
 
+  const classes = useStyles()
+
   return (
-    <div id = "type-bar-div">
-        <input id = "type-bar" value = {MessagesStore.newMessage} placeholder = "New message" onChange = {typeMessage} onKeyDown = {sendByEnter}/>
-        <button id = "send-button" onClick = {sendByClick}>SEND</button>
-    </div>
+    <Paper className={classes.typeBar}>
+        <InputBase style={{width: 'calc(100% - 40px)'}} value = {MessagesStore.newMessage} placeholder = "New message" onChange = {typeMessage} onKeyDown = {sendByEnter}/>
+        <IconButton style={{height: 40, width: 40}} onClick = {sendByClick}><SendIcon /></IconButton>
+    </Paper>
   )
 }))
 

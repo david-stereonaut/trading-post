@@ -13,16 +13,17 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     flexDirection: 'row',
     padding: 15,
-    height: '81vh'
+    height: '81vh',
   },
 }))
 
-const Messages = inject('MessagesStore', 'UserStore')(observer((props) =>  {
+const Messages = inject('MessagesStore', 'UserStore', 'GeneralStore')(observer((props) =>  {
 
-  const { MessagesStore } = props;
+  const { MessagesStore, GeneralStore } = props;
   const { UserStore } = props;
 
   useEffect(() => {
+    GeneralStore.handleTabChange('', 2)
     MessagesStore.getCons(MessagesStore.category);
     MessagesStore.socketPort = 'http://localhost:4000';
   }, []);

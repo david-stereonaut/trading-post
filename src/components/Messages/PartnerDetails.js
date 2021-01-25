@@ -1,4 +1,4 @@
-import { Avatar, makeStyles, Paper, Typography } from '@material-ui/core';
+import { Avatar, makeStyles, Paper, Typography, Divider } from '@material-ui/core';
 import { observer, inject } from 'mobx-react'
 
 const useStyles = makeStyles((theme) => ({
@@ -7,7 +7,8 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'row',
         alignItems: 'center',
         width: 350,
-        padding: 10
+        padding: 10,
+        cursor: 'pointer'
     },
     partnerText: {
         display: 'flex',
@@ -15,8 +16,8 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: 5
     },
     largeAvatar: {
-        height: '70px',
-        width: '70px'
+        height: '50px',
+        width: '50px'
     },
 }))
 
@@ -35,9 +36,9 @@ const PartnerDetails = inject('MessagesStore')(observer((props) =>  {
         <div className ={classes.partner}  onClick = {chooseCon}>
             <Avatar src = {partner.profilePic.imageUrl} className={classes.largeAvatar} />
             <div className ={classes.partnerText}>
-            <Typography>{`${partner.firstName} ${partner.lastName}`}</Typography>
-            {MessagesStore.category !== 'All barters' && <Typography>{shortedMessage}</Typography>}
-            {MessagesStore.category === 'All barters' && <Typography>{props.status}</Typography>}
+            <Typography variant='body1' style={{fontWeight: 500}}>{`${partner.firstName} ${partner.lastName}`}</Typography>
+            {MessagesStore.category !== 'All barters' && <Typography variant='subtitle1'>{shortedMessage}</Typography>}
+            {MessagesStore.category === 'All barters' && <Typography variant='subtitle1'>{props.status}</Typography>}
             </div>
         </div>
     )

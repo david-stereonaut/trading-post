@@ -8,9 +8,7 @@ const useStyles = makeStyles(() => ({
   consHeader: {
     display: 'flex',
     flexDirection: 'row',
-    '& > *': {
-      marginLeft: 10
-    },
+    padding: 10
   },
   conAvatar: {
     height: 70,
@@ -56,12 +54,12 @@ const ConHeader = inject('MessagesStore')(observer((props) =>  {
   return (
     <div className={classes.consHeader}>
         <Avatar onClick={redirectToProfile} className={classes.conAvatar} alt={partner.firstName} src={partner.profilePic && partner.profilePic.imageUrl}/>
-        <div>
+        <div style={{marginLeft: 15}}>
           <Typography variant='h5'>{`${partner.firstName} ${partner.lastName}`}</Typography>
           <Typography variant='subtitle2'>{statusText}</Typography>
         </div>
         {MessagesStore.partnerTyping === true && <Typography>{partner.firstName}`s typing...</Typography>}
-        <Buttons/>
+        <Buttons />
     </div>
   )
 }))
