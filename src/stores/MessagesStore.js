@@ -16,7 +16,7 @@ export class MessagesStore {
         this.generalPopup = false;
         this.textPopup = false;
         this.declineMessage = '';
-        this.socket = io('http://localhost:4000');
+        this.socket = io('http://localhost:3001', {autoConnect: false});
         this.initiateSocket();
         this.manageSocket();
 
@@ -186,10 +186,12 @@ export class MessagesStore {
     }
 
     setUserId = (id) => {
-        this.userId = id
+        this.userId = id;
+        this.socket.open();
     }
 
-    signOut() {
+    signOut = () => {
+        this.socket.disconnect();
         this.userId = '';
         this.category = 'Active barters';
         this.userCons = [];
@@ -199,6 +201,5 @@ export class MessagesStore {
         this.generalPopup = false;
         this.textPopup = false;
         this.declineMessage = '';
-        this.socket = io('http://localhost:4000');
     }
 }
