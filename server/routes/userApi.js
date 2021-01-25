@@ -9,12 +9,15 @@ const secret = 'secrettradingpost';
 // POST route to register a user
 router.post('/user/register', async function(req, res) {
     const user = new User({ ...req.body });
+    console.log('-----')
+    console.log(req.body)
     console.log(user)
+    console.log('-----')
     await user.save(function(err) {
       if (err) {
        console.log(err);
       } else {
-        res.status(200).send("Welcome to the club!");
+        res.status(200).send(user._id);
       }
     });
   });

@@ -23,7 +23,8 @@ export class UserStore {
       changeProfilePic: action,
       updateUserName: action,
       signOut: action,
-      setUserId: action
+      setUserId: action,
+      registerUser: action
     })
   }
 
@@ -39,6 +40,20 @@ export class UserStore {
     catch (err) {
       return err.response.data.error
     }
+  }
+
+  async registerUser(user) {
+    try {
+      const userId = await axios.post(`http://localhost:3001/user/register`, user);
+      console.log(userId.data)
+      this.userId = userId.data
+      localStorage.setItem('userId', userId.data);
+      return "ok"
+    }
+    catch (err) {
+      return err.response.data.error
+    }
+
   }
 
   async fetchUser() {
