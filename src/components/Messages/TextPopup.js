@@ -1,3 +1,4 @@
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, TextField } from '@material-ui/core';
 import { observer, inject } from 'mobx-react'
 import MessagesContainer from './MessagesContainer';
 
@@ -16,12 +17,16 @@ const TextPopup = inject('MessagesStore')(observer((props) =>  {
     const typeDeclineMessage = e => MessagesStore.typeDeclineMessage(e.target.value);
 
     return (
-        <div id = {MessagesStore.textPopup ? "visible-text-popup" : "hidden-text-popup"}>
-            <h3 id = "text-popup-text">Do you want to leave {partnerFirstName} a message?</h3>
-            <input id = "text-popup-input" value = {MessagesStore.declineMessage} onChange = {typeDeclineMessage}/>
-            <button className = "pop-up-button agree-button" onClick = {updateAndClosePopup}>Continue</button>
-            <button className = "pop-up-button cancel-button" onClick = {closePopup}>Cancel</button>
-        </div>
+        <Dialog open = {MessagesStore.textPopup}>
+            <DialogContent>
+                <DialogContentText>Do you want to leave {partnerFirstName} a message?</DialogContentText>
+                <TextField multiline style={{width: '100%'}} label='Write a message, be polite' value = {MessagesStore.declineMessage} onChange = {typeDeclineMessage}/>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick = {closePopup}>Cancel</Button>
+                <Button color='primary' onClick = {updateAndClosePopup}>Continue</Button>
+            </DialogActions>
+        </Dialog>
     )
 }))
 

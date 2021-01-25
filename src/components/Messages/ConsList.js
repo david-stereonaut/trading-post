@@ -1,3 +1,4 @@
+import { Typography } from '@material-ui/core';
 import { observer, inject } from 'mobx-react';
 import PartnerDetails from './PartnerDetails';
 
@@ -22,11 +23,12 @@ const ConsList = inject('MessagesStore')(observer((props) =>  {
             break;  
             case 'Declined barters': consToDisplay = userCons.filter(u => u.status === 'Cancelled' || u.status === 'Declined');
             break;  
+            default: consToDisplay = []
         }
 
     return (
-        <div id="cons-list">
-            <h2 className = 'category-title' id = {`${MessagesStore.category.split(' ')[0]}-title`}>{MessagesStore.category}</h2>
+        <div style={{marginTop: 10}}>
+            <Typography variant='h5'>{MessagesStore.category}</Typography>
             {consToDisplay.map((d, index) => <PartnerDetails key = {index} conId = {d._id} partner = {d.users.find(u => u._id !== MessagesStore.userId)} status = {d.status} lastMessage = {d.messages[d.messages.length - 1].body} partnerTyping = {d.partnerTyping}/>)}
         </div>
     )
