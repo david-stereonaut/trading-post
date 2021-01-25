@@ -26,6 +26,7 @@ const userSchema = new Schema({
     conversations: [{ type: Schema.Types.ObjectId, ref: 'Conversation' }],
     content: [],
     reviews: [],
+    neighbors: [{ type: Schema.Types.ObjectId, ref : 'User' }]
 }, { versionKey: false })
 
 const User = mongoose.model("User", userSchema)
