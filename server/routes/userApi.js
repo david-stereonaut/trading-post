@@ -54,7 +54,6 @@ router.post('/user/register', async function(req, res) {
               expiresIn: '1h'
             });
             res.cookie('token', token, { httpOnly: true })
-            // console.log("token")
               .send(user._id);
           }
         });
