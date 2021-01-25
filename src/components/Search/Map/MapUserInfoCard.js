@@ -6,6 +6,7 @@ import Tag from '../../Tag';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import { useHistory } from 'react-router-dom';
+import PersonIcon from '@material-ui/icons/Person';
 
 const useStyles=makeStyles((theme) => ({
   mainContainer: {
@@ -71,7 +72,7 @@ const MapUserInfoCard = inject('UserStore', 'SearchStore', 'GeneralStore')(obser
         </div>
       </div>
       <div>
-        <Button onClick={redirectToProfile} >User profile</Button>
+        <Button startIcon={<PersonIcon />} onClick={redirectToProfile} >More</Button>
       </div>
     </div>
 )

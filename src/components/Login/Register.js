@@ -4,7 +4,7 @@ import {Link, useHistory} from 'react-router-dom'
 import axios from 'axios'
 import { Button, Dialog, DialogContent, IconButton, makeStyles, Paper, TextField, Typography } from '@material-ui/core'
 import MapIcon from '@material-ui/icons/Map';
-import { Autocomplete, GoogleMap, LoadScript, Marker, StandaloneSearchBox } from '@react-google-maps/api'
+import { Autocomplete, GoogleMap, LoadScript, Marker } from '@react-google-maps/api'
 
 const useStyles = makeStyles(() => ({
     container: {
@@ -43,6 +43,7 @@ const Register = inject('GeneralStore', 'UserStore', 'MessagesStore')(observer((
       password: '',
       confirmPassword: ''
     })
+    const [zoom, setZoom] = useState(5)
     const [city, setCity] = useState(null)
     const [country, setCountry] = useState(null)
     const [location, setLocation] = useState(null)
@@ -57,7 +58,6 @@ const Register = inject('GeneralStore', 'UserStore', 'MessagesStore')(observer((
     const classes = useStyles()
 
     const onLoad = (autocomplete) => {
-      console.log('autocomplete: ', autocomplete)
   
       setAutocomplete(autocomplete)
     }
@@ -72,6 +72,7 @@ const Register = inject('GeneralStore', 'UserStore', 'MessagesStore')(observer((
           }
           setLocation(chosenLocation)
           setMapCenter(chosenLocation)
+          setZoom(10)
           let newCity = null
           let newCountry = null
           place.address_components.forEach(ac => {
@@ -214,7 +215,7 @@ const Register = inject('GeneralStore', 'UserStore', 'MessagesStore')(observer((
                   <GoogleMap
                     mapContainerStyle={containerStyle}
                     center={mapCenter}
-                    zoom={5}
+                    zoom={zoom}
                     clickableIcons={false}
                     options={{ gestureHandling: "greedy" }}
                     onDblClick={createMarker}

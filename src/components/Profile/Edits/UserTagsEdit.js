@@ -2,6 +2,7 @@ import { Card, CardMedia, Paper, Typography, Divider, Dialog, DialogTitle, Dialo
 import { observer, inject } from 'mobx-react'
 import { useState } from 'react';
 import Tag from '../../Tag';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 const useStyles = makeStyles(theme => ({
   tagEdit: {
@@ -16,9 +17,9 @@ const useStyles = makeStyles(theme => ({
 }))
 
 
-const UserTagsEdit = inject('UserStore', 'GeneralStore')(observer((props) =>  {
+const UserTagsEdit = inject('UserStore', 'GeneralStore', 'SearchStore')(observer((props) =>  {
 
-  const { UserStore, GeneralStore, type } = props
+  const { UserStore, GeneralStore, type, SearchStore } = props
 
   const [tagInput, setTagInput] = useState('')
 
@@ -32,8 +33,18 @@ const UserTagsEdit = inject('UserStore', 'GeneralStore')(observer((props) =>  {
       <Paper>
         {UserStore.user[type+'Tags'].map(tag => <Tag key={tag} tag={tag} editable={true} type={type} />)}
       </Paper>
-      <TextField value={tagInput} onChange={(e) => setTagInput(e.target.value)} label="Tag name" />
-      <div><Button color="primary" variant="contained" size="small" onClick={() => UserStore.addTag(tagInput, type)}>Add</Button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<Button color="primary" variant="contained" size="small" onClick={close}>Done</Button></div>
+      <Autocomplete
+        style={{width: '70%'}}
+        id="free-solo-demo"
+        value={tagInput}
+        onChange={(e, val) => setTagInput(val)}
+        freeSolo
+        options={SearchStore.allTags.map((option) => option)}
+        renderInput={(params) => (
+          <TextField {...params} style={{width: '100%'}} onChange={(e) => setTagInput(e.target.value)} label="Tag name" margin='normal' />
+        )}
+      />
+      <div><Button color="primary" variant="contained" size="small" onClick={() => {UserStore.addTag(tagInput, type); setTagInput('')}}>Add</Button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<Button color="primary" variant="contained" size="small" onClick={close}>Done</Button></div>
     </div>
   )
 }))

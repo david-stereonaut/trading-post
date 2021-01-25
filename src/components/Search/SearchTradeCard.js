@@ -8,6 +8,7 @@ import { useState } from 'react'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import { useHistory } from 'react-router-dom'
+import PersonIcon from '@material-ui/icons/Person';
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -54,7 +55,7 @@ const SearchTradeCard = inject('GeneralStore', 'SearchStore', 'UserStore')(obser
         {!seeTags ? <IconButton size="small" onClick={() => setSeeTags(!seeTags)}><ExpandMoreIcon /></IconButton> : <IconButton size="small" onClick={() => setSeeTags(!seeTags)}><ExpandLessIcon /></IconButton>}
       </CardContent>
       <CardActions style={{marginTop: 'auto'}}>
-        <Button onClick={redirectToProfile} color="secondary" variant="contained">Show profile</Button>
+        <Button startIcon={<PersonIcon />} onClick={redirectToProfile} color="secondary" variant="contained">More</Button>
         <Button startIcon={<TradeIcon />} color="secondary" variant="contained">Trade!</Button>
       </CardActions>
         </Card>

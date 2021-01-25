@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: (({showMap}) => showMap ? 'column' : 'row'),
     flexWrap: (({showMap}) => showMap ? null : 'wrap'),
     overflow: (({showMap}) => showMap ? 'auto' : null),
-    height: (({showMap}) => showMap ? 'calc(87vh - 40px - 2vh)' : null),
+    height: (({showMap}) => showMap ? 'calc(87vh - 68px - 2vh)' : null),
     '::-webkit-scrollbar': {
       display: 'none'
     }

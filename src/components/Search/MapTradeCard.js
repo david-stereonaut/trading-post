@@ -8,12 +8,13 @@ import { useState } from 'react'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import { useHistory } from 'react-router-dom'
+import PersonIcon from '@material-ui/icons/Person';
 
 const useStyles = makeStyles(theme => ({
   card: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'flex-start'
+    alignItems: 'center'
   },
   bottomSection: {
     display: 'flex',
@@ -27,14 +28,15 @@ const useStyles = makeStyles(theme => ({
   buttons: {
     display: 'flex',
     direction: 'row',
-    '& > *': {
+    '& > .MuiButton-root': {
       marginLeft:15
     },
   },
   text: {
     display: 'flex',
     flexDirection: 'column',
-    marginLeft: 5
+    marginLeft: 5,
+    maxWidth: 350
   },
   cardTitle: {
     display: 'flex',
@@ -71,7 +73,7 @@ const MapTradeCard = inject('GeneralStore', 'SearchStore', 'UserStore')(observer
           />
         </Card>
         <div className={classes.text}>
-        <Typography style={{alignSelf:'flex-end'}} variant="subtitle2">{trade.type === "Offering" ? "Offering" : "Requesting"}</Typography>
+        
           <Typography variant="body1">{trade.title}</Typography>
           <Typography variant="subtitle1" style={{fontSize: 12}} color="textSecondary">{`${trade.user_id.location.city}, ${trade.user_id.location.country}`}</Typography>
           <Typography variant="subtitle1" style={{fontSize: 12}} paragraph={true} color="textSecondary">{trade.subTitle}</Typography>
@@ -83,9 +85,9 @@ const MapTradeCard = inject('GeneralStore', 'SearchStore', 'UserStore')(observer
         </div>
       </div>
       <div className={classes.bottomSection}>
-        <div></div>
+      <Typography style={{alignSelf: 'flex-end'}} variant="subtitle2">{trade.type === "Offering" ? "Offering" : "Requesting"}</Typography>
         <div className={classes.buttons}>
-          <Button onClick={redirectToProfile} color="secondary" variant="contained">Show profile</Button>
+          <Button startIcon={<PersonIcon />} onClick={redirectToProfile} color="secondary" variant="contained">More</Button>
           <Button startIcon={<TradeIcon />} color="secondary" variant="contained">Trade!</Button>
         </div>
     

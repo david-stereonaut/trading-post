@@ -5,6 +5,7 @@ import Photo from '../Photo';
 import axios from 'axios';
 import { Cloudinary } from 'cloudinary-core';
 import Tag from '../../Tag';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 const uploadUrl = "https://api.cloudinary.com/v1_1/idoerez/image/upload"
 const deleteUrl = "https://api.cloudinary.com/v1_1/idoerez/image/destroy"
@@ -41,9 +42,9 @@ const useStyles = makeStyles(theme => ({
 }))
 
 
-const AddTradeCard = inject('UserStore', 'GeneralStore')(observer((props) =>  {
+const AddTradeCard = inject('UserStore', 'GeneralStore', 'SearchStore')(observer((props) =>  {
 
-  const { UserStore, GeneralStore, newTrade } = props
+  const { UserStore, GeneralStore, SearchStore, newTrade } = props
   const [imageUrl, setImageUrl] = useState('')
   const [imageId, setImageId] = useState('')
   const [title, setTitle] = useState('')
@@ -209,7 +210,17 @@ const AddTradeCard = inject('UserStore', 'GeneralStore')(observer((props) =>  {
               })}
             </Paper>
           }
-          <TextField label='Add Tag' value={addTagInput} onChange={({target}) => setAddTagInput(target.value)} />
+          <Autocomplete
+            style={{width: '100%'}}
+            id="free-solo-demo"
+            value={addTagInput}
+            onChange={(e, val) => setAddTagInput(val)}
+            freeSolo
+            options={SearchStore.allTags.map((option) => option)}
+            renderInput={(params) => (
+              <TextField {...params} style={{width: '100%'}} onChange={(e) => setAddTagInput(e.target.value)} label="Tag name" margin='normal' />
+            )}
+          />
           <Button onClick={addTag}>Add tag</Button>
         </div>
       </div>
