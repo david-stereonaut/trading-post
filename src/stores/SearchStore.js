@@ -85,14 +85,17 @@ export class SearchStore {
     
     const results = await axios.get(`http://localhost:3001/search/trades?q=${text}`);
     this.results = results.data
+    console.log(this.results)
     this.searchFor = 'trades'
+
   }
 
   async searchTags() {
-    let offering = this.getOfferingTagsArray()
-    let seeking = this.getSeekingTagsArray()
-    const tradesResults = await axios.get(`http://localhost:3001/search/tradetags?searchSeeking=${seeking}&searchOffering=${offering}&searchCity=${this.searchCity}&searchLocation=${this.searchCountry}`);
-    this.tradesResults = tradesResults.data;
+    // let offering = this.getOfferingTagsArray()
+    // let seeking = this.getSeekingTagsArray()
+    // const tradesResults = await axios.get(`http://localhost:3001/search/tradetags?searchSeeking=${seeking}&searchOffering=${offering}&searchCity=${this.searchCity}&searchLocation=${this.searchCountry}`);
+    // this.tradesResults = tradesResults.data;
+    this.searchUsers('e')
   }
 
   async searchPerfectTrades() {

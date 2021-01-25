@@ -5,7 +5,8 @@ import SearchIcon from '@material-ui/icons/Search';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import MapIcon from '@material-ui/icons/Map';
-import {LocationSearchInput} from './Location'
+import { LocationSearchInput } from './Location';
+import Switch from '@material-ui/core/Switch';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -79,32 +80,49 @@ const Searchbar = inject('UserStore', 'SearchStore', 'GeneralStore')(observer((p
 
   const [freeTextInput, setFreeTextInput] = useState('')
   const [showFilters, setShowFilters] = useState(false)
-  const [searchFor, setSearchFor] = useState('trades')
+  const [searchFor, setSearchFor] = useState('offering')
   const [typeFilter, setTypeFilter] = useState({
     seeking: true,
     offering: true
   })
   const [offeringTagsFilter, setOfferingTagsFilter] = useState([])
   const [seekingTagsFilter, setSeekingTagsFilter] = useState([])
+  const [exactMatch, setExactMatch] = useState(true);
   const [sortBy, setSortBy] = useState('location')
 
   useEffect(() => {
     SearchStore.getAllTags()
   }, [])
 
+  const handleSwitch = (event) => {
+    setExactMatch(event.target.checked);
+  };
+
   const search = () => {
-    switch(searchFor){
+    switch (searchFor) {
       case "offering":
         SearchStore.searchTrades(freeTextInput)
+        SearchStore.setSeekingFilter(false)
+        SearchStore.setOfferingFilter(true)
+        console.log(SearchStore.seekingFilter)
+        console.log(SearchStore.offeringFilter)
+        console.log(freeTextInput)
+        //SearchStore.searchOffering(freeTextInput)
         break;
       case "seeking":
         SearchStore.searchTrades(freeTextInput)
+        SearchStore.setSeekingFilter(true)
+        SearchStore.setOfferingFilter(false)
+        console.log(SearchStore.seekingFilter)
+        console.log(SearchStore.offeringFilter)
+        //SearchStore.searchSeeking(freeTextInput)
         break;
       case "people":
         SearchStore.searchUsers(freeTextInput)
         break;
-      case "trades":
+      case "tags":
         SearchStore.searchTags()
+        break;
     }
   }
 
@@ -115,13 +133,17 @@ const Searchbar = inject('UserStore', 'SearchStore', 'GeneralStore')(observer((p
       <Paper className={classes.paper}>
         <Paper className={classes.inputs}>
           <Select variant="outlined" label="Search for" className={classes.select} value={searchFor} onChange={({ target }) => setSearchFor(target.value)}>
-            <MenuItem value='offering'>Offers</MenuItem>
-            <MenuItem value='seeking'>Requests</MenuItem>
+            <MenuItem value='offering'>Offering Cards</MenuItem>
+            <MenuItem value='seeking'>Seeking Cards</MenuItem>
+            <MenuItem value='tags'>Trades</MenuItem>
             <MenuItem value='people'>People</MenuItem>
-            <MenuItem value='tags'>Tags</MenuItem>
           </Select>
-          <TextField id="Naked input" label={searchFor} variant="outlined" InputProps={{ className: classes.textField }} value={freeTextInput} onChange={({ target }) => setFreeTextInput(target.value)} placeholder="Search" />
-          
+
+          {!(searchFor === 'tags') &&
+            <TextField id="Naked input" label={searchFor} variant="outlined" InputProps={{ className: classes.textField }} value={freeTextInput} onChange={({ target }) => setFreeTextInput(target.value)} placeholder="Search" />
+          }
+
+          {searchFor === 'tags' &&
             <FormControl>
 
               <FormLabel style={{ marginBottom: 5 }}>Seeking Tags</FormLabel>
@@ -138,7 +160,8 @@ const Searchbar = inject('UserStore', 'SearchStore', 'GeneralStore')(observer((p
                   <TextField variant="outlined" {...params} />
                 )}
               />
-            </FormControl>
+            </FormControl>}
+          {searchFor === 'tags' &&
             <FormControl>
               <FormLabel style={{ marginBottom: 5, marginTop: 5 }}>Offering Tags</FormLabel>
               <Autocomplete
@@ -154,20 +177,25 @@ const Searchbar = inject('UserStore', 'SearchStore', 'GeneralStore')(observer((p
                   <TextField variant="outlined" {...params} />
                 )}
               />
-              </FormControl>
-              <FormControl>
-              <LocationSearchInput />
-                  {/* <MenuItem value='location'>Location</MenuItem>
-                  <MenuItem value='match'>Match</MenuItem> */}
-            </FormControl>
-            <div>
+            </FormControl>}
+          {searchFor === 'tags' &&
+            <FormControlLabel
+              control={<Switch checked={exactMatch} onChange={handleSwitch} name="exactMatch" />}
+              label="exact match"
+            />}
+          <div>
           </div>
           <IconButton className={classes.filterIcon} onClick={() => setShowFilters(!showFilters)}><FilterListIcon /></IconButton>
           <IconButton className={classes.searchIcon} onClick={search}><SearchIcon /></IconButton>
         </Paper>
         <Collapse style={{ width: '90%' }} in={showFilters}>
+          {/* <FormControl> */}
+          {/* <LocationSearchInput /> */}
+          {/* <MenuItem value='location'>Location</MenuItem>
+                  <MenuItem value='match'>Match</MenuItem> */}
+          {/* </FormControl> */}
           <div className={classes.filterSection}>
-            {searchFor !== 'people' &&
+            {/* {searchFor !== 'people' &&
               <FormControl component="fieldset">
                 <FormLabel component="legend">Trade types</FormLabel>
                 <FormGroup>
@@ -181,13 +209,13 @@ const Searchbar = inject('UserStore', 'SearchStore', 'GeneralStore')(observer((p
                   />
                 </FormGroup>
               </FormControl>
-            }
+            } */}
 
             <div>
               <FormControl>
                 <FormLabel style={{ marginBottom: 5 }}>Sort by</FormLabel>
                 <Select style={{ height: 40, width: 130 }} variant="outlined" value={SearchStore.sortBy} onChange={({ target }) => SearchStore.setSortBy(target.value)}>
-                 
+
                 </Select>
               </FormControl>
             </div>

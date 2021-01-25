@@ -44,7 +44,7 @@ const SearchResults = inject('UserStore','SearchStore', 'GeneralStore')(observer
 
   const { showMap, UserStore, user, SearchStore , allTags , usersResults , tradesResults } = props
 
-//   const { userId } = useParams()
+  const { userId } = useParams()
 
   const classes = useStyles({showMap})
 
@@ -62,9 +62,10 @@ const SearchResults = inject('UserStore','SearchStore', 'GeneralStore')(observer
 
   return (
     <div className={classes.container}>
-      {SearchStore.results.length > 0 && SearchStore.results[0].thumbnail && SearchStore.searchFor === 'offering' && filterTradeResults(SearchStore.results).map(trade => showMap ? <MapTradeCard trade={trade} /> : <SearchTradeCard trade={trade} />)}
+      {SearchStore.results.map(trade => <SearchTradeCard trade={trade} />)} 
+      {/* {SearchStore.results.length > 0 && SearchStore.results[0].thumbnail && SearchStore.searchFor === 'offering' && filterTradeResults(SearchStore.results).map(trade => showMap ? <MapTradeCard trade={trade} /> : <SearchTradeCard trade={trade} />)}
       {SearchStore.results.length > 0 && SearchStore.results[0].thumbnail && SearchStore.searchFor === 'seeking' && filterTradeResults(SearchStore.results).map(trade => showMap ? <MapTradeCard trade={trade} /> : <SearchTradeCard trade={trade} />)}
-      {SearchStore.results.length > 0 && SearchStore.results[0].firstName && SearchStore.searchFor === 'people' && SearchStore.results.map(user => showMap ? <MapUserCard user={user} /> : <SearchUserCard user={user} />)}
+      {SearchStore.results.length > 0 && SearchStore.results[0].firstName && SearchStore.searchFor === 'people' && SearchStore.results.map(user => showMap ? <MapUserCard user={user} /> : <SearchUserCard user={user} />)} */}
     </div>
   )
 }))
