@@ -48,24 +48,22 @@ const SearchResults = inject('UserStore','SearchStore', 'GeneralStore')(observer
 
   const classes = useStyles({showMap})
 
-  const filterTradeResults = (arr) => {
-    let newArr = arr.filter(trade => {
-      if (SearchStore.seekingFilter === SearchStore.offeringFilter) { return true }
-      else if (SearchStore.seekingFilter) { return trade.type === 'Seeking'}
-      else {return trade.type === 'Offering'}
-    })
-    if (SearchStore.seekingTagsFilter.length > 0) {
-      return newArr.filter(trade => SearchStore.seekingTagsFilter.some(r=> trade.tags.includes(r))) // arr1.some(r=> arr2.includes(r))
-    }
-    return newArr
-  }
+  // const filterTradeResults = (arr) => {
+  //   let newArr = arr.filter(trade => {
+  //     if (SearchStore.seekingFilter === SearchStore.offeringFilter) { return true }
+  //     else if (SearchStore.seekingFilter) { return trade.type === 'Seeking'}
+  //     else {return trade.type === 'Offering'}
+  //   })
+  //   if (SearchStore.seekingTagsFilter.length > 0) {
+  //     return newArr.filter(trade => SearchStore.seekingTagsFilter.some(r=> trade.tags.includes(r))) // arr1.some(r=> arr2.includes(r))
+  //   }
+  //   return newArr
+  // }
 
   return (
     <div className={classes.container}>
-      {SearchStore.results.map(trade => <SearchTradeCard trade={trade} />)} 
-      {/* {SearchStore.results.length > 0 && SearchStore.results[0].thumbnail && SearchStore.searchFor === 'offering' && filterTradeResults(SearchStore.results).map(trade => showMap ? <MapTradeCard trade={trade} /> : <SearchTradeCard trade={trade} />)}
-      {SearchStore.results.length > 0 && SearchStore.results[0].thumbnail && SearchStore.searchFor === 'seeking' && filterTradeResults(SearchStore.results).map(trade => showMap ? <MapTradeCard trade={trade} /> : <SearchTradeCard trade={trade} />)}
-      {SearchStore.results.length > 0 && SearchStore.results[0].firstName && SearchStore.searchFor === 'people' && SearchStore.results.map(user => showMap ? <MapUserCard user={user} /> : <SearchUserCard user={user} />)} */}
+      {SearchStore.results.length > 0 && SearchStore.results[0].thumbnail && SearchStore.searchFor === 'trades' && SearchStore.results.map(trade => showMap ? <MapTradeCard trade={trade} /> : <SearchTradeCard trade={trade} />)}
+      {SearchStore.results.length > 0 && SearchStore.results[0].firstName && SearchStore.searchFor === 'people' && SearchStore.results.map(user => showMap ? <MapUserCard user={user} /> : <SearchUserCard user={user} />)}
     </div>
   )
 }))

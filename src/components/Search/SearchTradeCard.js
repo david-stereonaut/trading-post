@@ -34,7 +34,7 @@ const SearchTradeCard = inject('GeneralStore', 'SearchStore', 'UserStore')(obser
         image={trade.thumbnail.imageUrl}
       />
       <CardContent>
-        <Typography variant="subtitle1" style={{ fontSize: 12 }} paragraph={true} color="textSecondary">{trade.type}</Typography>
+        <Typography variant="subtitle1" style={{ fontSize: 12 }} paragraph={true} color="textSecondary">{trade.type === "Offering" ? "Offering" : "Requesting"}</Typography>
         <Typography variant="body1">{trade.title}</Typography>
         <Typography variant="subtitle1" style={{ fontSize: 12 }} color="textSecondary">{`${trade.user_id.location.city}, ${trade.user_id.location.country}`}</Typography>
         <Typography variant="subtitle1" style={{ fontSize: 12 }} paragraph={true} color="textSecondary">{trade.subTitle}</Typography>

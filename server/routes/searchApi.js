@@ -5,38 +5,31 @@ const TradeCard = require('../models/TradeCardModel')
 const User = require('../models/UserModel')
 
 
-// router.get('/search/user', async function (req, res) {
-//     const { lastname, firstname } = req.query
-//     try {
-//         const user = await User.find({ $or: [{ lastName: lastname }, { firstName: firstname }] }).populate('offering').populate('seeking')
-//         res.send(user)
-//     }
-//     catch (err) {
-//         res.send(err.message)
-//     }
-// })
-
-router.get('/search/tradetags', async function (req, res) {
-    const { seeking, offering, location } = req.query
+//imperfecttrade?seeking=Synth,Dog Sitting&offering=Languages
+router.get('/search/imperfecttrade', async function (req, res) {
+    const { seeking, offering } = req.query
+    const newOffering = offering ? offering.split(',') : null
+    const newSeeking = seeking ? seeking.split(',') : null
     try {
-        const users = await User.find({ $and: [{ $or: [{ offeringTags: seeking }, { seekingTags: offering }] }, { "location.country": { $in: location } }] }).populate('offering').populate('seeking').limit(20)
-        console.log(users)
+        let users = await User.find({$or:[{offeringTags: {$in: newOffering }},{seekingTags:{$in:newSeeking}}]}, { firstName: 1, lastName: 1, profilePic: 1, seekingTags: 1, offeringTags: 1, description: 1, location: 1 })
         res.send(users)
+    }
+    catch (err) {
+        res.send(err)
+    }
+})
+router.get('/search/perfecttrade', async function (req, res) {
+    const { seeking, offering } = req.query
+    const newOffering = offering ? offering.split(',') : null
+    const newSeeking = seeking ? seeking.split(',') : null
+    try {
+    let users = await User.find({$and:[{offeringTags: {$in: newOffering }},{seekingTags:{$in:newSeeking}}]}, { firstName: 1, lastName: 1, profilePic: 1, seekingTags: 1, offeringTags: 1, description: 1, location: 1 })
+      res.send(users)
     }
     catch (err) {
         res.send(err.message)
     }
 })
-// router.get('/search/perfecttrade', async function (req, res) {
-//     const { seeking, offering, location } = req.query
-//     try {
-//         const users = await User.find({ $and: [{ $and: [{ offeringTags: seeking }, { seekingTags: offering }] }, { "location.country": { $in: location } }] }).populate('offering').populate('seeking').limit(20)
-//         res.send(users)
-//     }
-//     catch (err) {
-//         res.send(err.message)
-//     }
-// })
 
 router.get('/getTags', async function (req, res) {
     const data = await TradeCard.find({})
@@ -52,28 +45,6 @@ router.get('/getTags', async function (req, res) {
     let uniqueTags = Object.keys(uniqueTagsObject)
     res.send(uniqueTags)
 })
-
-// router.post('/search/tradeTags', async function (req, res) {
-//     const { tags } = req.body
-//     try {
-//         const tradCards = await TradeCard.find({ "tags": { $in: tags } })
-//         res.send(tradCards)
-//     }
-//     catch (err) {
-//         res.send(err.message)
-//     }
-// })
-
-// router.get('/search/userbylocation', async function (req, res) {
-//     const { lastname, firstname, city, country } = req.query
-//     try {
-//         const user = await User.find({ $and: [{ lastName: lastname }, { firstName: firstname }, { city: city }, { country: country }] }).populate('offering').populate('seeking')
-//         res.send(user)
-//     }
-//     catch (err) {
-//         res.send(err.message)
-//     }
-// })
 
 router.get('/autocomplete/users', async function (req, res) {
     const { text } = req.query
@@ -122,5 +93,40 @@ router.get('/search/users', async function (req, res) {
         res.status(401).send(err.message)
     }
 })
+
+
+
+// router.get('/search/user', async function (req, res) {
+//     const { lastname, firstname } = req.query
+//     try {
+//         const user = await User.find({ $or: [{ lastName: lastname }, { firstName: firstname }] }).populate('offering').populate('seeking')
+//         res.send(user)
+//     }
+//     catch (err) {
+//         res.send(err.message)
+//     }
+// })
+
+// router.post('/search/tradeTags', async function (req, res) {
+//     const { tags } = req.body
+//     try {
+//         const tradCards = await TradeCard.find({ "tags": { $in: tags } })
+//         res.send(tradCards)
+//     }
+//     catch (err) {
+//         res.send(err.message)
+//     }
+// })
+
+// router.get('/search/userbylocation', async function (req, res) {
+//     const { lastname, firstname, city, country } = req.query
+//     try {
+//         const user = await User.find({ $and: [{ lastName: lastname }, { firstName: firstname }, { city: city }, { country: country }] }).populate('offering').populate('seeking')
+//         res.send(user)
+//     }
+//     catch (err) {
+//         res.send(err.message)
+//     }
+// })
 
 module.exports = router

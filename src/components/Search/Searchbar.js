@@ -101,27 +101,16 @@ const Searchbar = inject('UserStore', 'SearchStore', 'GeneralStore')(observer((p
   const search = () => {
     switch (searchFor) {
       case "offering":
-        SearchStore.searchTrades(freeTextInput)
-        SearchStore.setSeekingFilter(false)
-        SearchStore.setOfferingFilter(true)
-        console.log(SearchStore.seekingFilter)
-        console.log(SearchStore.offeringFilter)
-        console.log(freeTextInput)
-        //SearchStore.searchOffering(freeTextInput)
+        SearchStore.searchOffering(freeTextInput)
         break;
       case "seeking":
-        SearchStore.searchTrades(freeTextInput)
-        SearchStore.setSeekingFilter(true)
-        SearchStore.setOfferingFilter(false)
-        console.log(SearchStore.seekingFilter)
-        console.log(SearchStore.offeringFilter)
-        //SearchStore.searchSeeking(freeTextInput)
+        SearchStore.searchSeeking(freeTextInput)
         break;
       case "people":
         SearchStore.searchUsers(freeTextInput)
         break;
-      case "tags":
-        SearchStore.searchTags()
+      case "swap":
+        exactMatch ? SearchStore.searchExactSwap() : SearchStore.searchSwap()
         break;
     }
   }
@@ -133,37 +122,19 @@ const Searchbar = inject('UserStore', 'SearchStore', 'GeneralStore')(observer((p
       <Paper className={classes.paper}>
         <Paper className={classes.inputs}>
           <Select variant="outlined" label="Search for" className={classes.select} value={searchFor} onChange={({ target }) => setSearchFor(target.value)}>
-            <MenuItem value='offering'>Offering Cards</MenuItem>
-            <MenuItem value='seeking'>Seeking Cards</MenuItem>
-            <MenuItem value='tags'>Trades</MenuItem>
+            <MenuItem value='offering'>Trade offers</MenuItem>
+            <MenuItem value='seeking'>Trade requests</MenuItem>
+            <MenuItem value='swap'>Swap</MenuItem>
             <MenuItem value='people'>People</MenuItem>
           </Select>
 
-          {!(searchFor === 'tags') &&
-            <TextField id="Naked input" label={searchFor} variant="outlined" InputProps={{ className: classes.textField }} value={freeTextInput} onChange={({ target }) => setFreeTextInput(target.value)} placeholder="Search" />
+          {!(searchFor === 'swap') &&
+            <TextField id="Naked input" label="Search for..." variant="outlined" InputProps={{ className: classes.textField }} value={freeTextInput} onChange={({ target }) => setFreeTextInput(target.value)} placeholder="Search" />
           }
 
-          {searchFor === 'tags' &&
+          {searchFor === 'swap' &&
             <FormControl>
-
-              <FormLabel style={{ marginBottom: 5 }}>Seeking Tags</FormLabel>
-              <Autocomplete
-                className={classes.seekingTagsFilter}
-                multiple
-                size="small"
-                limitTags={1}
-                options={SearchStore.allTags}
-                getOptionLabel={(option) => option}
-                defaultValue={[]}
-                onChange={(e, value) => SearchStore.setSeekingTagsFilter(value)}
-                renderInput={(params) => (
-                  <TextField variant="outlined" {...params} />
-                )}
-              />
-            </FormControl>}
-          {searchFor === 'tags' &&
-            <FormControl>
-              <FormLabel style={{ marginBottom: 5, marginTop: 5 }}>Offering Tags</FormLabel>
+              <FormLabel style={{ marginBottom: 5, marginTop: 5 }}>Trade offer tags</FormLabel>
               <Autocomplete
                 className={classes.offeringTagsFilter}
                 multiple
@@ -178,38 +149,41 @@ const Searchbar = inject('UserStore', 'SearchStore', 'GeneralStore')(observer((p
                 )}
               />
             </FormControl>}
-          {searchFor === 'tags' &&
+
+          {searchFor === 'swap' &&
+            <FormControl>
+
+              <FormLabel style={{ marginBottom: 5 }}>Trade request tags</FormLabel>
+              <Autocomplete
+                className={classes.seekingTagsFilter}
+                multiple
+                size="small"
+                limitTags={1}
+                options={SearchStore.allTags}
+                getOptionLabel={(option) => option}
+                defaultValue={[]}
+                onChange={(e, value) => SearchStore.setSeekingTagsFilter(value)}
+                renderInput={(params) => (
+                  <TextField variant="outlined" {...params} />
+                )}
+              />
+            </FormControl>}
+
+          {searchFor === 'swap' &&
             <FormControlLabel
-              control={<Switch checked={exactMatch} onChange={handleSwitch} name="exactMatch" />}
+              control={<Checkbox checked={exactMatch} onChange={handleSwitch} name="exactMatch" />}
               label="exact match"
-            />}
+            />
+          }
           <div>
           </div>
           <IconButton className={classes.filterIcon} onClick={() => setShowFilters(!showFilters)}><FilterListIcon /></IconButton>
           <IconButton className={classes.searchIcon} onClick={search}><SearchIcon /></IconButton>
         </Paper>
         <Collapse style={{ width: '90%' }} in={showFilters}>
-          {/* <FormControl> */}
-          {/* <LocationSearchInput /> */}
-          {/* <MenuItem value='location'>Location</MenuItem>
-                  <MenuItem value='match'>Match</MenuItem> */}
-          {/* </FormControl> */}
+
           <div className={classes.filterSection}>
-            {/* {searchFor !== 'people' &&
-              <FormControl component="fieldset">
-                <FormLabel component="legend">Trade types</FormLabel>
-                <FormGroup>
-                  <FormControlLabel
-                    control={<Checkbox checked={SearchStore.seekingFilter} onChange={({ target }) => SearchStore.setSeekingFilter(target.checked)} />}
-                    label="Show Seeking"
-                  />
-                  <FormControlLabel
-                    control={<Checkbox checked={SearchStore.offeringFilter} onChange={({ target }) => SearchStore.setOfferingFilter(target.checked)} />}
-                    label="Show Offering"
-                  />
-                </FormGroup>
-              </FormControl>
-            } */}
+
 
             <div>
               <FormControl>

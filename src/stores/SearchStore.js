@@ -34,6 +34,21 @@ export class SearchStore {
     })
   }
 
+
+  async searchSwap(offering, seeking) {
+
+    console.log(`http://localhost:3001/search/imperfecttrade?seeking=[${this.seekingTagsFilter}]&offering=${this.offeringTagsFilter}&location=null`)
+    const results = await axios.get(`http://localhost:3001/search/imperfecttrade?seeking=${this.seekingTagsFilter}&offering=${this.offeringTagsFilter}`);
+    this.results = results.data;
+    this.searchFor = 'people'
+  }
+
+  async searchExactSwap() {
+    const results = await axios.get(`http://localhost:3001/search/perfecttrade?seeking=${this.seekingTagsFilter}&offering=${this.offeringTagsFilter}`);
+    this.results = results.data;
+    this.searchFor = 'people'
+  }
+
   setSeekingFilter(value) {
     this.seekingFilter = value
   }
@@ -43,14 +58,18 @@ export class SearchStore {
   }
 
   setSeekingTagsFilter(value) {
-    this.SeekingTagsFilter = value
+    console.log(value)
+    this.seekingTagsFilter = value
+    console.log(this.SeekingTagsFilter)
   }
 
   setOfferingTagsFilter(value) {
-    this.OfferingTagsFilter = value
+    this.offeringTagsFilter = value
   }
 
   getOfferingTagsArray(){
+    console.log(this.offeringTagsFilter.toString())
+    console.log(this.offeringTagsFilter)
     return this.offeringTagsFilter.toString()
   }
 
@@ -81,26 +100,16 @@ export class SearchStore {
     this.allTags = tags.data
   }
 
-  async searchTrades(text) {
-    
+  async searchOffering(text) {   
     const results = await axios.get(`http://localhost:3001/search/trades?q=${text}`);
-    this.results = results.data
-    console.log(this.results)
+    this.results = results.data.filter(card => card.type === "Offering")
     this.searchFor = 'trades'
-
   }
 
-  async searchTags() {
-    // let offering = this.getOfferingTagsArray()
-    // let seeking = this.getSeekingTagsArray()
-    // const tradesResults = await axios.get(`http://localhost:3001/search/tradetags?searchSeeking=${seeking}&searchOffering=${offering}&searchCity=${this.searchCity}&searchLocation=${this.searchCountry}`);
-    // this.tradesResults = tradesResults.data;
-    this.searchUsers('e')
-  }
-
-  async searchPerfectTrades() {
-    const tradesResults = await axios.get(`http://localhost:3001/search/perfecttrade?searchSeeking=${this.searchSeeking}&searchOffering=${this.searchOffering}&searchCity=${this.searchCity}&searchLocation=${this.searchCountry}`);
-    this.tradesResults = tradesResults.data;
+  async searchSeeking(text) {   
+    const results = await axios.get(`http://localhost:3001/search/trades?q=${text}`);
+    this.results = results.data.filter(card => card.type === "Seeking")
+    this.searchFor = 'trades'
   }
 
   async searchUsers(text) {
