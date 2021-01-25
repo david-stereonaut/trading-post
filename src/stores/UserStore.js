@@ -1,4 +1,4 @@
-import { observable, action, computed, makeObservable } from  'mobx';
+import { observable, action, computed, makeObservable } from 'mobx';
 const axios = require('axios');
 
 export class UserStore {
@@ -6,15 +6,20 @@ export class UserStore {
 
     this.user = {};
     this.watchedUser = {};
+    this.userId = null;
+    this.login = { email: null, password: null }
 
     makeObservable(this, {
       user: observable,
+      login: observable,
       watchedUser: observable,
+      userId: observable,
       fetchUser: action,
       fetchWatchedUser: action,
       startConversation: action,
       addTag: action,
       removeTag: action,
+      loginUser: action,
       addImage: action,
       removeImage: action,
       changeProfilePic: action,
@@ -22,9 +27,27 @@ export class UserStore {
     })
   }
 
+   handleLogin(email, password) {
+    this.login.email = email
+    this.login.password = password
+  }
+  async loginUser() {
+    try {
+      const userId = await axios.post(`http://localhost:3001/user/authenticate`, this.login);
+      this.userId = userId.data
+      localStorage.setItem('userId', userId.data);
+      return("ok")
+    }
+    catch (err) {
+      alert(err.response.data.error)
+    }
+  }
+
   async fetchUser() {
-    const user = await axios.get(`http://localhost:3001/myUser/60045b1519f39a2c9c46c63e`);
+    this.userId = localStorage.getItem('userId')
+    const user = await axios.get(`http://localhost:3001/myUser/${this.userId}`);
     this.user = user.data;
+    console.log(this.user)
   }
 
   async fetchWatchedUser(id) {
@@ -36,7 +59,7 @@ export class UserStore {
   async startConversation(subject, text) {
     const conversation = {
       senderId: this.user.id,
-      recieverId : this.watchedUser.id,
+      recieverId: this.watchedUser.id,
       subject: subject,
       text: text
     }
@@ -75,13 +98,13 @@ export class UserStore {
     const user = await axios.put(`http://localhost:3001/addToUserArray/${this.user._id}`, data);
     this.user.images = user.data.images;
   }
-  
+
   async removeImage(imageUrl, imageId) {
-    const data= {
-      images : {imageUrl}
+    const data = {
+      images: { imageUrl }
     }
     const user = await axios.put(`http://localhost:3001/removeFromUserArray/${this.user._id}`, data);
-    axios.post('http://localhost:3001/destroyImage', {id:imageId})
+    axios.post('http://localhost:3001/destroyImage', { id: imageId })
     this.user.images = user.data.images;
   }
 

@@ -3,6 +3,7 @@ import Profile from "./Profile/Profile";
 import Search from "./Search/Search";
 import Messages from "./Messages/Messages";
 import { inject, observer } from "mobx-react";
+import Login from './Login/Login'
 
 
 const Container = inject('UserStore')(observer((props) => {
@@ -13,12 +14,14 @@ const Container = inject('UserStore')(observer((props) => {
     <div id="container">
       <Route exact path="/">
         <Redirect to="/search" />
-      </Route> 
+      </Route>
+      <Route exact path="/login" render={() => <Login />}/>
       <Route exact path="/search" render={() => <Search />}/>
       <Route exact path="/profile/:userId" render={() => <Profile />}/>
       <Route exact path="/messages" render={() => <Messages />}/>
     </div>
   )
 }))
+
 
 export default Container

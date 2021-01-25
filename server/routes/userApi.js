@@ -2,9 +2,67 @@ const express = require('express')
 const router = express.Router()
 const Conversation = require('../models/ConversationModel')
 const TradeCard = require('../models/TradeCardModel')
+const jwt = require('jsonwebtoken');
 const User = require('../models/UserModel')
+const secret = 'secrettradingpost';
 
-router.get('/myuser/:userId', async function (req, res) {
+// POST route to register a user
+router.post('/user/register', async function(req, res) {
+    const user = new User({ ...req.body });
+    console.log(user)
+    await user.save(function(err) {
+      if (err) {
+       console.log(err);
+      } else {
+        res.status(200).send("Welcome to the club!");
+      }
+    });
+  });
+
+  router.post('/user/authenticate', function(req, res) {
+    const { email, password } = req.body;
+    console.log(email, password)
+
+    User.findOne({ email }, function(err, user) {
+      if (err) {
+        console.error(err);
+        res.status(500)
+          .send({
+          error: 'Internal error please try again'
+        });
+      } else if (!user) {
+        res.status(401)
+          .send({
+            error: 'Incorrect email or password'
+          });
+      } else {
+        user.isCorrectPassword(password, function(err, same) {
+          if (err) {
+            res.status(500)
+              .send({
+                error: 'Internal error please try again'
+            });
+          } else if (!same) {
+            res.status(401)
+              .send({
+                error: 'Incorrect email or password'
+            });
+          } else {
+            // Issue token
+            const payload = { email };
+            const token = jwt.sign(payload, secret, {
+              expiresIn: '1h'
+            });
+            res.cookie('token', token, { httpOnly: true })
+            // console.log("token")
+              .send(user._id);
+          }
+        });
+      }
+    });
+  });
+
+router.get('/myuser/:userId',  async function (req, res) {
     const { userId } = req.params
     const data = await User.findById(userId).populate('tradeCards')
     let { password, ...newData} = data.toObject()

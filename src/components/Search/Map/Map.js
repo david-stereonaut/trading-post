@@ -1,6 +1,5 @@
 import { observer, inject } from 'mobx-react'
 import { useCallback, useEffect, useState, } from 'react'
-
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import MapResult from './MapResult';
 import { Slide } from '@material-ui/core';
@@ -34,7 +33,7 @@ const Map = inject('UserStore', 'SearchStore', 'GeneralStore', 'MapStore')(obser
 
   return (
     <LoadScript
-      googleMapsApiKey="AIzaSyBZbfnMyK4xaIDNevsXwulDnxC9nhZ0rS0"
+      googleMapsApiKey= "AIzaSyBZbfnMyK4xaIDNevsXwulDnxC9nhZ0rS0"
     >
       <GoogleMap
         mapContainerStyle={containerStyle}

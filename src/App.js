@@ -33,7 +33,7 @@ const App = inject('UserStore', 'SearchStore')(observer((props) => {
     <Router>
       <ThemeProvider theme={theme}>
         <div className="App">
-          <Navbar />
+          <Navbar/>
           <Container />
         </div>
       </ThemeProvider>
