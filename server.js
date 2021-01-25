@@ -9,7 +9,7 @@ const searchRouter = require('./server/routes/searchApi')
 const tradeCardRouter = require('./server/routes/tradeCardApi')
 const withAuth = require('./middleware');
 const cookieParser = require('cookie-parser');
-
+const SocketService = require('./server/SocketService/SocketService');
 mongoose.connect("mongodb+srv://TradingPostUser:elevation@cluster0.wllqb.mongodb.net/TradingPost?retryWrites=true&w=majority", { useNewUrlParser: true, useUnifiedTopology: true })
 // mongoose.connect("mongodb://localhost/trading-post", { useNewUrlParser: true},  { useUnifiedTopology: true })
 
@@ -39,6 +39,31 @@ app.get('/checkToken', withAuth, function(req, res) {
 });
 
 
+const socketServer = app.listen(4000);
+const cors = {
+  cors: [
+    {
+      origin: "http://localhost:3000",
+      methods: ["GET", "POST"]
+    }
+  ]
+}
+
+// ignore this (Eilon)
+// const cors = {
+//   cors: [
+//     {
+//       origin: "http://localhost:3000",
+//       methods: ["GET", "POST"]
+//     },
+//     {
+//       origin: "http://localhost:5000",
+//       methods: ["GET", "POST"]
+//     }
+//   ]
+// }
+
+const socketService = new SocketService(socketServer, cors);
 
 const port = process.env.PORT || 3001
 app.listen(port, function() {
