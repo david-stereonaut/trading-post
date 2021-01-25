@@ -30,7 +30,7 @@ const Messages = inject('MessagesStore', 'UserStore', 'GeneralStore')(observer((
     MessagesStore.getCons(MessagesStore.category);
     MessagesStore.socketPort = 'http://localhost:4000';
 
-  }, []);
+  }, [UserStore.user._id]);
 
   const classes = useStyles()
 
