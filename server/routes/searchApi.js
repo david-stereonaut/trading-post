@@ -8,8 +8,8 @@ const User = require('../models/UserModel')
 //imperfecttrade?seeking=Synth,Dog Sitting&offering=Languages
 router.get('/search/imperfecttrade', async function (req, res) {
     const { seeking, offering } = req.query
-    const newOffering = offering ? offering.split(',') : null
-    const newSeeking = seeking ? seeking.split(',') : null
+    const newOffering = offering.includes(',') ? offering.split(',') : [offering]
+    const newSeeking = seeking.includes(',') ? seeking.split(',') : [seeking]
     try {
         let users = await User.find({$or:[{offeringTags: {$in: newOffering }},{seekingTags:{$in:newSeeking}}]}, { firstName: 1, lastName: 1, profilePic: 1, seekingTags: 1, offeringTags: 1, description: 1, location: 1 })
         res.send(users)
@@ -20,8 +20,8 @@ router.get('/search/imperfecttrade', async function (req, res) {
 })
 router.get('/search/perfecttrade', async function (req, res) {
     const { seeking, offering } = req.query
-    const newOffering = offering ? offering.split(',') : null
-    const newSeeking = seeking ? seeking.split(',') : null
+    const newOffering = offering.includes(',') ? offering.split(',') : [offering]
+    const newSeeking = seeking.includes(',') ? seeking.split(',') : [seeking]
     try {
     let users = await User.find({$and:[{offeringTags: {$in: newOffering }},{seekingTags:{$in:newSeeking}}]}, { firstName: 1, lastName: 1, profilePic: 1, seekingTags: 1, offeringTags: 1, description: 1, location: 1 })
       res.send(users)
@@ -31,9 +31,28 @@ router.get('/search/perfecttrade', async function (req, res) {
     }
 })
 
+// router.get('/getTags', async function (req, res) {
+//     let data = await TradeCard.find({})
+//     const allTags = data.map(t => t.tags)
+//     data = await User.find({})
+//     let uniqueTagsObject = {}
+//     for (let i = 0; i < allTags.length; i++) {
+//         for (let j = 0; j < allTags[i].length; j++) {
+//             if (!(uniqueTagsObject[allTags[i][j]])) {
+//                 uniqueTagsObject[allTags[i][j]] = "value"
+//             }
+//         }
+//     }
+//     let uniqueTags = Object.keys(uniqueTagsObject)
+//     res.send(uniqueTags)
+// })
+
 router.get('/getTags', async function (req, res) {
-    const data = await TradeCard.find({})
+    let data = await TradeCard.find({})
     const allTags = data.map(t => t.tags)
+    data = await User.find({})
+    data.forEach(u => allTags.push(u.offeringTags))
+    data.forEach(u => allTags.push(u.seekingTags))
     let uniqueTagsObject = {}
     for (let i = 0; i < allTags.length; i++) {
         for (let j = 0; j < allTags[i].length; j++) {
