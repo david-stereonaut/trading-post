@@ -59,15 +59,15 @@ const useStyles = makeStyles((theme) => ({
 const UserInfo = inject('UserStore', 'GeneralStore')(observer((props) => {
 
   
-  const userName = useRef(null)
+
+  const [ref, setRef] = useState();
   
-  let usernameWidth = userName.current ? userName.current.offsetWidth : 87.5
+  let usernameWidth = ref ? ref.offsetWidth : 87.5
   
   
   const { UserStore, GeneralStore, user, editable } = props
   
   const { userId } = useParams()
-  
   
   const classes = useStyles({ usernameWidth, editable })
   
@@ -98,7 +98,7 @@ const UserInfo = inject('UserStore', 'GeneralStore')(observer((props) => {
           !GeneralStore.editName ?
           <div>
             <div className={classes.userName}>
-              <Typography variant="h5" ref={userName}>
+              <Typography variant="h5" ref={newRef => setRef(newRef)}>
                 {`${user.firstName} ${user.lastName}`}
               </Typography>
                 {editable && <IconButton size="small" onClick={() => GeneralStore.setEditName(true)}><EditIcon /></IconButton>}

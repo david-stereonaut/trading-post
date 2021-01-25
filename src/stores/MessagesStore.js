@@ -43,7 +43,8 @@ export class MessagesStore {
             revealTextPopup: action,
             // changeUser: action,
             manageSocket: action,
-            setUserId: action
+            setUserId: action,
+            signOut: action
         })
     }
 
@@ -188,5 +189,18 @@ export class MessagesStore {
         this.userId = id;
         this.socket.close();
         this.socket.open();
+    }
+
+    signOut() {
+        this.userId = '';
+        this.category = 'Active barters';
+        this.userCons = [];
+        this.currentConId = '';
+        this.newMessage = '';
+        this.reviewPopup = false;
+        this.generalPopup = false;
+        this.textPopup = false;
+        this.declineMessage = '';
+        this.socket = io('http://localhost:4000');
     }
 }

@@ -1,23 +1,47 @@
 import { observer, inject } from 'mobx-react'
-import {  useState } from 'react'
-import {Link} from 'react-router-dom'
+import {  useEffect, useState } from 'react'
+import {Link, useHistory} from 'react-router-dom'
 import axios from 'axios'
-import { makeStyles, TextField } from '@material-ui/core'
+import { Button, makeStyles, TextField, Typography } from '@material-ui/core'
 
 const useStyles = makeStyles(() => ({
     container: {
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center'
-    }
+        alignItems: 'center',
+        '& > *': {
+            marginTop: 10
+        },
+        
+    },
+    form: {
+        display: 'flex',
+        flexDirection: 'column',
+        '& > *': {
+            marginTop: 10
+        },
+        width: 200
+    },
 }))
 
 const Login = inject('GeneralStore', 'UserStore', 'MessagesStore')(observer((props) => {
 
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState([])
-    const [userOk, setUserOk] = useState(false)
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [error, setError] = useState('')
+    const [emailError, setEmailError] = useState(false)
+    const [passwordError, setPasswordError] = useState(false)
     let { GeneralStore, UserStore, MessagesStore } = props
+
+    const history = useHistory()
+
+    useEffect(() => {
+        GeneralStore.handleTabChange('', 3)
+        if (UserStore.user._id) {
+          history.push(`/search`)
+        }
+    
+      }, [UserStore.user._id]);
 
     const handleChange = (event) => {
         const value = event.target.value
@@ -29,34 +53,57 @@ const Login = inject('GeneralStore', 'UserStore', 'MessagesStore')(observer((pro
         }
     };
 
-    const userLogin = async () => {
-         UserStore.handleLogin(email, password)
-        const verify = await UserStore.loginUser()
-        if (verify ==="ok"){
-        await UserStore.fetchUser()
-        if (UserStore.user._id) {
-            MessagesStore.setUserId(UserStore.user._id)
-        }
-        setUserOk(true)
-    }
-}  
+    
 
-const userLogOut = () => {
-    localStorage.clear()
-}
+    const userLogin = async () => {
+        if (!email && !password) {
+            setEmail('')
+            setPassword('')
+            setEmailError(true)
+            setPasswordError(true)
+            setError('You must enter your email and password!')
+            return
+        } else if (!email) {
+            setEmail('')
+            setPassword('')
+            setEmailError(true)
+            setPasswordError(false)
+            setError('You must enter your email')
+            return
+        } else if (!password) {
+            setEmail('')
+            setPassword('')
+            setEmailError(false)
+            setPasswordError(true)
+            setError('You must enter your password!')
+            return
+        }
+        const verify = await UserStore.loginUser(email, password)
+        if (verify ==="ok"){
+            await UserStore.fetchUser()
+            MessagesStore.setUserId(UserStore.user._id)
+            history.push('/search')
+        } else {
+            setEmail('')
+            setPassword('')
+            setError(verify)
+        }
+    }  
 
     const classes = useStyles()
 
   return (
-        <div>
-            <input id="email-input" type="text" placeholder="Enter your Email" name="email" onChange={handleChange} />
-            <input id="password-input" type="text" placeholder="Enter your Password" name="password" onChange={handleChange} />
-        {userOk 
-        ? <Link to="/search"><button>Search for a Trade</button></Link>
-        : <button onClick={userLogin}>Login</button>
-        }
-        <button onClick={userLogOut}>Log Out</button>
+        <div className={classes.container}>
+            <Typography variant='h6'>Log in here</Typography>
+            <form className={classes.form}>
+                {!emailError ? <TextField label="Enter your Email" name="email" value={email} onChange={handleChange} /> : <TextField value={email} label="Enter your Email" error name="email" onChange={handleChange} />}
+                {!passwordError ? <TextField type='password' label="Enter your Password" value={password} name="password" onChange={handleChange} /> : <TextField value={password} error label="Enter your Password" name="password" onChange={handleChange} />}
+                <Button style={{flexGrow: 0}} onClick={userLogin}>Login</Button>
+                {error && <Typography variant='subtitle2' style={{color: 'red'}}>{error}</Typography>}
+            </form>
+            <Typography>Don't have a user? Register <Link to='/register'>here</Link></Typography>
         </div>
+        
     )
 }))
 
