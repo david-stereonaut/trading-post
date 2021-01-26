@@ -21,7 +21,7 @@ const GeneralPopup = inject('MessagesStore', 'UserStore')(observer((props) =>  {
         break;
         case 'Pending': 
             text = firstSender === MessagesStore.userId ? 'Cancel request? The request will be deleted' : `Starting barter with ${partnerFirstName}`;
-            newStatus = firstSender === MessagesStore.userId ? null : 'Active';
+            newStatus = firstSender === MessagesStore.userId ? 'Cancelled' : 'Active';
         break;
         default: text = ''; newStatus = '';
     }
