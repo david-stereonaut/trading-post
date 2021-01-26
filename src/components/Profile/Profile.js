@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import './Profile.scss'
 import UserInfo from './UserInfo'
 import UserPhotos from './UserPhotos'
-import UserContent from './UserContent'
+import UserReviews from './UserReviews'
 import UserTrades from './UserTrades'
 import { useParams } from 'react-router-dom'
 import { Divider } from '@material-ui/core'
@@ -79,7 +79,7 @@ const Profile = inject('UserStore', 'GeneralStore', 'SearchStore')(observer((pro
       </div>
       <div className="profile-right-section">
         <UserPhotos user={user} editable={editable} />
-        <UserContent user={user} editable={editable} />
+        <UserReviews user={user} editable={editable} />
       </div>
       {editable && user.firstName ? <ProfilePicUpload /> : null}
       {editable && user.firstName ? <ImageUpload /> : null}

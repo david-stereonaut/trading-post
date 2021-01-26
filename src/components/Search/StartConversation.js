@@ -9,9 +9,13 @@ const StartConversation = inject('MessagesStore', 'GeneralStore', 'UserStore')(o
 
     const [addTrade, setAddTrade] = useState(false)
 
-    const closePopup = () => GeneralStore.setStartTradeDialog(false);
+    const closePopup = () => { GeneralStore.setStartTradeDialog(false); GeneralStore.setStartTradeBody('')}
 
     const startConversation = () => {
+      if (UserStore.userId === GeneralStore.startTradeUserId) {
+        MessagesStore.setStartConvoSnackbar('You cant start a barter with yourself!')
+        return
+      }
       const newConvo = {
         users: [UserStore.userId, GeneralStore.startTradeUserId],
         status: 'Pending',
@@ -24,6 +28,7 @@ const StartConversation = inject('MessagesStore', 'GeneralStore', 'UserStore')(o
       }
       MessagesStore.startConversation(newConvo)
       GeneralStore.setStartTradeDialog(false)
+      GeneralStore.setStartTradeBody('')
     }
 
     return (

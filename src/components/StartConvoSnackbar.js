@@ -10,7 +10,7 @@ const StartConvoSnackbar = inject('MessagesStore', 'GeneralStore', 'UserStore')(
 
     return (
       <Snackbar
-      open={MessagesStore.startConvoSnackbar}
+      open={MessagesStore.startConvoSnackbar ? true : false}
       autoHideDuration={4000}
       onClose={() => MessagesStore.setStartConvoSnackbar('')}
       message={MessagesStore.startConvoSnackbar}
