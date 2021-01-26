@@ -61,15 +61,17 @@ const UserTrades = inject('UserStore', 'GeneralStore')(observer((props) =>  {
 
   return (
     <Paper className={classes.tradesContainer}>
-      <div className={classes.tradeTitle}>
-        <Typography variant="h5" align="center">Trades</Typography>
+      {/* <div className={classes.tradeTitle}>
+        <Typography variant="h5" align="right">Trades</Typography>
         {editable && <IconButton size="small" onClick={openEdit} ><AddIcon /></IconButton>}
-      </div>
-      <Typography variant="h6">Trade offers:</Typography>
+      </div> */}
+      <Typography variant="h6">Trade offers: {editable && <IconButton size="small" onClick={openEdit} ><AddIcon /></IconButton>}</Typography>
+      
       <div className="user-trades-container">
         {offering && offering.length > 0 ? (offering.map((trade) => <TradeCard key={trade._id} type='profile' trade={trade} editable={editable} />)) : <Typography >User has no offers</Typography>}
       </div>
-      <Typography variant="h6">Trade requests:</Typography>
+      <Typography variant="h6">Trade requests:       {editable && <IconButton size="small" onClick={openEdit} ><AddIcon /></IconButton>}</Typography>
+
       <div className="user-trades-container">
         {seeking && seeking.length > 0 ? (seeking.map((trade) => <TradeCard key={trade._id} type='profile' trade={trade} editable={editable} />)) : <Typography >User has no trades</Typography>}
       </div>
