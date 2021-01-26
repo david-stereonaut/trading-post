@@ -28,7 +28,8 @@ export class UserStore {
       isNeighbor: action,
       isNeighborhood: action,
       getNeighborhood: action,
-      registerUser: action
+      registerUser: action, 
+      addNeighbor:action
     })
   }
 
@@ -64,7 +65,7 @@ export class UserStore {
   async fetchUser() {
     const user = await axios.get(`http://localhost:3001/myUser/${this.userId}`);
     this.user = user.data;
-    this.getNeighborhood();
+    // this.getNeighborhood();
   }
 
   async fetchWatchedUser(id) {
@@ -194,7 +195,19 @@ export class UserStore {
     this.neighborhood = neighborhood;
   }
 
-  isNeighbor = userId  => this.user.neighbors.some(n => n._id === userId);
+  isNeighbor = userId  => this.user.neighbors && this.user.neighbors.some(n => n._id === userId);
 
   isNeighborhood = userId => this.neighborhood.includes(userId);
+
+  async addNeighbor(){
+    try {
+      const user1 = this.user._id
+      const user2 = this.watchedUser._id
+      await axios.post(`http://localhost:3001/neighbors`, {user1, user2})
+      this.fetchUser()
+    }
+    catch (err) {
+      return err.response.data.error
+    }
+}
 }
