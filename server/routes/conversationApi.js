@@ -52,6 +52,18 @@ router.post('/conversations/:conversationId', async function (req, res) {
     }
 })
 
+router.post('/userReviewd/:conversationId', async function (req, res) {
+    let userId = req.body.reviewerId
+    let { conversationId } = req.params
+    try {
+        const updatedConversation = await Conversation.findByIdAndUpdate( conversationId , { $push: { usersReviewed: userId } }, { new: true })
+        res.send(updatedConversation)
+    }
+    catch (err) {
+        res.send(err.message)
+    }
+})
+
 router.put('/conversations/:conversationId', async function (req, res) {
     let newStatus = req.body.status
     let { conversationId } = req.params

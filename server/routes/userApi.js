@@ -95,6 +95,10 @@ router.get('/user/:userId', async function (req, res) {
             path: 'reviewer',
             select: '_id firstName lastName profilePic'
         }
+      },
+      {
+        path: 'neighbors',
+        select: '_id firstName lastName profilePic seekingTags offeringTags location neighbors'
       }
     ])
     data.reviews.forEach(r => r.stars = null)
