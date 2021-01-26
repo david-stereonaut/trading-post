@@ -50,6 +50,12 @@ const ProfileTradeCard = inject('GeneralStore')(observer((props) =>  {
     GeneralStore.handleAddTradeCardDialog()
   }
 
+  const startTrade = () => {
+    GeneralStore.setStartTradeUserId(trade.user_id)
+    GeneralStore.setStartTrade(trade)
+    GeneralStore.setStartTradeDialog(true)
+  }
+
   return (
     <Paper>
       <div className={`${classes.card} profile-trade-card`} >
@@ -70,7 +76,7 @@ const ProfileTradeCard = inject('GeneralStore')(observer((props) =>  {
             {trade.tags.map(tag => <Tag key={tag} tag={tag} />)}
           </div>
         </div>
-        {trade.type === "Offering" ? <Button startIcon={<TradeIcon />} color="secondary" variant="contained">Trade!</Button> : <Button startIcon={<TradeIcon />} color="secondary" variant="contained">Trade!</Button>}
+        {<Button onClick={startTrade} startIcon={<TradeIcon />} color="secondary" variant="contained">Trade!</Button>}
       </div>
     </Paper>
   )

@@ -5,15 +5,15 @@ import { sizing } from '@material-ui/system';
 import Tag from '../Tag';
 
 
-const UserContent = inject('UserStore')(observer((props) =>  {
+const UserReviews = inject('UserStore')(observer((props) =>  {
 
-  const { UserStore } = props
+  const { UserStore, user } = props
 
   return (
     <Paper style={{}}>
-      <Typography variant="h6">Content:</Typography>
+      <Typography variant="h6">Reviews:</Typography>
     </Paper>
   )
 }))
 
-export default UserContent
+export default UserReviews

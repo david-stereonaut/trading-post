@@ -68,6 +68,7 @@ const MessageTradeCard = inject('GeneralStore', 'SearchStore', 'UserStore')(obse
         
           <Typography variant="body1">{trade.title}</Typography>
           <Typography variant="body1" style={{fontSize: 14}}  paragraph={true}>{trade.description}</Typography>
+      <Typography style={{alignSelf: 'flex-end'}} variant="subtitle2">{trade.type === 'Offering' ? 'Offering' : 'Requesting'}</Typography>
         </div>
       </div>
     </Paper>
