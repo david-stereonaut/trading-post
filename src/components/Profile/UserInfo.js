@@ -6,8 +6,21 @@ import { useParams } from 'react-router-dom';
 import EditIcon from '@material-ui/icons/Edit';
 import { useRef, useState, useEffect } from 'react';
 import UserTagsEdit from './Edits/UserTagsEdit';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+import RemoveIcon from '@material-ui/icons/Remove';
+
+
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    '& > *': {
+      margin: theme.spacing(1),
+    },
+  },
+  extendedIcon: {
+    marginRight: theme.spacing(1),
+  },
   userName: {
     '& button': {
       display: 'none'
@@ -16,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
       '& button': {
         display: 'inline-block'
       },
-      textDecoration: (({editable}) => editable ? 'underline' : null)
+      textDecoration: (({ editable }) => editable ? 'underline' : null)
     },
     display: 'flex',
     flexDirection: 'row',
@@ -59,19 +72,25 @@ const useStyles = makeStyles((theme) => ({
 
 const UserInfo = inject('UserStore', 'GeneralStore')(observer((props) => {
 
-  
+
   const userName = useRef(null)
-  
+
   let usernameWidth = userName.current ? userName.current.offsetWidth : 87.5
-  
-  
+
+
   const { UserStore, GeneralStore, user, editable } = props
-  
+
   const { userId } = useParams()
-  
-  
+
+  let neighbor = UserStore.isNeighbor(user._id)
+
   const classes = useStyles({ usernameWidth, editable })
-  
+
+  const handleNeighbor = () => {
+    neighbor = !neighbor
+    !neighbor && UserStore.addNeighbor()
+  }
+
   const [editNameInput, setEditNameInput] = useState(`${UserStore.user.firstName} ${UserStore.user.lastName}`)
   const [editDescriptionInput, setEditDescriptionInput] = useState(`${UserStore.user.description}`)
 
@@ -86,6 +105,14 @@ const UserInfo = inject('UserStore', 'GeneralStore')(observer((props) => {
   return (
     <div>
       <Paper style={{}}>
+      {!editable && <div style={{ marginLeft: -10, marginTop: -20 }}>
+        {neighbor ? <Fab variant="extended" color="secondary" aria-label="add" size="small">
+          <RemoveIcon onClick={handleNeighbor}/>
+        </Fab> :
+        <Fab variant="extended" color="secondary" aria-label="add" size="small">
+          <AddIcon onClick={handleNeighbor}/>
+        </Fab>}
+        </div>}
         <div id="user-info">
           <Card className={classes.profilePic}>
             {editable && <IconButton size="small" onClick={GeneralStore.openProfilePicDialog}><EditIcon /></IconButton>}
@@ -95,34 +122,34 @@ const UserInfo = inject('UserStore', 'GeneralStore')(observer((props) => {
             />
           </Card>
           <ClickAwayListener onClickAway={() => GeneralStore.setEditName(false)}>
-          {
-          !GeneralStore.editName ?
-          <div style={{display: 'flex', flexDirection: 'column'}}>
-            <div className={classes.userName}>
-              <Typography variant="h5" ref={userName}>
-                {`${user.firstName} ${user.lastName}`}
-              </Typography>
-                {editable && <IconButton size="small" onClick={() => GeneralStore.setEditName(true)}><EditIcon /></IconButton>}
-            </div> 
-            <div>
-              <Typography variant="body2" color="textSecondary">{user.description}</Typography>
-            </div>
-          </div> :
-          <div className={classes.columnItems}>
-            <TextField
-              label="Name"
-              onChange={(event) => setEditNameInput(event.target.value)}
-              value={editNameInput}
-            />
-            <TextField
-              multiline
-              label="Description"
-              onChange={(event) => setEditDescriptionInput(event.target.value)}
-              value={editDescriptionInput}
-            />
-            <Button onClick={setNewDetails}>Save</Button>
-          </div>
-          }
+            {
+              !GeneralStore.editName ?
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <div className={classes.userName}>
+                    <Typography variant="h5" ref={userName}>
+                      {`${user.firstName} ${user.lastName}`}
+                    </Typography>
+                    {editable && <IconButton size="small" onClick={() => GeneralStore.setEditName(true)}><EditIcon /></IconButton>}
+                  </div>
+                  <div>
+                    <Typography variant="body2" color="textSecondary">{user.description}</Typography>
+                  </div>
+                </div> :
+                <div className={classes.columnItems}>
+                  <TextField
+                    label="Name"
+                    onChange={(event) => setEditNameInput(event.target.value)}
+                    value={editNameInput}
+                  />
+                  <TextField
+                    multiline
+                    label="Description"
+                    onChange={(event) => setEditDescriptionInput(event.target.value)}
+                    value={editDescriptionInput}
+                  />
+                  <Button onClick={setNewDetails}>Save</Button>
+                </div>
+            }
           </ClickAwayListener>
           <div style={{ marginTop: 10 }}>
             <div className={classes.tags}>
@@ -130,10 +157,10 @@ const UserInfo = inject('UserStore', 'GeneralStore')(observer((props) => {
               {editable && <IconButton size="small" onClick={GeneralStore.handleUserOfferTagEdit}><EditIcon fontSize="inherit" /></IconButton>}
             </div>
             {!GeneralStore.UserOfferTagEdit ?
-            <div className="user-tag-container">
-              {user.offeringTags && user.offeringTags.length > 0 ? user.offeringTags.map(tag => <Tag key={tag} tag={tag} />) : <Typography variant="subtitle1" >User has no offering tags</Typography>}
-            </div> :
-            <UserTagsEdit type={'offering'} />}
+              <div className="user-tag-container">
+                {user.offeringTags && user.offeringTags.length > 0 ? user.offeringTags.map(tag => <Tag key={tag} tag={tag} />) : <Typography variant="subtitle1" >User has no offering tags</Typography>}
+              </div> :
+              <UserTagsEdit type={'offering'} />}
           </div>
           <div style={{ marginTop: 10, marginBottom: 10 }}>
             <div className={classes.tags}>
@@ -141,10 +168,10 @@ const UserInfo = inject('UserStore', 'GeneralStore')(observer((props) => {
               {editable && <IconButton size="small" onClick={GeneralStore.handleUserSeekTagEdit}><EditIcon fontSize="inherit" /></IconButton>}
             </div>
             {!GeneralStore.UserSeekTagEdit ?
-            <div className="user-tag-container">
-              {user.seekingTags && user.seekingTags.length > 0 ? user.seekingTags.map(tag => <Tag key={tag} tag={tag} />) : <Typography variant="subtitle1" >User has no requesting tags</Typography>}
-            </div> :
-            <UserTagsEdit type={'seeking'} />}
+              <div className="user-tag-container">
+                {user.seekingTags && user.seekingTags.length > 0 ? user.seekingTags.map(tag => <Tag key={tag} tag={tag} />) : <Typography variant="subtitle1" >User has no requesting tags</Typography>}
+              </div> :
+              <UserTagsEdit type={'seeking'} />}
           </div>
         </div>
       </Paper>
