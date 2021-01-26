@@ -19,6 +19,11 @@ const ReviewPopup = inject('MessagesStore')(observer((props) =>  {
 
   const reviewAndComplete = () => {
     MessagesStore.addReview(partnerId, MessagesStore.userId, reviewText, rating);
+    if(conversation.status === 'Completed') {
+      MessagesStore.closePopup('reviewPopup');
+      MessagesStore.userCons.find(d => d._id === MessagesStore.currentConId).usersReviewed.push(MessagesStore.userId);
+      return;
+    }
     MessagesStore.updateAndClosePopup('Completed', 'reviewPopup');
     setReviewText('');
   }

@@ -9,6 +9,7 @@ const conversationSchema = new Schema({
     body: String,
     tradeCard: { type: Schema.Types.ObjectId, ref: 'TradeCard' }
   }],
+  usersReviewed: []
 }, { versionKey: false })
 const Conversation = mongoose.model("Conversation", conversationSchema)
 module.exports = Conversation
