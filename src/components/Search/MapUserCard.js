@@ -86,7 +86,7 @@ const MapUserCard = inject('GeneralStore', 'SearchStore', 'UserStore')(observer(
         </Card>}
         <div className={classes.text}>
           <Typography variant="body1">{`${user.firstName} ${user.lastName}`}</Typography>
-          <Typography variant="subtitle1" style={{fontSize: 12}} paragraph={true} color="textSecondary">{`${user.location.city}, ${user.location.country}`}</Typography>
+          {user.location && user.location.city &&  <Typography variant="subtitle1" style={{fontSize: 12}} paragraph={true} color="textSecondary">{`${user.location.city}, ${user.location.country}`}</Typography>}
           <Typography variant="body1" style={{fontSize: 14}} paragraph={true}>{user.description}</Typography>
         </div>
         <div>

@@ -81,7 +81,7 @@ const MapTradeCard = inject('GeneralStore', 'SearchStore', 'UserStore')(observer
         <div className={classes.text}>
         
           <Typography variant="body1">{trade.title}</Typography>
-          <Typography variant="subtitle1" style={{fontSize: 12}} color="textSecondary">{`${trade.user_id.location.city}, ${trade.user_id.location.country}`}</Typography>
+          {trade.user_id.location && trade.user_id.location.city && <Typography variant="subtitle1" style={{fontSize: 12}} color="textSecondary">{`${trade.user_id.location.city}, ${trade.user_id.location.country}`}</Typography>}
           <Typography variant="subtitle1" style={{fontSize: 12}} paragraph={true} color="textSecondary">{trade.subTitle}</Typography>
           <Typography variant="body1" style={{fontSize: 14}}  paragraph={true}>{trade.description}</Typography>
         </div>
