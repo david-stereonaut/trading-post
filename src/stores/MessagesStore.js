@@ -43,7 +43,8 @@ export class MessagesStore {
             manageSocket: action,
             setUserId: action,
             signOut: action,
-            addReview: action
+            addReview: action,
+            addNeighbor: action
         })
     }
 
@@ -198,5 +199,13 @@ export class MessagesStore {
         }
         console.log(review);
         await axios.post(`http://localhost:3001/review/${reviewOfId}`, review);
+    }
+
+    addNeighbor = async newNeighbor => {
+        const users = {
+            user1: this.userId,
+            user2: newNeighbor
+        }
+        await axios.post(`http://localhost:3001/neighbors`, users);
     }
 }

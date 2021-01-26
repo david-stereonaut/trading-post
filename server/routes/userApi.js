@@ -71,6 +71,10 @@ router.get('/myuser/:userId',  async function (req, res) {
             path: 'reviewer',
             select: '_id firstName lastName profilePic'
         }
+      },
+      {
+        path: 'neighbors',
+        select: '_id firstName lastName profilePic seekingTags offeringTags location neighbors'
       }
     ])
     data.reviews.forEach(r => r.stars = null)
@@ -134,6 +138,19 @@ router.post('/review/:userId', async function (req, res) {
   try {
       const updatedUser = await User.findByIdAndUpdate( userId , { $push: { reviews: review } }, { new: true })
       res.send(updatedUser)
+  }
+  catch (err) {
+      res.send(err.message)
+  }
+})
+
+router.post('/neighbors', async function (req, res) {
+  let user1 = req.body.user1;
+  let user2 = req.body.user2;
+  try {
+    await User.findByIdAndUpdate( user1 , { $push: { neighbors: user2 } }, { new: true });
+    await User.findByIdAndUpdate( user2 , { $push: { neighbors: user1 } }, { new: true });
+    res.end();
   }
   catch (err) {
       res.send(err.message)

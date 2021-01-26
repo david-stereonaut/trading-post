@@ -32,6 +32,7 @@ const userSchema = new Schema({
       review: String,
       stars: Number
     }],
+    neighbors: [{ type: Schema.Types.ObjectId, ref: 'User' }]
 }, { versionKey: false })
 
 userSchema.pre('save', function(next) {
