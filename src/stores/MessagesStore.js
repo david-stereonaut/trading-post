@@ -191,14 +191,14 @@ export class MessagesStore {
         this.declineMessage = '';
     }
 
-    async addReview(reviewOfId, reviewerId, reviewText, stars) {
+     addReview = async (reviewOfId, reviewerId, reviewText, stars) => {
         const review = {
             reviewer: reviewerId,
             review: reviewText,
             stars: stars
         }
-        console.log(review);
         await axios.post(`http://localhost:3001/review/${reviewOfId}`, review);
+        await axios.post(`http://localhost:3001/userReviewd/${this.currentConId}`, {reviewerId: reviewerId});
     }
 
     addNeighbor = async newNeighbor => {
