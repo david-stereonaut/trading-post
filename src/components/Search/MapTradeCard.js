@@ -91,7 +91,7 @@ const MapTradeCard = inject('GeneralStore', 'SearchStore', 'UserStore')(observer
         </div>
       </div>
       <div className={classes.bottomSection}>
-      <Typography style={{alignSelf: 'flex-end'}} variant="subtitle2">{trade.type === "Offering" ? "Offering" : "Requesting"}</Typography>
+      <Typography style={{alignSelf: 'flex-end'}} variant="subtitle2">{trade.type === "Offering" ? "Offering" : "Requesting"}{UserStore.isNeighbor(trade.user_id._id) && ` - Neighbor`}</Typography>
         <div className={classes.buttons}>
           <Button startIcon={<PersonIcon />} onClick={redirectToProfile} color="secondary" variant="contained">More</Button>
           <Button startIcon={<TradeIcon />} onClick={startTrade} color="secondary" variant="contained">Trade!</Button>

@@ -113,11 +113,11 @@ const UserInfo = inject('UserStore', 'GeneralStore')(observer((props) => {
     <div>
       <Paper style={{}}>
       {!editable && <div style={{ marginLeft: -10, marginTop: -20 }}>
-        {UserStore.watchedUser.neighbor ? <Fab variant="extended" color="secondary" aria-label="add" size="small">
-          <RemoveIcon onClick={handleNeighbor}/>
+        {UserStore.watchedUser.neighbor ? <Fab onClick={handleNeighbor} variant="extended" color="secondary" aria-label="add" size="small">
+          <RemoveIcon/>
         </Fab> :
-        <Fab variant="extended" color="secondary" aria-label="add" size="small">
-          <AddIcon onClick={handleNeighbor}/>
+        <Fab onClick={handleNeighbor} variant="extended" color="secondary" aria-label="add" size="small">
+          <AddIcon/>
         </Fab>}
         </div>}
         <div id="user-info">

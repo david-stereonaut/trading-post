@@ -28,14 +28,14 @@ const useStyles = makeStyles(theme => ({
 const ProfilePicUpload = inject('UserStore', 'GeneralStore')(observer((props) =>  {
 
   const { UserStore, GeneralStore } = props
-  const [imageUrl, setImageUrl] = useState(UserStore.user.profilePic.imageUrl)
-  const [imageId, setImageId] = useState(UserStore.user.profilePic.imageId)
+  const [imageUrl, setImageUrl] = useState('')
+  const [imageId, setImageId] = useState('')
   const [loading, setLoading] = useState(false)
 
 
 
   const choosePhoto = async e => {
-    if (imageUrl === UserStore.user.profilePic.imageUrl && e.target.files[0]) {
+    if (!imageUrl && e.target.files[0]) {
       console.log('same image no delete')
       const formData = new FormData();
       formData.append('file', e.target.files[0]);
@@ -65,23 +65,24 @@ const ProfilePicUpload = inject('UserStore', 'GeneralStore')(observer((props) =>
 
   const cancel = async () => {
     GeneralStore.closeProfilePicDialog()
-    if (imageUrl !== UserStore.user.profilePic.imageUrl) {
+    if (imageUrl) {
       let result = await axios.post('http://localhost:3001/destroyImage', {id: imageId})
       console.log(result.data)
-      setImageUrl(UserStore.user.profilePic.imageUrl)
-      setImageId(UserStore.user.profilePic.imageId)
     }
+      setImageUrl('')
+      setImageId('')
+    
   }
 
   const choose = async () => {
     GeneralStore.closeProfilePicDialog()
     UserStore.changeProfilePic(imageUrl, imageId)
-    if (imageUrl !== UserStore.user.profilePic.imageUrl) {
-      let deleted = await axios.post('http://localhost:3001/destroyImage', {id: imageId})
+    if (imageUrl) {
+      let deleted = await axios.post('http://localhost:3001/destroyImage', {id: UserStore.user.profilePic.imageId})
       console.log(deleted.data)
     }
-    setImageUrl(UserStore.user.profilePic.imageUrl)
-    setImageId(UserStore.user.profilePic.imageId)
+    setImageUrl('')
+    setImageId('')
   }
 
   const classes = useStyles()
@@ -95,8 +96,9 @@ const ProfilePicUpload = inject('UserStore', 'GeneralStore')(observer((props) =>
       }}} open={GeneralStore.profilePicDialog} aria-labelledby="form-dialog-title">
         <DialogTitle>Change profile picture</DialogTitle>
         <DialogContent>
-          {!loading ?
-          imageUrl && <Photo imgUrl={imageUrl} /> :
+        {!loading ?
+          imageUrl ? <Photo imgUrl={imageUrl} /> : 
+          <Typography>No image chosen</Typography> :
           <Card className={classes.loadingScreen}>
             <CircularProgress />
           </Card>

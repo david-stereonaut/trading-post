@@ -7,6 +7,7 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import InboxIcon from '@material-ui/icons/Inbox';
 import { useState } from "react";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import tradingPost from '../../assets/navbar.jpg'
 
 
 const Navbar = inject('GeneralStore', 'UserStore', 'SearchStore', 'MessagesStore')(observer((props) =>  {
@@ -53,7 +54,8 @@ const Navbar = inject('GeneralStore', 'UserStore', 'SearchStore', 'MessagesStore
         }
         }}
       />}
-      {UserStore.user._id && <IconButton style={{marginLeft: 'auto'}} onClick={signOut}><ExitToAppIcon /></IconButton>}
+      <img style={{height: 52, marginLeft: 'auto'}} src={tradingPost} alt="our logo" />
+      {UserStore.user._id && <IconButton onClick={signOut}><ExitToAppIcon /></IconButton>}
     </AppBar>
   )
 }))

@@ -36,7 +36,7 @@ const useStyles=makeStyles((theme) => ({
 
 const MapUserInfoCard = inject('UserStore', 'SearchStore', 'GeneralStore')(observer((props) =>  {
   
-  const {user, GeneralStore} = props
+  const {user, GeneralStore, UserStore} = props
 
   const [seekTags, setSeekTags] = useState(false)
   const [offerTags, setOfferTags] = useState(false)
@@ -61,6 +61,7 @@ const MapUserInfoCard = inject('UserStore', 'SearchStore', 'GeneralStore')(obser
     <div className={classes.mainContainer}>
       <div className={classes.titles}>
         <Typography className={classes.cardTitle} variant="h6">{`${user.firstName} ${user.lastName}`}</Typography>
+        {UserStore.isNeighbor(user._id) &&  <Typography className={classes.cardTitle} variant="subtitle1" style={{ fontSize: 12 }} color="textSecondary">Neighbor</Typography>}
       </div>
       <div className={classes.content}>
         <Card style={{width:120, flexShrink: 0, height: 120}}>
