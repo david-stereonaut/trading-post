@@ -7,7 +7,6 @@ import { TradeIcon } from '../TradeIcon'
 import { useState } from 'react'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
-import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -45,21 +44,13 @@ const useStyles = makeStyles(theme => ({
 
 // line 57 will be user's opposite tags, but didn't do logic yet, so now you just have 2 sets of the same tags - says seeking now, will be logic for seeking/offering
 
-const MapTradeCard = inject('GeneralStore', 'SearchStore', 'UserStore')(observer((props) =>  {
+const MapTradeCardOld = inject('GeneralStore', 'SearchStore', 'UserStore')(observer((props) =>  {
 
   const { GeneralStore, SearchStore, UserStore, trade, showMap, userId } = props
 
   const [seeTags, setSeeTags] = useState(false)
 
   const classes = useStyles()
-
-  const history = useHistory()
-
-  const redirectToProfile = () => {
-    history.push(`/profile/${trade.user_id._id}`)
-  }
-
-
 
   return (
     <Paper style={{marginBottom: 15, padding: 15}}>
@@ -71,7 +62,6 @@ const MapTradeCard = inject('GeneralStore', 'SearchStore', 'UserStore')(observer
           />
         </Card>
         <div className={classes.text}>
-        <Typography style={{alignSelf:'flex-end'}} variant="subtitle2">{trade.type === "Offering" ? "Offering" : "Requesting"}</Typography>
           <Typography variant="body1">{trade.title}</Typography>
           <Typography variant="subtitle1" style={{fontSize: 12}} color="textSecondary">{`${trade.user_id.location.city}, ${trade.user_id.location.country}`}</Typography>
           <Typography variant="subtitle1" style={{fontSize: 12}} paragraph={true} color="textSecondary">{trade.subTitle}</Typography>
@@ -85,13 +75,13 @@ const MapTradeCard = inject('GeneralStore', 'SearchStore', 'UserStore')(observer
       <div className={classes.bottomSection}>
         <div></div>
         <div className={classes.buttons}>
-          <Button onClick={redirectToProfile} color="secondary" variant="contained">Show profile</Button>
+          <Button href={`/profile/${trade.user_id._id}`} color="secondary" variant="contained">Show profile</Button>
           <Button startIcon={<TradeIcon />} color="secondary" variant="contained">Trade!</Button>
         </div>
-    
+        <Typography style={{alignSelf:'flex-end'}} variant="subtitle2">{trade.type}</Typography>
       </div>
     </Paper>
   )
 }))
 
-export default MapTradeCard
+export default MapTradeCardOld

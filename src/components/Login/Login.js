@@ -101,7 +101,7 @@ const Login = inject('GeneralStore', 'UserStore', 'MessagesStore')(observer((pro
                 <Button style={{flexGrow: 0}} onClick={userLogin}>Login</Button>
                 {error && <Typography variant='subtitle2' style={{color: 'red'}}>{error}</Typography>}
             </form>
-            <Typography>Don't have a user? Register <Link to='/register'>here</Link></Typography>
+            <Typography>Don't have an account? Register <Link to='/register'>here</Link></Typography>
         </div>
         
     )

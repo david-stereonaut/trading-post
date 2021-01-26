@@ -27,7 +27,8 @@ export class UserStore {
       setUserId: action,
       isNeighbor: action,
       isNeighborhood: action,
-      getNeighborhood: action
+      getNeighborhood: action,
+      registerUser: action
     })
   }
 
@@ -45,7 +46,22 @@ export class UserStore {
     }
   }
 
-  fetchUser = async () => {
+
+  async registerUser(user) {
+    try {
+      const userId = await axios.post(`http://localhost:3001/user/register`, user);
+      console.log(userId.data)
+      this.userId = userId.data
+      localStorage.setItem('userId', userId.data);
+      return "ok"
+    }
+    catch (err) {
+      return err.response.data.error
+    }
+
+  }
+
+  async fetchUser() {
     const user = await axios.get(`http://localhost:3001/myUser/${this.userId}`);
     this.user = user.data;
     this.getNeighborhood();

@@ -43,6 +43,7 @@ const Profile = inject('UserStore', 'GeneralStore')(observer((props) =>  {
 
   return user ? (
     <div id="profile-container">
+      {editable = userId === UserStore.user._id ? true : false}
       <UserInfo user={user} editable={editable} />
       <div className="profile-middle-section">
         <UserTrades user={user} editable={editable} />
