@@ -34,7 +34,7 @@ const useStyles=makeStyles((theme) => ({
 
 const MapTradeInfoCard = inject('UserStore', 'SearchStore', 'GeneralStore')(observer((props) =>  {
   
-  const {trade, GeneralStore} = props
+  const {trade, GeneralStore, UserStore} = props
 
   const classes = useStyles()
 
@@ -53,7 +53,7 @@ const MapTradeInfoCard = inject('UserStore', 'SearchStore', 'GeneralStore')(obse
   return (
     <div className={classes.mainContainer}>
       <div className={classes.titles}>
-        <Typography variant="subtitle2">{trade.type}</Typography>
+        <Typography variant="subtitle2">{trade.type}{UserStore.isNeighbor(trade.user_id._id) && ` - Neighbor`}</Typography>
         <Typography className={classes.cardTitle} variant="h6">{trade.title}</Typography>
         <Typography className={classes.cardTitle} color="textSecondary" variant="subtitle2">{trade.subTitle}</Typography>
       </div>

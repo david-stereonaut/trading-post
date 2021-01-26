@@ -165,7 +165,8 @@ const Register = inject('GeneralStore', 'UserStore', 'MessagesStore')(observer((
         tradeCards: [],
         conversations: [],
         content: [],
-        reviews: []
+        reviews: [],
+        neighbors: []
       }
       console.log(newUser)
       const verify = await UserStore.registerUser(newUser)

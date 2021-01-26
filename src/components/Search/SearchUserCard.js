@@ -51,8 +51,9 @@ const SearchUserCard = inject('GeneralStore', 'SearchStore', 'UserStore')(observ
       </Card>
       <CardContent>
         <Typography variant="body1">{`${user.firstName} ${user.lastName}`}</Typography>
-        <Typography variant="subtitle1" style={{ fontSize: 12 }} paragraph={true} color="textSecondary">{`${user.location.city}, ${user.location.country}`}</Typography>
-        <Typography variant="body1" style={{ fontSize: 14 }} paragraph={true}>{user.description}</Typography>
+        {user.location && user.location.city &&  <Typography variant="subtitle1" style={{ fontSize: 12 }} color="textSecondary">{`${user.location.city}, ${user.location.country}`}</Typography>}
+        {UserStore.isNeighbor(user._id) &&  <Typography variant="subtitle1" style={{ fontSize: 12 }} color="textSecondary">Neighbor</Typography>}
+        <Typography variant="body1" style={{ fontSize: 14, marginTop: 15 }} paragraph={true}>{user.description}</Typography>
         <Typography variant="subtitle2">Seeking</Typography>
         {seekTags ? user.seekingTags.map(tag => <Tag tag={tag} />) : [...user.seekingTags].splice(0, 3).map(tag => <Tag tag={tag} />)}
         {!seekTags ? <IconButton size="small" onClick={() => setSeekTags(!seekTags)}><ExpandMoreIcon /></IconButton> : <IconButton size="small" onClick={() => setSeekTags(!seekTags)}><ExpandLessIcon /></IconButton>}

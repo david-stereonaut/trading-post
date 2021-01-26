@@ -82,14 +82,21 @@ const UserInfo = inject('UserStore', 'GeneralStore')(observer((props) => {
 
   const { userId } = useParams()
 
-  let neighbor = UserStore.isNeighbor(user._id)
+  const neighbor = UserStore.watchedUser.neighbor
+
+  const handleNeighbor = () => {
+    console.log('trig')
+    if (!UserStore.watchedUser.neighbor) {
+      UserStore.addNeighbor()
+    } else {
+      UserStore.removeNeighbor()
+    }
+  }
+
+
 
   const classes = useStyles({ usernameWidth, editable })
 
-  const handleNeighbor = () => {
-    neighbor = !neighbor
-    !neighbor && UserStore.addNeighbor()
-  }
 
   const [editNameInput, setEditNameInput] = useState(`${UserStore.user.firstName} ${UserStore.user.lastName}`)
   const [editDescriptionInput, setEditDescriptionInput] = useState(`${UserStore.user.description}`)
@@ -106,11 +113,11 @@ const UserInfo = inject('UserStore', 'GeneralStore')(observer((props) => {
     <div>
       <Paper style={{}}>
       {!editable && <div style={{ marginLeft: -10, marginTop: -20 }}>
-        {neighbor ? <Fab variant="extended" color="secondary" aria-label="add" size="small">
-          <RemoveIcon onClick={handleNeighbor}/>
+        {UserStore.watchedUser.neighbor ? <Fab onClick={handleNeighbor} variant="extended" color="secondary" aria-label="add" size="small">
+          <RemoveIcon/>
         </Fab> :
-        <Fab variant="extended" color="secondary" aria-label="add" size="small">
-          <AddIcon onClick={handleNeighbor}/>
+        <Fab onClick={handleNeighbor} variant="extended" color="secondary" aria-label="add" size="small">
+          <AddIcon/>
         </Fab>}
         </div>}
         <div id="user-info">

@@ -68,11 +68,7 @@ export class UserStore {
     // this.getNeighborhood();
   }
 
-  async fetchWatchedUser(id) {
-    const user = await axios.get(`http://localhost:3001/user/${id}`);
-    console.log(user.data)
-    this.watchedUser = user.data;
-  }
+  
 
   async startConversation(subject, text) {
     const conversation = {
@@ -197,14 +193,37 @@ export class UserStore {
   isNeighborhood = userId => this.neighborhood.includes(userId);
 
   async addNeighbor(){
+    if (this.isNeighbor(this.watchedUser._id)) {return}
     try {
+      console.log('trig')
       const user1 = this.user._id
       const user2 = this.watchedUser._id
       await axios.post(`http://localhost:3001/neighbors`, {user1, user2})
-      this.fetchUser()
+      await this.fetchUser()
+      await this.fetchWatchedUser(this.watchedUser._id)
     }
     catch (err) {
       return err.response.data.error
     }
-}
+  }
+
+  async removeNeighbor() {
+    if (!this.isNeighbor(this.watchedUser._id)) {return}
+    try {
+      const user1 = this.user._id
+      const user2 = this.watchedUser._id
+      await axios.delete(`http://localhost:3001/neighbors`, { data: {user1, user2}})
+      await this.fetchUser()
+      await this.fetchWatchedUser(this.watchedUser._id)
+    }
+    catch (err) {
+      return err.response.data.error
+    }
+  }
+
+  async fetchWatchedUser(id) {
+    const user = await axios.get(`http://localhost:3001/user/${id}`);
+    this.watchedUser = {...user.data, neighbor: this.isNeighbor(user.data._id)};
+    console.log(this.watchedUser)
+  }
 }

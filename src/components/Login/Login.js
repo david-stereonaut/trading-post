@@ -3,6 +3,7 @@ import {  useEffect, useState } from 'react'
 import {Link, useHistory} from 'react-router-dom'
 import axios from 'axios'
 import { Button, makeStyles, TextField, Typography } from '@material-ui/core'
+import tradingPost from '../../assets/tradingPostLogoPink.png'
 
 const useStyles = makeStyles(() => ({
     container: {
@@ -94,6 +95,8 @@ const Login = inject('GeneralStore', 'UserStore', 'MessagesStore')(observer((pro
 
   return (
         <div className={classes.container}>
+            <Typography variant='h5'>Welcome to</Typography>
+            <img style={{borderRadius: '50%', height: 150}} src={tradingPost} alt="our nice logo" />
             <Typography variant='h6'>Log in here</Typography>
             <form className={classes.form}>
                 {!emailError ? <TextField label="Enter your Email" name="email" value={email} onChange={handleChange} /> : <TextField value={email} label="Enter your Email" error name="email" onChange={handleChange} />}
