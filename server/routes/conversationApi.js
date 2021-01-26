@@ -9,10 +9,14 @@ router.get('/conversations/:userId', async function (req, res) {
         const data = await User.findById(userId).populate([
             {
                 path: 'conversations',
-                populate: {
+                populate: [{
                     path: 'users',
                     select: '_id firstName lastName profilePic'
-                }
+                },
+                {
+                    path: 'messages.tradeCard',
+                },
+                ]
             }
         ])
         const { conversations } = data
@@ -38,7 +42,6 @@ router.post('/conversations/addconversation', async function (req, res) {
 
 router.post('/conversations/:conversationId', async function (req, res) {
     let message = req.body
-    console.log(userId);
     let { conversationId } = req.params
     try {
         const updatedConversation = await Conversation.findByIdAndUpdate( conversationId , { $push: { messages: message } }, { new: true })
@@ -51,7 +54,6 @@ router.post('/conversations/:conversationId', async function (req, res) {
 
 router.post('/userReviewd/:conversationId', async function (req, res) {
     let userId = req.body.reviewerId
-    console.log(userId);
     let { conversationId } = req.params
     try {
         const updatedConversation = await Conversation.findByIdAndUpdate( conversationId , { $push: { usersReviewed: userId } }, { new: true })

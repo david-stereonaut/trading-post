@@ -8,13 +8,14 @@ import { useState } from 'react'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import { useHistory } from 'react-router-dom'
+import PersonIcon from '@material-ui/icons/Person';
 
 const useStyles = makeStyles(theme => ({
   card: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'flex-start',
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-between',
     '& > *': {
       margin: 15
     },
@@ -38,7 +39,9 @@ const useStyles = makeStyles(theme => ({
   text: {
     display: 'flex',
     flexDirection: 'column',
-    marginLeft: 5
+    marginLeft: 5,
+    marginRight: 'auto',
+    maxWidth: 200
   },
   cardTitle: {
     display: 'flex',
@@ -64,12 +67,18 @@ const MapUserCard = inject('GeneralStore', 'SearchStore', 'UserStore')(observer(
     history.push(`/profile/${user._id}`)
   }
 
+  const startTrade = () => {
+    GeneralStore.setStartTradeUserId(user._id)
+    GeneralStore.setStartTrade(null)
+    GeneralStore.setStartTradeDialog(true)
+  }
+
 
   return (
     <Paper style={{marginBottom: 15, padding: 15}}>
       <div className={classes.card}>
         {user.profilePic && 
-        <Card style={{width:125, flexShrink: 0, height: 125}}>
+        <Card style={{width:125, flexShrink: 0, height: 125,}}>
           <CardMedia style={{height: 125}}
             image={user.profilePic.imageUrl}
             title="Trade Thumbnail"
@@ -91,8 +100,8 @@ const MapUserCard = inject('GeneralStore', 'SearchStore', 'UserStore')(observer(
       </div>
       <div className={classes.bottomSection}>
         <div className={classes.buttons}>
-          <Button onClick={redirectToProfile} color="secondary" variant="contained">Show profile</Button>
-          <Button startIcon={<TradeIcon />} color="secondary" variant="contained">Trade!</Button>
+          <Button startIcon={<PersonIcon />} onClick={redirectToProfile} color="secondary" variant="contained">More</Button>
+          <Button startIcon={<TradeIcon />} onClick={startTrade} color="secondary" variant="contained">Trade!</Button>
         </div>
       </div>
     </Paper>

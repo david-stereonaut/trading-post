@@ -5,6 +5,8 @@ import Messages from "./Messages/Messages";
 import { inject, observer } from "mobx-react";
 import Login from './Login/Login'
 import Register from "./Login/Register";
+import StartConversation from "./Search/StartConversation";
+import StartConvoSnackbar from "./StartConvoSnackbar";
 
 
 const Container = inject('UserStore')(observer((props) => {
@@ -21,6 +23,8 @@ const Container = inject('UserStore')(observer((props) => {
       <Route exact path="/search" render={() => <Search />}/>
       <Route exact path="/profile/:userId" render={() => <Profile />}/>
       <Route exact path="/messages" render={() => <Messages />}/>
+      <StartConversation />
+      <StartConvoSnackbar />
     </div>
   )
 }))

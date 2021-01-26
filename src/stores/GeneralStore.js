@@ -20,7 +20,11 @@ export class GeneralStore {
     this.editTradeTags = []
     this.editTradeType = 'Offering'
     this.editTradeId = ''
-    this.allTags = [];
+    this.allTags = []
+    this.startTradeDialog = false
+    this.startTrade = null
+    this.startTradeUserId = ''
+    this.startTradeBody = ''
 
     makeObservable(this, {
       currentTab: observable,
@@ -51,6 +55,14 @@ export class GeneralStore {
       addEditTag: action,
       allTags: observable, 
       getTags: action,
+      startTrade: observable,
+      setStartTrade: action,
+      startTradeDialog: observable,
+      setStartTradeDialog: action,
+      startTradeUserId: observable,
+      setStartTradeUserId: action,
+      startTradeBody: observable,
+      setStartTradeBody: action
     })
   }
 
@@ -105,6 +117,22 @@ export class GeneralStore {
   async getTags() {
     const tags = await axios.get(`http://localhost:3001/getTags`);
     this.allTags = tags.data;
+  }
+
+  setStartTradeDialog = (value) => {
+    this.startTradeDialog = value
+  }
+
+  setStartTrade = (value) => {
+    this.startTrade = value
+  }
+
+  setStartTradeUserId = (value) => {
+    this.startTradeUserId = value
+  }
+
+  setStartTradeBody = (value) => {
+    this.startTradeBody = value
   }
 
 }

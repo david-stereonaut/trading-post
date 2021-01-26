@@ -11,6 +11,7 @@ import App from './Location'
 import Searchbar from './Searchbar'
 import { makeStyles } from '@material-ui/core'
 import SearchResults from './SearchResults'
+import StartConversation from './StartConversation'
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {

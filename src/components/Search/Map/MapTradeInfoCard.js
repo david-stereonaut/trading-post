@@ -4,7 +4,8 @@ import { useCallback, useEffect, useState, } from 'react'
 import { GoogleMap, InfoWindow, LoadScript, Marker } from '@react-google-maps/api';
 import { Button, Card, CardMedia, makeStyles, Typography } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
-
+import PersonIcon from '@material-ui/icons/Person';
+import { TradeIcon } from '../../TradeIcon'
 
 const useStyles=makeStyles((theme) => ({
   mainContainer: {
@@ -33,7 +34,7 @@ const useStyles=makeStyles((theme) => ({
 
 const MapTradeInfoCard = inject('UserStore', 'SearchStore', 'GeneralStore')(observer((props) =>  {
   
-  const {trade} = props
+  const {trade, GeneralStore} = props
 
   const classes = useStyles()
 
@@ -41,6 +42,12 @@ const MapTradeInfoCard = inject('UserStore', 'SearchStore', 'GeneralStore')(obse
 
   const redirectToProfile = () => {
     history.push(`/profile/${trade.user_id._id}`)
+  }
+
+  const startTrade = () => {
+    GeneralStore.setStartTradeUserId(trade.user_id._id)
+    GeneralStore.setStartTrade(trade)
+    GeneralStore.setStartTradeDialog(true)
   }
 
   return (
@@ -60,7 +67,8 @@ const MapTradeInfoCard = inject('UserStore', 'SearchStore', 'GeneralStore')(obse
         <Typography >{trade.description}</Typography>
       </div>
       <div>
-        <Button onClick={redirectToProfile} >User profile</Button>
+        <Button startIcon={<PersonIcon />} onClick={redirectToProfile} >More</Button>
+        <Button startIcon={<TradeIcon />} onClick={startTrade} >Trade!</Button>
       </div>
     </div>
 )

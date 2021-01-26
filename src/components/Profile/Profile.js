@@ -14,9 +14,9 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
 
-const Profile = inject('UserStore', 'GeneralStore')(observer((props) =>  {
+const Profile = inject('UserStore', 'GeneralStore', 'SearchStore')(observer((props) =>  {
   
-  const { UserStore, GeneralStore } = props
+  const { UserStore, GeneralStore, SearchStore } = props
   const [value, setValue] = useState(0);
 
   const handleTabChange = (event, newValue) => {
@@ -43,8 +43,15 @@ const Profile = inject('UserStore', 'GeneralStore')(observer((props) =>  {
     GeneralStore.handleTabChange('', (editable ? 0 : 3))
   }, [UserStore.user])
 
+  const getTags = async () => {
+    await SearchStore.getAllTags()
+  }
+
   useEffect(() => {
     GeneralStore.handleTabChange('', (editable ? 0 : 3))
+    if (SearchStore.allTags.length === 0) {
+      getTags()
+    }
   }, [])
 
 
