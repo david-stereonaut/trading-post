@@ -6,7 +6,6 @@ const moment = require('moment');
 
 export class MessagesStore {
     constructor() {
-        //inserting dummy userId (change way to get it)
         this.userId = '';
         this.category = 'Active barters';
         this.userCons = [];
@@ -41,10 +40,11 @@ export class MessagesStore {
             popUpReview: action,
             revealGeneralPopup: action,
             revealTextPopup: action,
-            // changeUser: action,
             manageSocket: action,
             setUserId: action,
-            signOut: action
+            signOut: action,
+            addReview: action,
+            addNeighbor: action
         })
     }
 
@@ -60,7 +60,6 @@ export class MessagesStore {
 
     changeCategory (category) {
         this.category = category;
-        // this.currentConId = '';
         this.getCons();
     }
 
@@ -141,16 +140,6 @@ export class MessagesStore {
     revealTextPopup = () => this.textPopup = true;
     
     closePopup = popup => this[popup] = false;
-    
-    // changeUser = () => {
-    //     if (this.userId === '60045b1519f39a2c9c46c63e') {    
-    //         this.userId = '6004588a19f39a2c9c46c63d';
-    //     } 
-    //     else {
-    //         this.userId = '60045b1519f39a2c9c46c63e';
-    //     }
-    //     this.getCons('Active');
-    // }
 
     initiateSocket = () => {
         this.socket.on('connect', data => {
@@ -173,7 +162,6 @@ export class MessagesStore {
         const conversation = this.userCons.find(d => d._id === data._id);
         conversation.messages.push(messages[messages.length - 1]);
         conversation.partnerTyping = false;
-        // if (this.currentConId !== data._id){return}
         });
 
         this.socket.on('statusChanged', data => {
@@ -201,5 +189,23 @@ export class MessagesStore {
         this.generalPopup = false;
         this.textPopup = false;
         this.declineMessage = '';
+    }
+
+    async addReview(reviewOfId, reviewerId, reviewText, stars) {
+        const review = {
+            reviewer: reviewerId,
+            review: reviewText,
+            stars: stars
+        }
+        console.log(review);
+        await axios.post(`http://localhost:3001/review/${reviewOfId}`, review);
+    }
+
+    addNeighbor = async newNeighbor => {
+        const users = {
+            user1: this.userId,
+            user2: newNeighbor
+        }
+        await axios.post(`http://localhost:3001/neighbors`, users);
     }
 }
