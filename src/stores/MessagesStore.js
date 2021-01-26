@@ -16,6 +16,7 @@ export class MessagesStore {
         this.generalPopup = false;
         this.textPopup = false;
         this.declineMessage = '';
+        this.startConvoSnackbar = ''
         this.socket = io('http://localhost:3001', {autoConnect: false});
         this.initiateSocket();
         this.manageSocket();
@@ -44,7 +45,9 @@ export class MessagesStore {
             // changeUser: action,
             manageSocket: action,
             setUserId: action,
-            signOut: action
+            signOut: action,
+            startConvoSnackbar: observable,
+            setStartConvoSnackbar: action
         })
     }
 
@@ -56,6 +59,17 @@ export class MessagesStore {
             return moment(b.messages[b.messages.length - 1].message_time) - moment(a.messages[a.messages.length - 1].message_time);
         });
         this.userCons = results;
+    }
+
+    async startConversation (conversation) {
+        try {
+            await axios.post(`http://localhost:3001/conversations/addconversation`, conversation);
+            this.startConvoSnackbar = 'Message sent!'
+        }
+        catch {
+            this.startConvoSnackbar = 'There was a problem sending your message, please try again soon'
+        }
+
     }
 
     changeCategory (category) {
@@ -188,6 +202,10 @@ export class MessagesStore {
     setUserId = (id) => {
         this.userId = id;
         this.socket.open();
+    }
+
+    setStartConvoSnackbar = (value) => {
+        this.startConvoSnackbar = value
     }
 
     signOut = () => {

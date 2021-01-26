@@ -1,5 +1,6 @@
 import { makeStyles, Paper, Typography } from '@material-ui/core';
 import { observer, inject } from 'mobx-react'
+import MessageTradeCard from './MessageTradeCard';
 const moment = require('moment');
 
 const useStyles = makeStyles(() => ({
@@ -45,6 +46,7 @@ const Message = inject('MessagesStore')(observer((props) =>  {
 
   return (
     <Paper id = "Message" className = {classes[type]}>
+        {message.tradeCard && <MessageTradeCard trade={message.tradeCard} />}
         <Typography paragraph={type !== 'systemMessage' && true} variant='body1' >{message.senderId === 'system message' && 'System message: '}{message.body}</Typography>
         {message.senderId !== 'system message' && <Typography variant='subtitle2' style={{fontSize: 13, marginBottom: -5}}>{messageTime}</Typography>}
     </Paper>

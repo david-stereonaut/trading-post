@@ -36,6 +36,12 @@ const SearchUserCard = inject('GeneralStore', 'SearchStore', 'UserStore')(observ
     history.push(`/profile/${user._id}`)
   }
 
+  const startTrade = () => {
+    GeneralStore.setStartTradeUserId(user._id)
+    GeneralStore.setStartTrade(null)
+    GeneralStore.setStartTradeDialog(true)
+  }
+
   return (
     <Card className={classes.card}>
       <Card style={{width:175, alignSelf: 'center', marginTop: 8}}>
@@ -54,9 +60,9 @@ const SearchUserCard = inject('GeneralStore', 'SearchStore', 'UserStore')(observ
         {offerTags ? user.offeringTags.map(tag => <Tag tag={tag} />) : [...user.offeringTags].splice(0, 3).map(tag => <Tag tag={tag} />)}
         {!offerTags ? <IconButton size="small" onClick={() => setOfferTags(!offerTags)}><ExpandMoreIcon /></IconButton> : <IconButton size="small" onClick={() => setOfferTags(!offerTags)}><ExpandLessIcon /></IconButton>}
       </CardContent>
-      <CardActions style={{marginTop: 'auto'}}>
-        <Button startIcon={<PersonIcon />} onClick={redirectToProfile} color="secondary" variant="contained">More</Button>
-        <Button startIcon={<TradeIcon />} color="secondary" variant="contained">Trade!</Button>
+      <CardActions style={{marginTop: 'auto', alignSelf: 'center',}}>
+        <Button style={{marginRight: 10}} startIcon={<PersonIcon />} onClick={redirectToProfile} color="secondary" variant="contained">More</Button>
+        <Button startIcon={<TradeIcon />} onClick={startTrade} color="secondary" variant="contained">Trade!</Button>
       </CardActions>
     </Card>
   )

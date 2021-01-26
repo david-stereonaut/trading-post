@@ -7,6 +7,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import { useHistory } from 'react-router-dom';
 import PersonIcon from '@material-ui/icons/Person';
+import { TradeIcon } from '../../TradeIcon'
 
 const useStyles=makeStyles((theme) => ({
   mainContainer: {
@@ -35,7 +36,7 @@ const useStyles=makeStyles((theme) => ({
 
 const MapUserInfoCard = inject('UserStore', 'SearchStore', 'GeneralStore')(observer((props) =>  {
   
-  const {user} = props
+  const {user, GeneralStore} = props
 
   const [seekTags, setSeekTags] = useState(false)
   const [offerTags, setOfferTags] = useState(false)
@@ -47,6 +48,12 @@ const MapUserInfoCard = inject('UserStore', 'SearchStore', 'GeneralStore')(obser
 
   const redirectToProfile = () => {
     history.push(`/profile/${user._id}`)
+  }
+
+  const startTrade = () => {
+    GeneralStore.setStartTradeUserId(user._id)
+    GeneralStore.setStartTrade(null)
+    GeneralStore.setStartTradeDialog(true)
   }
 
 
@@ -73,6 +80,7 @@ const MapUserInfoCard = inject('UserStore', 'SearchStore', 'GeneralStore')(obser
       </div>
       <div>
         <Button startIcon={<PersonIcon />} onClick={redirectToProfile} >More</Button>
+        <Button startIcon={<TradeIcon />} onClick={startTrade} >Trade!</Button>
       </div>
     </div>
 )

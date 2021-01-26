@@ -35,6 +35,12 @@ const SearchTradeCard = inject('GeneralStore', 'SearchStore', 'UserStore')(obser
     history.push(`/profile/${trade.user_id._id}`)
   }
 
+  const startTrade = () => {
+    GeneralStore.setStartTradeUserId(trade.user_id._id)
+    GeneralStore.setStartTrade(trade)
+    GeneralStore.setStartTradeDialog(true)
+  }
+
 
 
 
@@ -54,9 +60,9 @@ const SearchTradeCard = inject('GeneralStore', 'SearchStore', 'UserStore')(obser
         {seeTags ? trade.tags.map(tag => <Tag tag={tag} />) : [...trade.tags].splice(0, 3).map(tag => <Tag tag={tag} />)}
         {!seeTags ? <IconButton size="small" onClick={() => setSeeTags(!seeTags)}><ExpandMoreIcon /></IconButton> : <IconButton size="small" onClick={() => setSeeTags(!seeTags)}><ExpandLessIcon /></IconButton>}
       </CardContent>
-      <CardActions style={{marginTop: 'auto'}}>
-        <Button startIcon={<PersonIcon />} onClick={redirectToProfile} color="secondary" variant="contained">More</Button>
-        <Button startIcon={<TradeIcon />} color="secondary" variant="contained">Trade!</Button>
+      <CardActions style={{marginTop: 'auto', alignSelf: 'center', }}>
+        <Button style={{marginRight: 10}} startIcon={<PersonIcon />} onClick={redirectToProfile} color="secondary" variant="contained">More</Button>
+        <Button startIcon={<TradeIcon />} onClick={startTrade} color="secondary" variant="contained">Trade!</Button>
       </CardActions>
         </Card>
     

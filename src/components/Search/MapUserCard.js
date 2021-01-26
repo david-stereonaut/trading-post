@@ -67,6 +67,12 @@ const MapUserCard = inject('GeneralStore', 'SearchStore', 'UserStore')(observer(
     history.push(`/profile/${user._id}`)
   }
 
+  const startTrade = () => {
+    GeneralStore.setStartTradeUserId(user._id)
+    GeneralStore.setStartTrade(null)
+    GeneralStore.setStartTradeDialog(true)
+  }
+
 
   return (
     <Paper style={{marginBottom: 15, padding: 15}}>
@@ -95,7 +101,7 @@ const MapUserCard = inject('GeneralStore', 'SearchStore', 'UserStore')(observer(
       <div className={classes.bottomSection}>
         <div className={classes.buttons}>
           <Button startIcon={<PersonIcon />} onClick={redirectToProfile} color="secondary" variant="contained">More</Button>
-          <Button startIcon={<TradeIcon />} color="secondary" variant="contained">Trade!</Button>
+          <Button startIcon={<TradeIcon />} onClick={startTrade} color="secondary" variant="contained">Trade!</Button>
         </div>
       </div>
     </Paper>

@@ -71,6 +71,13 @@ const useStyles = makeStyles((theme) => ({
   },
   tagsFilter: {
     width: 150,
+    backgroundColor: 'white',
+    // maxHeight: 100,
+  },
+  focusedTagsFilter: {
+    // position: 'relative',
+    zIndex: 9999999,
+    width: 250,
   }
 }))
 
@@ -136,8 +143,9 @@ const Searchbar = inject('UserStore', 'SearchStore', 'GeneralStore')(observer((p
           {searchFor === 'swap' &&
             <FormControl>
               <Autocomplete
+                classes={{ focused: classes.focusedTagsFilter}}
                 forcePopupIcon={false}
-                className={classes.tagsFilter}
+                className={`${classes.tagsFilter}`}
                 multiple
                 size="small"
                 limitTags={1}
@@ -154,6 +162,7 @@ const Searchbar = inject('UserStore', 'SearchStore', 'GeneralStore')(observer((p
           {searchFor === 'swap' &&
             <FormControl>
               <Autocomplete
+                classes={{ focused: classes.focusedTagsFilter}}
                 forcePopupIcon={false}
                 className={classes.tagsFilter}
                 multiple

@@ -9,10 +9,14 @@ router.get('/conversations/:userId', async function (req, res) {
         const data = await User.findById(userId).populate([
             {
                 path: 'conversations',
-                populate: {
+                populate: [{
                     path: 'users',
                     select: '_id firstName lastName profilePic'
-                }
+                },
+                {
+                    path: 'messages.tradeCard',
+                },
+                ]
             }
         ])
         const { conversations } = data
