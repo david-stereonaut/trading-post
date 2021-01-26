@@ -183,6 +183,7 @@ export class UserStore {
   }
 
   getNeighborhood = () => {
+    if (!this.user.neighborhood) { return }
     if(!this.user.neighbors) {return}
     const allNeighbors =  [];
     this.user.neighbors.forEach(n => n.neighbors.forEach(n => allNeighbors.push(n)));
