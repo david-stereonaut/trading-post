@@ -7,6 +7,7 @@ export class UserStore {
     this.user = {};
     this.watchedUser = {};
     this.userId = null;
+    this.neighborhood = [];
 
     makeObservable(this, {
       user: observable,
@@ -24,6 +25,9 @@ export class UserStore {
       updateUserName: action,
       signOut: action,
       setUserId: action,
+      isNeighbor: action,
+      isNeighborhood: action,
+      getNeighborhood: action,
       registerUser: action
     })
   }
@@ -42,6 +46,7 @@ export class UserStore {
     }
   }
 
+
   async registerUser(user) {
     try {
       const userId = await axios.post(`http://localhost:3001/user/register`, user);
@@ -59,6 +64,7 @@ export class UserStore {
   async fetchUser() {
     const user = await axios.get(`http://localhost:3001/myUser/${this.userId}`);
     this.user = user.data;
+    this.getNeighborhood();
   }
 
   async fetchWatchedUser(id) {
@@ -180,4 +186,15 @@ export class UserStore {
     this.userId = null;
   }
 
+  getNeighborhood = () => {
+    if(!this.user.neighbors) {return}
+    const allNeighbors =  [];
+    this.user.neighbors.forEach(n => n.neighbors.forEach(n => allNeighbors.push(n)));
+    const neighborhood = [...new Set(allNeighbors)];
+    this.neighborhood = neighborhood;
+  }
+
+  isNeighbor = userId  => this.user.neighbors.some(n => n._id === userId);
+
+  isNeighborhood = userId => this.neighborhood.includes(userId);
 }
