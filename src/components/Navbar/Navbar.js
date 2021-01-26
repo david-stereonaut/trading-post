@@ -25,7 +25,7 @@ const Navbar = inject('GeneralStore', 'UserStore', 'SearchStore', 'MessagesStore
 
   const search = (e) => {
     if (e.key === 'Enter') {
-      SearchStore.searchTrades(searchInput)
+      SearchStore.searchOffering(searchInput)
       setSearchInput('')
       history.push('/search')
     }

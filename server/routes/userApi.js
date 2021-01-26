@@ -164,6 +164,19 @@ router.post('/neighbors', async function (req, res) {
   }
 })
 
+router.delete('/neighbors', async function (req, res) {
+  let user1 = req.body.user1;
+  let user2 = req.body.user2;
+  try {
+    await User.findByIdAndUpdate( user1 , { $pull: { neighbors: user2 } }, { new: true });
+    await User.findByIdAndUpdate( user2 , { $pull: { neighbors: user1 } }, { new: true });
+    res.end();
+  }
+  catch (err) {
+      res.send(err.message)
+  }
+})
+
 router.put('/addToUserArray/:userId',async function (req, res) {
     let { userId } = req.params
     try {

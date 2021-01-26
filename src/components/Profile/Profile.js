@@ -41,7 +41,7 @@ const Profile = inject('UserStore', 'GeneralStore', 'SearchStore')(observer((pro
 
   useEffect(() => {
     GeneralStore.handleTabChange('', (editable ? 0 : 3))
-  }, [UserStore.user])
+  }, [UserStore.user, UserStore.watchedUser])
 
   const getTags = async () => {
     await SearchStore.getAllTags()
