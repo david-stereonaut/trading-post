@@ -1,4 +1,3 @@
-<h2>Trading post</h2>
 
 A social network that helps people manage barters.
 
