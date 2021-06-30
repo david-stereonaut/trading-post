@@ -17,7 +17,7 @@ The user can also use the map with the locations of the other users:
 
 ![map](https://user-images.githubusercontent.com/73039912/107616060-f7c78480-6c55-11eb-91fa-fd64aa26acb4.png)
 
-To start barter, the user has to send a request to the partner. Once a barter has been confirmed and became active, the partners can comunicate using live chat on the conversations page:
+To start barter, the user has to send a request to the partner. Once a barter has been confirmed and became active, the partners can communicate using live chat on the conversations page:
 
 ![chat](https://user-images.githubusercontent.com/73039912/107616072-fd24cf00-6c55-11eb-9c4b-f1d7bd27bfb2.png)
 
